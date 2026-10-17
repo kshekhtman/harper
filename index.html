@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QuarterTetris: Voice 4-Year Planner</title>
+<style>
+  :root {
+    --maroon: #800000; --bg: #0f1115; --panel: #171a21; --line: #262b36; --text: #e8e9ee; --muted: #8a90a0;
+    --red: #ff4d5e; --yellow: #ffc84a; --green: #3ddc84; --blue: #5aa9ff;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif; background: var(--bg); color: var(--text); }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo { width: 34px; height: 34px; border-radius: 8px; background: var(--maroon); display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 6px; }
+  .logo span { background: #fff; border-radius: 2px; opacity: .9; }
+  .logo span:nth-child(4) { opacity: 0; }
+  h1 { font-size: 20px; margin: 0; letter-spacing: -.3px; }
+  .sub { color: var(--muted); font-size: 13px; }
+  .status-pill { font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); }
+  .status-pill.valid { color: var(--green); border-color: #1f5a3a; background: #0f2a1c; }
+  .status-pill.invalid { color: var(--red); border-color: #5a1f27; background: #2a0f14; }
+  main { display: grid; grid-template-columns: 1fr 340px; gap: 18px; padding: 18px 24px; }
+  .grid { display: grid; grid-template-columns: 90px repeat(3, 1fr); gap: 8px; }
+  .colhead { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; padding: 0 4px 2px; }
+  .rowhead { display: flex; flex-direction: column; justify-content: center; color: var(--muted); font-size: 12px; }
+  .rowhead b { color: var(--text); font-size: 15px; }
+  .cell { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; min-height: 128px; transition: border-color .3s, background .3s; position: relative; }
+  .cell.warn { border-color: var(--yellow); box-shadow: 0 0 0 1px var(--yellow) inset; }
+  .cell.abroad { background: linear-gradient(135deg, #14233a, #171a21); border-color: var(--blue); }
+  .cellhead { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .badge { font-size: 10px; padding: 1px 6px; border-radius: 6px; }
+  .badge.abroad { background: var(--blue); color: #001; font-weight: 600; }
+  .badge.warn { background: var(--yellow); color: #210; font-weight: 600; }
+  .cards { display: flex; flex-direction: column; gap: 5px; }
+  .card { border-radius: 7px; padding: 5px 8px; font-size: 12px; background: #20242e; border-left: 4px solid var(--c, #666); position: relative; }
+  .card .id { font-weight: 650; }
+  .card .t { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card.bad { background: #3a121a; outline: 1.5px solid var(--red); }
+  .card.bad .why { color: #ff9aa5; font-size: 10.5px; margin-top: 2px; }
+  .card.changed { animation: glow 1.6s ease-out; }
+  .card.fixed { outline: 1.5px solid var(--green); }
+  @keyframes glow { 0% { box-shadow: 0 0 0 0 rgba(90,169,255,.9); } 100% { box-shadow: 0 0 0 10px rgba(90,169,255,0); } }
+  .tray { margin-top: 14px; background: var(--panel); border: 1px dashed var(--line); border-radius: 10px; padding: 10px; min-height: 60px; }
+  .tray.has { border-color: var(--red); }
+  .tray h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; }
+  .tray .cards { flex-direction: row; flex-wrap: wrap; }
+  .tray .card { width: 180px; }
+  aside { display: flex; flex-direction: column; gap: 14px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  #talk { width: 100%; padding: 16px; font-size: 16px; font-weight: 650; border: 0; border-radius: 12px; cursor: pointer; background: var(--maroon); color: white; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  #talk.live { background: #2a2f3b; }
+  .orb { width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+  #talk.live .orb { background: var(--green); animation: pulse 1.2s infinite; }
+  #talk.speaking .orb { background: var(--blue); animation: pulse .6s infinite; }
+  @keyframes pulse { 50% { transform: scale(1.5); opacity: .5; } }
+  #mode { text-align: center; color: var(--muted); font-size: 12px; margin-top: 8px; }
+  #log { height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+  .msg { padding: 8px 10px; border-radius: 10px; line-height: 1.35; }
+  .msg.user { background: #232836; align-self: flex-end; max-width: 90%; }
+  .msg.ai { background: #2a1416; border: 1px solid #4a1d22; max-width: 95%; }
+  .msg.tool { color: var(--blue); font-family: ui-monospace, Menlo, monospace; font-size: 11px; padding: 2px 4px; }
+  .panel h2 { font-size: 13px; margin: 0 0 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  #problems { font-size: 12px; color: #ffb3bb; margin: 0; padding-left: 16px; }
+  #problems li.w { color: var(--yellow); }
+  #problems.empty { color: var(--green); list-style: none; padding: 0; }
+  details { font-size: 12px; color: var(--muted); }
+  details button { margin: 4px 4px 0 0; background: #232836; color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; cursor: pointer; font-size: 12px; }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--muted); margin-top: 10px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+  footer { color: var(--muted); font-size: 11px; padding: 0 24px 18px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"><span></span><span></span><span></span><span></span></div>
+    <div><h1>QuarterTetris</h1><div class="sub" id="subtitle">Say your major to load a plan</div></div>
+  </div>
+  <div class="status-pill" id="pill">No plan loaded</div>
+</header>
+
+<main>
+  <section>
+    <div class="grid" id="grid"></div>
+    <div class="tray" id="tray"><h3>Needs a new quarter</h3><div class="cards" id="traycards"></div></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <aside>
+    <div class="panel">
+      <button id="talk"><span class="orb"></span><span id="talklabel">Talk to Harper</span></button>
+      <div id="mode">Click and allow microphone access</div>
+    </div>
+    <div class="panel"><h2>Conversation</h2><div id="log"></div></div>
+    <div class="panel"><h2>Plan check</h2><ul id="problems" class="empty"><li>Load a major to begin.</li></ul></div>
+    <div class="panel">
+      <details>
+        <summary>Test without voice (backup demo controls)</summary>
+        <div>
+          <button data-t='["load_major",{"major":"CS"}]'>Load CS</button>
+          <button data-t='["load_major",{"major":"Econ"}]'>Load Econ</button>
+          <button data-t='["set_study_abroad",{"quarter":"Y3-Autumn"}]'>Abroad Y3-Autumn</button>
+          <button data-t='["mark_course_closed",{"course_id":"CMSC 14300"}]'>Close CMSC 14300</button>
+          <button data-t='["mark_course_closed",{"course_id":"ECON 20100"}]'>Close ECON 20100</button>
+          <button data-t='["move_course",{"course_id":"SOSC 1","to_quarter":"Y1-Winter"}]'>Move SOSC 1 → Y1-Winter</button>
+          <button data-t='["auto_fix",{}]'>Auto-fix</button>
+        </div>
+      </details>
+    </div>
+  </aside>
+</main>
+<footer>Sample course data based on the UChicago College Catalog, simplified for demo purposes. Not official advising.</footer>
+
+<script src="catalog.js"></script>
+<script src="planner.js"></script>
+<script type="module">
+
+  // ======== PASTE YOUR ELEVENLABS AGENT ID HERE ========
+  const AGENT_ID = "PASTE_YOUR_AGENT_ID_HERE";
+  // =====================================================
+
+  const P = window.Planner.createPlanner(window.CATALOG);
+  const COLORS = { CS: "#5aa9ff", ECON: "#3ddc84", MATH: "#c18cff", STAT: "#ff8ad8", HUM: "#ffb35a", SOSC: "#ff7a5a",
+                   CIV: "#4ad6d6", ARTS: "#f5e05a", BIO: "#8ee05a", PHYS: "#a0a8ff", ELECTIVE: "#888" };
+  const YEARS = ["First year", "Second year", "Third year", "Fourth year"];
+  let lastBad = new Set();
+
+  const $ = id => document.getElementById(id);
+  $("legend").innerHTML = Object.entries(COLORS).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("");
+
+  function cardHTML(id, issues, changed, fixed) {
+    const c = P.courses[id];
+    const cls = ["card", issues ? "bad" : "", changed ? "changed" : "", fixed ? "fixed" : ""].join(" ");
+    return `<div class="${cls}" data-id="${id}" style="--c:${COLORS[c.category] || "#666"}">
+      <div class="id">${id}</div><div class="t">${c.title}</div>
+      ${issues ? `<div class="why">${issues.join("; ")}</div>` : ""}</div>`;
+  }
+
+  function render() {
+    // FLIP animation: remember where every card was.
+    const first = {};
+    document.querySelectorAll(".card").forEach(el => (first[el.dataset.id] = el.getBoundingClientRect()));
+
+    const s = P.state, v = P.validate(), changed = new Set(s.changed);
+    const bad = new Set(Object.keys(v.courseIssues));
+    let html = `<div></div>` + P.SEASONS.map(x => `<div class="colhead">${x}</div>`).join("");
+    for (let y = 1; y <= 4; y++) {
+      html += `<div class="rowhead"><b>Year ${y}</b>${YEARS[y - 1]}</div>`;
+      for (const season of P.SEASONS) {
+        const q = `Y${y}-${season}`, warn = v.quarterWarnings[q], abroad = s.abroad === q;
+        html += `<div class="cell ${warn ? "warn" : ""} ${abroad ? "abroad" : ""}">
+          <div class="cellhead"><span>${q} · ${P.hoursIn(q)} hrs/wk</span>
+            <span>${abroad ? '<span class="badge abroad">✈ ABROAD</span>' : ""} ${warn ? `<span class="badge warn">⚠ ${warn[0]}</span>` : ""}</span></div>
+          <div class="cards">${s.plan[q].map(id => cardHTML(id, v.courseIssues[id], changed.has(id), lastBad.has(id) && !bad.has(id))).join("")}</div></div>`;
+      }
+    }
+    $("grid").innerHTML = html;
+    $("traycards").innerHTML = s.tray.map(id => cardHTML(id, ["unscheduled"], changed.has(id))).join("");
+    $("tray").classList.toggle("has", s.tray.length > 0);
+    lastBad = new Set([...bad, ...s.tray]);
+
+    // Status
+    const hard = Object.keys(v.courseIssues).length + s.tray.length;
+    const pill = $("pill");
+    if (!s.major) { pill.textContent = "No plan loaded"; pill.className = "status-pill"; }
+    else if (hard) { pill.textContent = `✕ ${hard} problem${hard > 1 ? "s" : ""}`; pill.className = "status-pill invalid"; }
+    else { pill.textContent = "✓ Plan valid: on track to graduate"; pill.className = "status-pill valid"; }
+    if (s.major) $("subtitle").textContent = `${s.major} major · sample 4-year plan${s.abroad ? ` · abroad ${s.abroad}` : ""}`;
+
+    const items = [];
+    Object.entries(v.courseIssues).forEach(([id, ps]) => items.push(`<li>${id}: ${ps.join("; ")}</li>`));
+    s.tray.forEach(id => items.push(`<li>${id} needs a new quarter</li>`));
+    Object.entries(v.quarterWarnings).forEach(([q, ws]) => items.push(`<li class="w">${q}: ${ws.join("; ")}</li>`));
+    const ul = $("problems");
+    ul.className = items.length || !s.major ? "" : "empty";
+    ul.innerHTML = s.major ? (items.join("") || "<li>✓ All prerequisites and offerings check out.</li>") : "<li>Load a major to begin.</li>";
+
+    // FLIP: animate cards from old position to new.
+    document.querySelectorAll(".card").forEach(el => {
+      const f = first[el.dataset.id], l = el.getBoundingClientRect();
+      if (!f) { el.animate([{ opacity: 0, transform: "scale(.85)" }, { opacity: 1, transform: "none" }], { duration: 450, easing: "ease-out" }); return; }
+      const dx = f.left - l.left, dy = f.top - l.top;
+      if (Math.abs(dx) + Math.abs(dy) > 2) el.animate([{ transform: `translate(${dx}px,${dy}px)`, zIndex: 10 }, { transform: "none" }], { duration: 700, easing: "cubic-bezier(.2,.8,.2,1)" });
+    });
+  }
+
+  function log(kind, text) {
+    const d = document.createElement("div");
+    d.className = `msg ${kind}`; d.textContent = text;
+    $("log").appendChild(d); $("log").scrollTop = $("log").scrollHeight;
+  }
+
+  // Wrap each tool: run it, re-render, log, and return JSON text to the agent.
+  const clientTools = {};
+  Object.entries(P.tools).forEach(([name, fn]) => {
+    clientTools[name] = async (params = {}) => {
+      const res = fn(params || {});
+      render();
+      log("tool", `⚙ ${name}(${Object.values(params || {}).join(", ")})`);
+      return JSON.stringify(res);
+    };
+  });
+  window.QT = clientTools; // for console testing
+
+  document.querySelectorAll("details button").forEach(b => b.onclick = () => { const [n, a] = JSON.parse(b.dataset.t); clientTools[n](a); });
+
+  // ---- Voice ----
+  let convo = null;
+  const talk = $("talk");
+  talk.onclick = async () => {
+    if (convo) { await convo.endSession(); return; }
+    if (AGENT_ID.startsWith("PASTE")) { alert("Paste your ElevenLabs Agent ID into index.html (AGENT_ID)."); return; }
+    try {
+      $("mode").textContent = "Connecting…";
+      const { Conversation } = await import("https://cdn.jsdelivr.net/npm/@elevenlabs/client/+esm");
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      convo = await Conversation.startSession({
+        agentId: AGENT_ID,
+        clientTools,
+        onConnect: () => { talk.classList.add("live"); $("talklabel").textContent = "End conversation"; $("mode").textContent = "Listening…"; },
+        onDisconnect: () => { convo = null; talk.className = ""; $("talklabel").textContent = "Talk to Harper"; $("mode").textContent = "Disconnected"; },
+        onMessage: ({ message, source }) => log(source === "user" ? "user" : "ai", message),
+        onModeChange: ({ mode }) => { talk.classList.toggle("speaking", mode === "speaking"); $("mode").textContent = mode === "speaking" ? "Harper is speaking…" : "Listening…"; },
+        onError: (e) => { console.error(e); $("mode").textContent = "Error: " + (e?.message || e); }
+      });
+    } catch (e) { console.error(e); $("mode").textContent = "Couldn't connect: " + e.message; }
+  };
+
+  P.onChange(() => {});
+  render();
+</script>
+</body>
+</html>

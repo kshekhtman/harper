@@ -1,0 +1,86 @@
+// QuarterTetris course data. Sample data based on the UChicago College Catalog,
+// simplified for the demo (see README). To add a major: add courses + a plan.
+window.CATALOG = {
+  courses: [
+    // ---- Core ----
+    { id: "HUM 1", title: "Humanities Core I", category: "HUM", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "HUM 2", title: "Humanities Core II", category: "HUM", offered: ["Winter"], prereqs: ["HUM 1"], abroad_eligible: false, hours_per_week: 8 },
+    { id: "HUM 3", title: "Humanities Core III", category: "HUM", offered: ["Spring"], prereqs: ["HUM 2"], abroad_eligible: false, hours_per_week: 8 },
+    { id: "SOSC 1", title: "Social Sciences Core I", category: "SOSC", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "SOSC 2", title: "Social Sciences Core II", category: "SOSC", offered: ["Winter"], prereqs: ["SOSC 1"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "SOSC 3", title: "Social Sciences Core III", category: "SOSC", offered: ["Spring"], prereqs: ["SOSC 2"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CIV 1", title: "Civilization Studies I", category: "CIV", offered: ["Autumn", "Winter", "Spring"], prereqs: [], abroad_eligible: true, hours_per_week: 7 },
+    { id: "CIV 2", title: "Civilization Studies II", category: "CIV", offered: ["Autumn", "Winter", "Spring"], prereqs: ["CIV 1"], abroad_eligible: true, hours_per_week: 7 },
+    { id: "ARTS 1", title: "Core Arts Requirement", category: "ARTS", offered: ["Autumn", "Winter", "Spring"], prereqs: [], abroad_eligible: true, hours_per_week: 6 },
+    { id: "BIO 1", title: "Biological Sciences Core I", category: "BIO", offered: ["Autumn", "Winter", "Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 7 },
+    { id: "BIO 2", title: "Biological Sciences Core II", category: "BIO", offered: ["Autumn", "Winter", "Spring"], prereqs: ["BIO 1"], abroad_eligible: false, hours_per_week: 7 },
+    { id: "PHYS 1", title: "Physical Sciences Core I", category: "PHYS", offered: ["Autumn", "Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "PHYS 2", title: "Physical Sciences Core II", category: "PHYS", offered: ["Winter", "Spring"], prereqs: ["PHYS 1"], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ELECTIVE 1", title: "General Elective I", category: "ELECTIVE", offered: ["Autumn", "Winter", "Spring"], prereqs: [], abroad_eligible: true, hours_per_week: 7 },
+    { id: "ELECTIVE 2", title: "General Elective II", category: "ELECTIVE", offered: ["Autumn", "Winter", "Spring"], prereqs: [], abroad_eligible: true, hours_per_week: 7 },
+    // ---- Math / Stats ----
+    { id: "MATH 15100", title: "Calculus I", category: "MATH", offered: ["Autumn", "Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "MATH 15200", title: "Calculus II", category: "MATH", offered: ["Autumn", "Winter", "Spring"], prereqs: ["MATH 15100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "MATH 15300", title: "Calculus III", category: "MATH", offered: ["Autumn", "Winter", "Spring"], prereqs: ["MATH 15200"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "MATH 19520", title: "Math Methods for Social Sciences", category: "MATH", offered: ["Autumn", "Winter", "Spring"], prereqs: ["MATH 15300"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "STAT 23400", title: "Statistical Models and Methods", category: "STAT", offered: ["Autumn", "Winter", "Spring"], prereqs: ["MATH 15300"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "STAT 24300", title: "Numerical Linear Algebra", category: "STAT", offered: ["Autumn", "Winter", "Spring"], prereqs: ["MATH 15200"], abroad_eligible: false, hours_per_week: 11 },
+    // ---- Computer Science ----
+    { id: "CMSC 14100", title: "Intro to Computer Science I", category: "CS", offered: ["Autumn", "Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CMSC 14200", title: "Intro to Computer Science II", category: "CS", offered: ["Autumn", "Winter", "Spring"], prereqs: ["CMSC 14100"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "CMSC 14300", title: "Systems Programming I", category: "CS", offered: ["Autumn", "Winter", "Spring"], prereqs: ["CMSC 14200"], abroad_eligible: false, hours_per_week: 15 },
+    { id: "CMSC 14400", title: "Systems Programming II", category: "CS", offered: ["Winter", "Spring"], prereqs: ["CMSC 14300"], abroad_eligible: false, hours_per_week: 16 },
+    { id: "CMSC 27100", title: "Discrete Mathematics", category: "CS", offered: ["Autumn", "Winter"], prereqs: ["CMSC 14200", "MATH 15200"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "CMSC 27200", title: "Theory of Algorithms", category: "CS", offered: ["Winter", "Spring"], prereqs: ["CMSC 27100", "CMSC 14200"], abroad_eligible: false, hours_per_week: 15 },
+    { id: "CMSC 25300", title: "Math Foundations of ML", category: "CS", offered: ["Autumn", "Spring"], prereqs: ["CMSC 14200", "STAT 24300"], abroad_eligible: false, hours_per_week: 13 },
+    { id: "CMSC 23300", title: "Networks & Distributed Systems", category: "CS", offered: ["Winter", "Spring"], prereqs: ["CMSC 14300"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "CMSC 23500", title: "Intro to Database Systems", category: "CS", offered: ["Autumn", "Spring"], prereqs: ["CMSC 14300"], abroad_eligible: false, hours_per_week: 13 },
+    { id: "CMSC 25400", title: "Machine Learning", category: "CS", offered: ["Autumn", "Winter", "Spring"], prereqs: ["CMSC 25300"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "CMSC 23200", title: "Intro to Computer Security", category: "CS", offered: ["Autumn", "Winter", "Spring"], prereqs: ["CMSC 14300"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CMSC 22240", title: "Computer Architecture for Scientists", category: "CS", offered: ["Winter"], prereqs: ["CMSC 14300"], abroad_eligible: false, hours_per_week: 12 },
+    // ---- Economics ----
+    { id: "ECON 10000", title: "Principles of Microeconomics", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: [], abroad_eligible: true, hours_per_week: 8 },
+    { id: "ECON 10200", title: "Principles of Macroeconomics", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["ECON 10000"], abroad_eligible: true, hours_per_week: 8 },
+    { id: "ECON 20000", title: "Elements of Economic Analysis I", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["MATH 15300"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "ECON 20100", title: "Elements of Economic Analysis II", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["ECON 20000", "MATH 19520"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "ECON 20200", title: "Elements of Economic Analysis III", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["ECON 20100"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "ECON 20300", title: "Elements of Economic Analysis IV", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["ECON 20200"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "ECON 21020", title: "Econometrics", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["ECON 20000", "STAT 23400", "MATH 19520"], abroad_eligible: false, hours_per_week: 15 },
+    { id: "ECON 20700", title: "Game Theory & Economic Applications", category: "ECON", offered: ["Autumn", "Spring"], prereqs: ["ECON 20100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "ECON 25000", title: "Introduction to Finance", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["ECON 20200", "ECON 21020"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "ECON 24000", title: "Labor Economics", category: "ECON", offered: ["Winter", "Spring"], prereqs: ["ECON 20100", "ECON 21020"], abroad_eligible: true, hours_per_week: 10 },
+    { id: "ECON 26010", title: "Public Finance", category: "ECON", offered: ["Autumn", "Spring"], prereqs: ["ECON 20100"], abroad_eligible: true, hours_per_week: 10 },
+    { id: "ECON 28000", title: "Industrial Organization", category: "ECON", offered: ["Autumn", "Winter"], prereqs: ["ECON 20100"], abroad_eligible: true, hours_per_week: 11 },
+    { id: "ECON 23950", title: "Economic Policy Analysis", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["ECON 20100"], abroad_eligible: true, hours_per_week: 10 }
+  ],
+  plans: {
+    CS: {
+      "Y1-Autumn": ["CMSC 14100", "MATH 15100", "HUM 1"],
+      "Y1-Winter": ["CMSC 14200", "MATH 15200", "HUM 2"],
+      "Y1-Spring": ["CMSC 14300", "MATH 15300", "HUM 3"],
+      "Y2-Autumn": ["CMSC 27100", "STAT 24300", "SOSC 1", "PHYS 1"],
+      "Y2-Winter": ["CMSC 14400", "CMSC 27200", "SOSC 2"],
+      "Y2-Spring": ["CMSC 25300", "SOSC 3", "PHYS 2", "BIO 1"],
+      "Y3-Autumn": ["CMSC 23500", "CMSC 25400", "ARTS 1"],
+      "Y3-Winter": ["CMSC 23300", "CIV 1", "BIO 2"],
+      "Y3-Spring": ["CIV 2", "ECON 10000", "ELECTIVE 1"],
+      "Y4-Autumn": ["CMSC 23200", "ECON 10200", "STAT 23400"],
+      "Y4-Winter": ["CMSC 22240", "MATH 19520", "ECON 20000"],
+      "Y4-Spring": ["ECON 20100", "ELECTIVE 2"]
+    },
+    Econ: {
+      "Y1-Autumn": ["MATH 15100", "ECON 10000", "HUM 1"],
+      "Y1-Winter": ["MATH 15200", "ECON 10200", "HUM 2"],
+      "Y1-Spring": ["MATH 15300", "BIO 1", "HUM 3"],
+      "Y2-Autumn": ["ECON 20000", "MATH 19520", "SOSC 1", "PHYS 1"],
+      "Y2-Winter": ["ECON 20100", "STAT 23400", "SOSC 2", "PHYS 2"],
+      "Y2-Spring": ["ECON 20200", "ECON 21020", "SOSC 3"],
+      "Y3-Autumn": ["ECON 20300", "ECON 28000", "ARTS 1"],
+      "Y3-Winter": ["ECON 25000", "CIV 1", "BIO 2"],
+      "Y3-Spring": ["ECON 24000", "ECON 20700", "CIV 2"],
+      "Y4-Autumn": ["ECON 26010", "CMSC 14100", "ELECTIVE 1"],
+      "Y4-Winter": ["ECON 23950", "STAT 24300", "CMSC 14200"],
+      "Y4-Spring": ["CMSC 14300", "CMSC 25300", "ELECTIVE 2"]
+    }
+  }
+};
