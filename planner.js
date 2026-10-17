@@ -169,6 +169,37 @@
       state.plan[QUARTERS[best]].push(id);
       return true;
     }
+    // move a course (and, if needed, its prerequisites) into an earlier quarter
+    function pullEarlier(id, depth) {
+      const w = whereIs(id);
+      if (!w || w === "TRAY") return false;
+      const cur = qIndex(w);
+      removeEverywhere(id);
+      const tryPlace = () => {
+        for (let i = 0; i < cur; i++) {
+          if (canPlace(id, i, MAX_COURSES) && hoursIn(QUARTERS[i]) + courses[id].hours_per_week <= HEAVY_HOURS + 6) { state.plan[QUARTERS[i]].push(id); return true; }
+        }
+        return false;
+      };
+      if (tryPlace()) return true;
+      if (depth > 0) {
+        (courses[id].prereqs || []).forEach(pr => pullEarlier(pr, depth - 1));
+        if (tryPlace()) return true;
+      }
+      state.plan[w].push(id);
+      return false;
+    }
+    function rescueStuck() {
+      for (let round = 0; round < 4 && state.tray.length; round++) {
+        let progress = false;
+        [...state.tray].sort((a, b) => depth(a) - depth(b)).forEach(id => {
+          removeEverywhere(id);
+          (courses[id].prereqs || []).forEach(pr => pullEarlier(pr, 3));
+          if (placeBest(id, state.origin[id] ?? 0)) progress = true; else state.tray.push(id);
+        });
+        if (!progress) break;
+      }
+    }
     function runAutoFix() {
       const home = {};
       for (let pass = 0; pass < 30; pass++) {
@@ -183,6 +214,7 @@
         state.tray.push(...stuck);
         if (stuck.length === toPlace.length) break;
       }
+      rescueStuck();
     }
 
     // tools the agent can call
@@ -190,7 +222,14 @@
       load_major({ major }) {
         const m = parseMajor(major);
         if (!m || !catalog.plans[m]) return { ok: false, error: `Unknown major "${major}". Available: ${Object.keys(catalog.plans).join(", ")}` };
-        state.major = m; state.second = null; state.plan = emptyPlan(); state.tray = []; state.abroad = null; state.closed = {}; state.origin = {};
+        // majors with tracks: ask which one unless they already said
+        const tracks = Object.keys(catalog.plans).filter(k => k.startsWith(m + " - "));
+        if (tracks.length && !/standard|general|regular|base|main|normal/i.test(String(major))) {
+          return { ok: true, needs_track: true, major: m,
+                   tracks: [`${m} (standard)`, ...tracks.map(t => t.slice(m.length + 3))],
+                   hint: `Ask which ${m} track they want. Then call load_major with "${m} standard" or the track name.` };
+        }
+        state.major = m; state.second = null; state.coreChoices = {}; state.plan = emptyPlan(); state.tray = []; state.abroad = null; state.closed = {}; state.origin = {};
         QUARTERS.forEach(q => (state.plan[q] = [...(catalog.plans[m][q] || [])]));
         // leave the Core open so the student picks it
         const open = [];
@@ -217,6 +256,7 @@
         if (!state.major) return { ok: false, error: "Load a first major before adding a second one." };
         if (!m2 || !catalog.plans[m2]) return { ok: false, error: `Unknown major "${major}". Available: ${Object.keys(catalog.plans).join(", ")}` };
         if (m2 === state.major) return { ok: false, error: `${m2} is already the first major.` };
+        if (m2 === state.second) return { ok: false, error: `${m2} is already the second major. To remove it, use drop_second_major.` };
         const cats = catalog.major_categories || {};
         const mine1 = cats[state.major] || [], mine2 = cats[m2] || [];
         const core = Object.keys(catalog.core_options || {});
@@ -256,6 +296,24 @@
         state.changed = [];
         return result({ major: state.major, study_abroad: state.abroad || "none", plan });
       },
+      start_over() {
+        state.major = null; state.second = null; state.coreChoices = {}; state.plan = emptyPlan();
+        state.tray = []; state.abroad = null; state.closed = {}; state.origin = {}; state.changed = [];
+        emit();
+        return { ok: true, message: "Cleared everything. Ask for their major to start again." };
+      },
+      drop_second_major() {
+        if (!state.second) return { ok: false, error: "There's no second major to drop." };
+        const dropped = state.second, choices = { ...(state.coreChoices || {}) }, abroad = state.abroad;
+        const before = snapshot();
+        const m = state.major;
+        tools.load_major({ major: m + " standard" });
+        if (state.major !== m) { state.major = m; QUARTERS.forEach(q => (state.plan[q] = [...catalog.plans[m][q]])); }
+        Object.entries(choices).forEach(([a, name]) => tools.choose_core({ area: a, option: name }));
+        if (abroad && !state.abroad) tools.set_study_abroad({ quarter: abroad });
+        runAutoFix();
+        return result({ message: `Dropped the ${dropped} second major.`, changes: diff(before) });
+      },
       move_course({ course_id, to_quarter }) {
         const id = findCourse(course_id), q = parseQuarter(to_quarter);
         if (!id) return { ok: false, error: `Couldn't find course "${course_id}".` };
@@ -267,8 +325,9 @@
       set_study_abroad({ quarter }) {
         const before = snapshot();
         if (/none|cancel|no/i.test(String(quarter)) && !parseQuarter(quarter)) {
-          state.abroad = null; state.changed = [];
-          return result({ message: "Study abroad cancelled." });
+          state.abroad = null;
+          runAutoFix();
+          return result({ message: "Study abroad cancelled.", changes: diff(before), unscheduled: [...state.tray] });
         }
         const q = parseQuarter(quarter);
         if (!q) return { ok: false, error: `Couldn't understand quarter "${quarter}".` };
@@ -359,6 +418,7 @@
           pick.courses.forEach(c => { removeEverywhere(c.id); state.plan[q].push(c.id); });
           state.plan[q].filter(id => !courses[id]?.abroad_eligible).forEach(id => { removeEverywhere(id); state.tray.push(id); });
         }
+        state.coreChoices = { ...(state.coreChoices || {}), [a]: pick.name };
         runAutoFix(); // slot the new sequence in cleanly
         return result({ message: `Switched ${a} to ${pick.name}${pick.abroad ? ` (abroad in ${pick.abroad}, ${state.abroad})` : ""}.`, changes: diff(before),
                         hint: state.tray.length ? "Some courses need new quarters. Offer auto_fix." : undefined });
@@ -412,6 +472,7 @@
       squeeze_in() {
         // last resort: allow a fifth course in the lightest quarters that work
         const before = snapshot();
+        runAutoFix();
         const todo = [...state.tray].sort((a, b) => depth(a) - depth(b));
         const stuck = [];
         todo.forEach(id => {
@@ -422,7 +483,14 @@
         });
         state.tray.push(...stuck);
         const changes = diff(before);
-        return result({ changes, message: stuck.length ? `Squeezed in ${todo.length - stuck.length}, but ${stuck.length} still won't fit.` : `Squeezed everything in with a fifth course where needed.` });
+        const options = [];
+        if (stuck.length) {
+          if (state.second) options.push(`drop the ${state.second} second major`);
+          if (state.abroad) options.push(`skip studying abroad in ${state.abroad}`);
+          options.push("leave them unscheduled and ask your adviser about summer courses (Harper can't schedule summer yet)");
+        }
+        return result({ changes, message: stuck.length ? `Squeezed in ${todo.length - stuck.length}, but ${stuck.length} still won't fit. This isn't possible in four years.` : `Squeezed everything in with a fifth course where needed.`,
+          verdict: stuck.length ? "not_possible" : "fixed", options: options.length ? options : undefined });
       },
       auto_fix() {
         const before = snapshot();
@@ -430,7 +498,9 @@
         const changes = diff(before);
         const left = state.tray.length;
         return result({ changes, message: (changes.length ? `Moved ${changes.length} course(s).` : "Nothing needed fixing.") +
-          (left ? ` ${left} course(s) can't fit in four years without a fifth course in some quarter.` : "") });
+          (left ? ` ${left} course(s) can't fit in four years without a fifth course in some quarter.` : ""),
+          verdict: left ? "needs_fifth_course" : "fixed",
+          next_step: left ? "Tell them it doesn't fit with four courses a quarter and ask if they're okay taking five in a quarter (squeeze_in). Don't move courses one by one." : undefined });
       }
     };
 

@@ -56,6 +56,7 @@
           <button data-t='["lighten_load",{"period":"Y2"}]'>Lighten year 2</button>
           <button data-t='["add_second_major",{"major":"Econ"}]'>Add Econ as second major</button>
           <button data-t='["auto_fix",{}]'>Auto-fix</button>
+          <button data-t='["start_over",{}]'>Start over</button>
           <button data-t='["squeeze_in",{}]'>Squeeze in (5th course)</button>
           <button data-t='["export_plan",{}]'>Export for adviser</button>
         </div>
@@ -231,7 +232,7 @@
   window.QT = clientTools;
 
   $("majorbuttons").innerHTML = Object.keys(window.CATALOG.plans)
-    .map(m => `<button data-t='${JSON.stringify(["load_major", { major: m }])}'>${m}</button>`).join("");
+    .map(m => `<button data-t='${JSON.stringify(["load_major", { major: m + " standard" }])}'>${m}</button>`).join("");
   document.querySelectorAll("details button").forEach(b => b.onclick = () => { const [n, a] = JSON.parse(b.dataset.t); clientTools[n](a); });
 
   // voice
@@ -254,6 +255,10 @@
           let text = String(message).replace(/\[[^\]]*\]\s*/g, "").trim();
           // Harper spells these out so they sound right; show the normal spelling
           if (source !== "user") text = text.replace(/\bHume\b/g, "Hum").replace(/\bSosh\b/g, "Sosc").replace(/\bSiv\b/g, "Civ");
+          // "Econ two oh two" -> "ECON 202" on screen (she still says it the spoken way)
+          const num = { zero: 0, oh: 0, o: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9 };
+          text = text.replace(/\b(C[ .-]?M[ .-]?S[ .-]?C|cmsc|econ|math|stat|huma|sosc|hist|bios|data|pbpl|plsc|psyc|engl|phys|chem|astr|artv|busn|musi|taps|arth)((?:[ -](?:zero|oh|o|one|two|three|four|five|six|seven|eight|nine)\b){3,5})/gi,
+            (m, dept, digits) => dept.replace(/[^a-z]/gi, "").toUpperCase() + " " + digits.trim().split(/[ -]+/).map(w => num[w.toLowerCase()]).join(""));
           if (text) log(source === "user" ? "user" : "ai", text);
         },
         onModeChange: ({ mode }) => { talk.classList.toggle("speaking", mode === "speaking"); $("mode").textContent = mode === "speaking" ? "Harper is speaking…" : "Listening…"; },
