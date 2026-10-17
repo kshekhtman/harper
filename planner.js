@@ -51,6 +51,16 @@
       else if (/fourth|senior|\bfour\b/.test(s)) year = 4;
       return season && year ? `Y${year}-${season}` : null;
     }
+    function coreArea(input) {
+      const s = String(input || "").toLowerCase();
+      if (/hum/.test(s)) return "HUM";
+      if (/sosc|social/.test(s)) return "SOSC";
+      if (/civ|abroad/.test(s)) return "CIV";
+      if (/art|music|theat/.test(s)) return "ARTS";
+      if (/bio|life/.test(s)) return "BIO";
+      if (/phys|phsc|chem|astr|science/.test(s)) return "PHYS";
+      return null;
+    }
     function parseMajor(input) {
       const s = String(input || "").toLowerCase().trim();
       const names = Object.keys(catalog.plans);
@@ -219,6 +229,57 @@
         diff(before);
         state.changed = [id, ...Object.keys(v.courseIssues)];
         return result({ message: `${id} is closed for ${q} and has been unscheduled.`, now_broken: Object.keys(v.courseIssues), hint: "Offer to call auto_fix." });
+      },
+      list_core_options({ area }) {
+        const a = coreArea(area);
+        const opts = catalog.core_options || {};
+        if (!a) return { ok: true, areas: Object.keys(opts), hint: "Ask which area they want: Hum, Sosc, Civ, science (Phys or Bio), or Arts." };
+        const current = state.plan ? catalog.courses.filter(c => c.category === a && whereIs(c.id) && whereIs(c.id) !== "TRAY").map(c => c.id) : [];
+        return { ok: true, area: a, options: (opts[a] || []).map(o => ({ name: o.name, abroad: o.abroad || undefined, current: o.courses.every(c => current.includes(c.id)) || undefined })) };
+      },
+      choose_core({ area, option }) {
+        const a = coreArea(area);
+        const opts = (catalog.core_options || {})[a] || [];
+        if (!a || !opts.length) return { ok: false, error: `No options for "${area}". Areas: ${Object.keys(catalog.core_options || {}).join(", ")}` };
+        const low = String(option || "").toLowerCase();
+        const pick = opts.find(o => o.name.toLowerCase() === low)
+          || opts.find(o => o.name.toLowerCase().includes(low) || low.includes(o.name.toLowerCase()))
+          || opts.find(o => o.abroad && low.includes(o.abroad.toLowerCase()))
+          || opts.find(o => low.split(/\s+/).filter(w => w.length > 3).some(w => o.name.toLowerCase().includes(w)))
+          || opts.find(o => { const text = (o.name + " " + o.courses.map(c => c.title).join(" ")).toLowerCase();
+                              return low.split(/\s+/).filter(w => w.length > 3).some(w => text.includes(w.slice(0, 5))); });
+        if (!pick) return { ok: false, error: `No ${a} option matching "${option}".`, options: opts.map(o => o.name) };
+        // the slots this area currently fills, in quarter order
+        const slots = [];
+        QUARTERS.forEach(q => state.plan[q].forEach(id => { if (courses[id]?.category === a) slots.push([q, id]); }));
+        state.tray.filter(id => courses[id]?.category === a).forEach(id => slots.push(["TRAY", id]));
+        const before = snapshot();
+        // register the chosen courses (each one requires the one before it)
+        pick.courses.forEach((c, i) => {
+          if (!courses[c.id]) {
+            const prev = courses[slots[0]?.[1]] || {};
+            const nc = { id: c.id, title: c.title, category: a, offered: c.offered, prereqs: [],
+                         abroad_eligible: !!pick.abroad || a === "CIV" || a === "ARTS", hours_per_week: prev.hours_per_week || 8 };
+            catalog.courses.push(nc); courses[c.id] = nc; byNorm[norm(c.id)] = c.id;
+          }
+          courses[c.id].prereqs = i > 0 ? [pick.courses[i - 1].id] : [];
+        });
+        slots.forEach(([q, id], i) => {
+          removeEverywhere(id);
+          const nid = pick.courses[i]?.id;
+          if (!nid) return;
+          if (q === "TRAY") state.tray.push(nid); else state.plan[q].push(nid);
+        });
+        pick.courses.slice(slots.length).forEach(c => state.tray.push(c.id));
+        if (pick.abroad) {
+          const q = state.abroad || "Y3-Autumn";
+          state.abroad = q;
+          pick.courses.forEach(c => { removeEverywhere(c.id); state.plan[q].push(c.id); });
+          state.plan[q].filter(id => !courses[id]?.abroad_eligible).forEach(id => { removeEverywhere(id); state.tray.push(id); });
+        }
+        runAutoFix(); // slot the new sequence in cleanly
+        return result({ message: `Switched ${a} to ${pick.name}${pick.abroad ? ` (abroad in ${pick.abroad}, ${state.abroad})` : ""}.`, changes: diff(before),
+                        hint: state.tray.length ? "Some courses need new quarters. Offer auto_fix." : undefined });
       },
       lighten_load({ period, max_hours }) {
         // period can be a whole year ("Y2", "second year") or one quarter ("Y2-Autumn")

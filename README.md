@@ -32,6 +32,8 @@ We split it this way so the model can't make up a plan that breaks the rules. Wh
 2. Put your agent ID in `index.html` where it says `AGENT_ID`.
 3. Open `index.html` in Chrome and click "Talk to Harper."
     
+You can also pick your own Core sequences ("switch my Sosc to Power, Identity, and Resistance," "do Civ in Rome"), and ask Harper to lighten a heavy year.
+
 You can also try everything without voice using "Manual controls" on the right.
 
 ## About the data

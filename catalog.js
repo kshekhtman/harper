@@ -209,5 +209,569 @@ window.CATALOG = {
       "Y4-Winter": ["CMSC 14200", "MATH 19520", "ELECTIVE 1"],
       "Y4-Spring": ["CMSC 14300", "DATA 23700", "ELECTIVE 2"]
     }
+  },
+  core_options: {
+    "HUM": [
+      {
+        "name": "Readings in World Literature",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "HUMA 11000",
+            "title": "Readings in World Literature I",
+            "offered": [
+              "Autumn"
+            ]
+          },
+          {
+            "id": "HUMA 11001",
+            "title": "Readings in World Literature II",
+            "offered": [
+              "Winter"
+            ]
+          },
+          {
+            "id": "HUMA 11002",
+            "title": "Readings in World Literature III",
+            "offered": [
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Human Being and Citizen",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "HUMA 11500",
+            "title": "Human Being and Citizen I",
+            "offered": [
+              "Autumn"
+            ]
+          },
+          {
+            "id": "HUMA 11501",
+            "title": "Human Being and Citizen II",
+            "offered": [
+              "Winter"
+            ]
+          },
+          {
+            "id": "HUMA 11502",
+            "title": "Human Being and Citizen III",
+            "offered": [
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Media Aesthetics",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "HUMA 12300",
+            "title": "Media Aesthetics I",
+            "offered": [
+              "Autumn"
+            ]
+          },
+          {
+            "id": "HUMA 12400",
+            "title": "Media Aesthetics II",
+            "offered": [
+              "Winter"
+            ]
+          },
+          {
+            "id": "HUMA 12500",
+            "title": "Media Aesthetics III",
+            "offered": [
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Philosophical Perspectives",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "HUMA 13000",
+            "title": "Philosophical Perspectives I",
+            "offered": [
+              "Autumn"
+            ]
+          },
+          {
+            "id": "HUMA 13001",
+            "title": "Philosophical Perspectives II",
+            "offered": [
+              "Winter"
+            ]
+          },
+          {
+            "id": "HUMA 13002",
+            "title": "Philosophical Perspectives III",
+            "offered": [
+              "Spring"
+            ]
+          }
+        ]
+      }
+    ],
+    "SOSC": [
+      {
+        "name": "Self, Culture, and Society",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "SOSC 12100",
+            "title": "Self, Culture, and Society I",
+            "offered": [
+              "Autumn"
+            ]
+          },
+          {
+            "id": "SOSC 12200",
+            "title": "Self, Culture, and Society II",
+            "offered": [
+              "Winter"
+            ]
+          },
+          {
+            "id": "SOSC 12300",
+            "title": "Self, Culture, and Society III",
+            "offered": [
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Power, Identity, and Resistance",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "SOSC 14100",
+            "title": "Power, Identity, Resistance I",
+            "offered": [
+              "Autumn"
+            ]
+          },
+          {
+            "id": "SOSC 14200",
+            "title": "Power, Identity, Resistance II",
+            "offered": [
+              "Winter"
+            ]
+          },
+          {
+            "id": "SOSC 14300",
+            "title": "Power, Identity, Resistance III",
+            "offered": [
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Mind, Brain, and Meaning",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "SOSC 15100",
+            "title": "Mind, Brain, and Meaning I",
+            "offered": [
+              "Autumn"
+            ]
+          },
+          {
+            "id": "SOSC 15200",
+            "title": "Mind, Brain, and Meaning II",
+            "offered": [
+              "Winter"
+            ]
+          },
+          {
+            "id": "SOSC 15300",
+            "title": "Mind, Brain, and Meaning III",
+            "offered": [
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Economy, Politics, and Society",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "SOSC 13100",
+            "title": "Economy, Politics, Society I",
+            "offered": [
+              "Autumn"
+            ]
+          },
+          {
+            "id": "SOSC 13200",
+            "title": "Economy, Politics, Society II",
+            "offered": [
+              "Winter"
+            ]
+          },
+          {
+            "id": "SOSC 13300",
+            "title": "Economy, Politics, Society III",
+            "offered": [
+              "Spring"
+            ]
+          }
+        ]
+      }
+    ],
+    "CIV": [
+      {
+        "name": "History of European Civilization",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "HIST 13100",
+            "title": "History of European Civ I",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          },
+          {
+            "id": "HIST 13200",
+            "title": "History of European Civ II",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "European Civilization in Paris",
+        "abroad": "Paris",
+        "courses": [
+          {
+            "id": "HIST 24001",
+            "title": "European Civ in Paris I",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          },
+          {
+            "id": "HIST 24002",
+            "title": "European Civ in Paris II",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Mediterranean Civilization in Rome",
+        "abroad": "Rome",
+        "courses": [
+          {
+            "id": "HIST 24201",
+            "title": "Mediterranean Civ in Rome I",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          },
+          {
+            "id": "HIST 24202",
+            "title": "Mediterranean Civ in Rome II",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Civilizations in the Americas",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "HIST 14100",
+            "title": "Civ in the Americas I",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          },
+          {
+            "id": "HIST 14200",
+            "title": "Civ in the Americas II",
+            "offered": [
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      }
+    ],
+    "PHYS": [
+      {
+        "name": "Stars and Galaxies",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "ASTR 10100",
+            "title": "Stars",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          },
+          {
+            "id": "ASTR 10200",
+            "title": "Galaxies and Cosmology",
+            "offered": [
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Chemical Systems",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "CHEM 10100",
+            "title": "Introductory General Chem I",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          },
+          {
+            "id": "CHEM 10200",
+            "title": "Introductory General Chem II",
+            "offered": [
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Energy and Environment",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "PHSC 13400",
+            "title": "Energy and Environment I",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          },
+          {
+            "id": "PHSC 13500",
+            "title": "Energy and Environment II",
+            "offered": [
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Physics of Matter",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "PHSC 11800",
+            "title": "Physics of Matter I",
+            "offered": [
+              "Autumn",
+              "Winter"
+            ]
+          },
+          {
+            "id": "PHSC 11900",
+            "title": "Physics of Matter II",
+            "offered": [
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      }
+    ],
+    "BIO": [
+      {
+        "name": "Core Biology and The Human Genome",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "BIOS 10130",
+            "title": "Core Biology",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          },
+          {
+            "id": "BIOS 12117",
+            "title": "The Human Genome",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Environment and Ecology",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "BIOS 13100",
+            "title": "Ecology and Conservation I",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          },
+          {
+            "id": "BIOS 13200",
+            "title": "Ecology and Conservation II",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Human Biology and Disease",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "BIOS 11100",
+            "title": "Human Biology I",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          },
+          {
+            "id": "BIOS 11200",
+            "title": "Human Biology II",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Evolution and Genetics",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "BIOS 14100",
+            "title": "Evolution and Genetics I",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          },
+          {
+            "id": "BIOS 14200",
+            "title": "Evolution and Genetics II",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      }
+    ],
+    "ARTS": [
+      {
+        "name": "On Images",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "ARTV 10100",
+            "title": "On Images",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Introduction to Music",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "MUSI 10100",
+            "title": "Introduction to Music",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Introduction to Theater",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "TAPS 10100",
+            "title": "Introduction to Theater",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Introduction to Art",
+        "abroad": null,
+        "courses": [
+          {
+            "id": "ARTH 10100",
+            "title": "Introduction to Art",
+            "offered": [
+              "Autumn",
+              "Winter",
+              "Spring"
+            ]
+          }
+        ]
+      }
+    ]
   }
 };
