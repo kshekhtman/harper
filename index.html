@@ -16,7 +16,9 @@
     </div>
   </div>
   <div class="header-right">
-    <button id="exportbtn" type="button">Export for adviser</button>
+    <button id="uploadbtn" class="hbtn" type="button">Upload transcript</button>
+    <input id="transcriptfile" type="file" accept=".pdf,.txt,.csv,.html,.htm,text/plain,application/pdf" hidden />
+    <button id="exportbtn" class="hbtn" type="button">Export for adviser</button>
     <div class="status-pill" id="pill">No plan loaded</div>
   </div>
 </header>
@@ -115,9 +117,10 @@
       html += `<div class="rowhead"><b>Year ${y}</b>${YEARS[y - 1]}</div>`;
       for (const season of P.SEASONS) {
         const q = `Y${y}-${season}`, warn = v.quarterWarnings[q], abroad = s.abroad === q;
-        html += `<div class="cell ${warn ? "warn" : ""} ${abroad ? "abroad" : ""}">
+        const done = (s.locked || []).includes(q);
+        html += `<div class="cell ${warn ? "warn" : ""} ${abroad ? "abroad" : ""} ${done ? "done" : ""}">
           <div class="cellhead"><span>${P.hoursIn(q)} hrs / week</span>
-            <span>${abroad ? '<span class="badge abroad">Study abroad</span>' : ""} ${warn ? `<span class="badge warn">Heavy load</span>` : ""}</span></div>
+            <span>${done ? '<span class="badge done">Completed</span>' : ""}${abroad ? '<span class="badge abroad">Study abroad</span>' : ""} ${warn ? `<span class="badge warn">Heavy load</span>` : ""}</span></div>
           <div class="cards">${s.plan[q].map(id => cardHTML(id, v.courseIssues[id], changed.has(id), lastBad.has(id) && !bad.has(id))).join("")}</div></div>`;
       }
     }
@@ -203,7 +206,7 @@
     for (let y = 1; y <= 4; y++) {
       rows += `<tr><th>Year ${y}</th>` + P.SEASONS.map(se => {
         const q = `Y${y}-${se}`;
-        return `<td class="${s.abroad === q ? "ab" : ""}">${s.abroad === q ? '<div class="tag">Study abroad</div>' : ""}` +
+        return `<td class="${s.abroad === q ? "ab" : ""}">${(s.locked || []).includes(q) ? '<div class="tag">Completed</div>' : ""}${s.abroad === q ? '<div class="tag">Study abroad</div>' : ""}` +
           s.plan[q].map(id => `<div class="c${v.courseIssues[id] ? " x" : ""}"><b>${id}</b> ${P.courses[id].title}</div>`).join("") +
           `<div class="h">${P.hoursIn(q)} hrs/week</div></td>`;
       }).join("") + "</tr>";
@@ -228,6 +231,61 @@
     const ok = showSheet();
     log("tool", "export plan");
     return JSON.stringify(ok ? { ok: true, message: "The one-page summary is open on screen. They can click 'Print or save as PDF' to download it." } : { ok: false, error: "No plan loaded yet." });
+  };
+
+  // ---- transcript upload (read in the browser, never sent anywhere) ----
+  function parseTranscript(text) {
+    const order = { Autumn: 0, Winter: 1, Spring: 2 };
+    const out = []; let term = null; const terms = [];
+    text.split(/\r?\n/).forEach(line => {
+      const t = line.match(/\b(Autumn|Fall|Winter|Spring|Summer)\s+(?:Quarter\s+|Term\s+)?(\d{4})\b/i);
+      if (t) {
+        let se = t[1][0].toUpperCase() + t[1].slice(1).toLowerCase(); if (se === "Fall") se = "Autumn";
+        const y = +t[2]; term = se === "Summer" ? null : { s: se, ay: se === "Autumn" ? y : y - 1 };
+        if (term) terms.push(term);
+      }
+      const re = /\b([A-Z]{4})\s?(\d{5})\b\s*([^\n]*)/g; let m;
+      while ((m = re.exec(line))) {
+        if (!term) continue;
+        const title = m[3].replace(/\s{2,}.*$/, "").replace(/\s+(A|A-|B\+|B|B-|C\+|C|C-|D|F|P|W|I)\s.*$/, "").trim().slice(0, 40);
+        out.push({ id: `${m[1]} ${m[2]}`, title, term });
+      }
+    });
+    if (!out.length) return [];
+    const firstAy = Math.min(...terms.map(t => t.ay));
+    return out.map(e => ({ id: e.id, title: e.title, quarter: P.QUARTERS[(e.term.ay - firstAy) * 3 + order[e.term.s]] })).filter(e => e.quarter);
+  }
+  async function pdfText(file) {
+    if (!window.pdfjsLib) {
+      await new Promise((res, rej) => { const sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"; sc.onload = res; sc.onerror = rej; document.head.appendChild(sc); });
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    }
+    const pdf = await window.pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+    let text = "";
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const content = await (await pdf.getPage(i)).getTextContent();
+      let lastY = null;
+      content.items.forEach(it => { const y = Math.round(it.transform[5]); text += (lastY !== null && Math.abs(y - lastY) > 2 ? "\n" : " ") + it.str; lastY = y; });
+      text += "\n";
+    }
+    return text;
+  }
+  $("uploadbtn").onclick = () => $("transcriptfile").click();
+  $("transcriptfile").onchange = async ev => {
+    const file = ev.target.files[0]; ev.target.value = "";
+    if (!file) return;
+    try {
+      const text = /\.pdf$/i.test(file.name) ? await pdfText(file) : await file.text();
+      const entries = parseTranscript(text);
+      const res = P.tools.import_transcript({ entries });
+      render();
+      log("tool", `transcript · ${entries.length} courses found`);
+      if (!res.ok) { alert("Couldn't find any courses in that file. It needs course numbers like CMSC 14100 under quarter headings like Autumn 2024."); return; }
+      const t = res.transcript;
+      const note = t ? `The student just uploaded their transcript: ${t.completed_courses} courses through ${t.completed_through} are now marked completed. ${t.on_track ? "Everything left fits in the remaining quarters, so they're on track." : `${t.unscheduled.length} course(s) don't fit in the remaining quarters.`} Tell them in one sentence.`
+                     : `The student just uploaded their transcript (${entries.length} courses). Ask for their major so you can plan the rest.`;
+      if (convo && typeof convo.sendContextualUpdate === "function") convo.sendContextualUpdate(note);
+    } catch (e) { console.error(e); alert("Couldn't read that file: " + e.message); }
   };
   window.QT = clientTools;
 

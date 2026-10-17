@@ -1,0 +1,38 @@
+THE UNIVERSITY OF CHICAGO
+UNOFFICIAL ACADEMIC TRANSCRIPT (SAMPLE - NOT A REAL STUDENT)
+
+Student: Sample Student
+Program: The College, Bachelor of Science in Computer Science
+
+Autumn Quarter 2024
+CMSC 14100   Introduction to Computer Science I        A     100
+MATH 15100   Calculus I                                A-    100
+HUMA 12300   Human Being and Citizen I                 B+    100
+
+Winter Quarter 2025
+CMSC 14200   Introduction to Computer Science II       A-    100
+MATH 15200   Calculus II                               B+    100
+HUMA 12400   Human Being and Citizen II                A-    100
+
+Spring Quarter 2025
+CMSC 14300   Systems Programming I                     B+    100
+MATH 15300   Calculus III                              B     100
+HUMA 12500   Human Being and Citizen III               A     100
+MUSI 10100   Introduction to Western Art Music         A     100
+
+Autumn Quarter 2025
+CMSC 27100   Discrete Mathematics                      B+    100
+STAT 24300   Numerical Linear Algebra                  A-    100
+SOSC 14100   Mind I                                    A     100
+ECON 10000   Principles of Microeconomics              A-    100
+
+Winter Quarter 2026
+CMSC 14400   Systems Programming II                    B     100
+SOSC 14200   Mind II                                   A-    100
+ASTR 12700   Stars                                     A     100
+
+Spring Quarter 2026
+CMSC 25300   Mathematical Foundations of ML            B+    100
+SOSC 14300   Mind III                                  A     100
+ASTR 12710   Galaxies                                  A-    100
+LING 20001   Introduction to Linguistics               A     100

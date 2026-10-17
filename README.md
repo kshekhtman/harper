@@ -34,6 +34,8 @@ We split it this way so the model can't make up a plan that breaks the rules. Wh
     
 You can also pick your own Core sequences ("switch my Sosc to Power, Identity, and Resistance," "do Civ in Rome"), and ask Harper to lighten a heavy year.
 
+Already partway through? Click **Upload transcript** (PDF or text). Harper reads it in your browser (nothing is uploaded anywhere), locks the quarters you've finished, picks up your Core choices from what you took, and plans the rest. Try it with `sample-transcript.txt`.
+
 You can add a second major ("add econ as a second major"). Shared courses count once, and Harper tells you if it doesn't fit in four years.
 
 Say "send this to my adviser" (or click Export for adviser) to get a one-page summary you can print or save as a PDF.

@@ -741,7 +741,7 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
 
 /* export button + one-page adviser summary */
 .header-right { display: flex; align-items: center; gap: 12px; justify-self: end; }
-#exportbtn {
+.hbtn, #exportbtn {
   padding: 7px 14px;
   border: 1px solid var(--rule2);
   border-radius: 999px;
@@ -755,7 +755,7 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
   cursor: pointer;
   transition: all 150ms ease;
 }
-#exportbtn:hover { border-color: var(--maroon-bright); color: #fff; background: rgba(184, 29, 36, 0.25); }
+.hbtn:hover, #exportbtn:hover { border-color: var(--maroon-bright); color: #fff; background: rgba(184, 29, 36, 0.25); }
 
 #sheet {
   position: fixed;
@@ -833,3 +833,9 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
 .card.pick { border-style: dashed; border-left-style: solid; background: rgba(255, 255, 255, 0.02); box-shadow: none; }
 .card.pick .id { color: var(--ink-secondary); font-family: var(--sans); }
 .card.pick .t { color: var(--muted); font-style: italic; }
+
+/* quarters already completed on the transcript */
+.cell.done { background: rgba(255, 255, 255, 0.015); border-style: dashed; }
+.cell.done .card { opacity: 0.62; box-shadow: none; }
+.cell.done .card .id::after { content: " \2713"; color: var(--green); }
+.badge.done { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
