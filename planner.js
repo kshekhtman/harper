@@ -52,10 +52,12 @@
       return season && year ? `Y${year}-${season}` : null;
     }
     function parseMajor(input) {
-      const s = String(input || "").toLowerCase();
-      if (/econ/.test(s)) return "Econ";
-      if (/cs|comput|cmsc/.test(s)) return "CS";
-      return Object.keys(catalog.plans).find(m => m.toLowerCase() === s) || null;
+      const s = String(input || "").toLowerCase().trim();
+      const names = Object.keys(catalog.plans);
+      const opts = m => [m, ...((catalog.aliases || {})[m] || [])].map(x => x.toLowerCase());
+      return names.find(m => opts(m).includes(s))
+        || names.find(m => opts(m).some(o => new RegExp(`\\b${o.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(s)))
+        || null;
     }
 
     function whereIs(id) {

@@ -53,6 +53,10 @@ window.CATALOG = {
     { id: "ECON 28000", title: "Industrial Organization", category: "ECON", offered: ["Autumn", "Winter"], prereqs: ["ECON 20100"], abroad_eligible: true, hours_per_week: 11 },
     { id: "ECON 23950", title: "Economic Policy Analysis", category: "ECON", offered: ["Autumn", "Winter", "Spring"], prereqs: ["ECON 20100"], abroad_eligible: true, hours_per_week: 10 }
   ],
+  aliases: {
+    CS: ["computer science", "comp sci", "cs", "cmsc"],
+    Econ: ["economics", "econ"]
+  },
   plans: {
     CS: {
       "Y1-Autumn": ["CMSC 14100", "MATH 15100", "HUM 1"],
