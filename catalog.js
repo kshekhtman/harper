@@ -1,5 +1,5 @@
-// Harper course data. Sample data based on the UChicago College Catalog,
-// simplified for the demo (see README). To add a major: add courses + a plan.
+// Course data, loosely based on the College Catalog and simplified (see README).
+// To add a major, add its courses and a 12-quarter plan.
 window.CATALOG = {
   courses: [
     // ---- Core ----

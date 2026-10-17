@@ -1,6 +1,5 @@
-// Harper rule engine: deterministic plan state + validation + tools.
-// The voice agent never edits the plan directly; it calls these tools and
-// explains the results. Works in the browser (window.Planner) and Node (tests).
+// Rule engine for Harper. Holds the plan, checks it, and exposes the tools
+// the voice agent calls. The agent never edits the plan itself.
 (function (root) {
   const SEASONS = ["Autumn", "Winter", "Spring"];
   const QUARTERS = [];
@@ -23,11 +22,12 @@
     const seasonOf = q => q.split("-")[1];
     const qIndex = q => QUARTERS.indexOf(q);
 
-    // ---------- Fuzzy input parsing (the LLM may say things loosely) ----------
+    // the agent sometimes says "fall of junior year" instead of "Y3-Autumn", so be loose here
     function findCourse(input) {
       const n = norm(input);
       if (!n) return null;
       if (byNorm[n]) return byNorm[n];
+      if (byNorm[n + "00"]) return byNorm[n + "00"]; // "CMSC 141" -> CMSC 14100
       const digits = n.replace(/[^0-9]/g, "");
       if (digits.length >= 4) {
         const hit = Object.keys(byNorm).find(k => k.endsWith(digits));
@@ -58,7 +58,6 @@
       return Object.keys(catalog.plans).find(m => m.toLowerCase() === s) || null;
     }
 
-    // ---------- State helpers ----------
     function whereIs(id) {
       for (const q of QUARTERS) if (state.plan[q].includes(id)) return q;
       return state.tray.includes(id) ? "TRAY" : null;
@@ -77,7 +76,7 @@
     }
     const pretty = q => (q === "TRAY" ? "unscheduled" : q);
 
-    // ---------- Validation ----------
+    // validation
     function courseProblems(id, q) {
       const c = courses[id], i = qIndex(q), out = [];
       if (!c) return out;
@@ -118,7 +117,7 @@
       return { ok: true, ...extra, plan_valid: problems.filter(p => !p.includes("warning")).length === 0, problems };
     }
 
-    // ---------- Auto-fix (greedy, prerequisite-aware) ----------
+    // auto-fix: put each broken course in the closest quarter that works
     function depth(id, seen = {}) {
       if (seen[id]) return 0; seen[id] = 1;
       const c = courses[id]; if (!c || !c.prereqs.length) return 0;
@@ -160,7 +159,7 @@
       }
     }
 
-    // ---------- Tools (called by the voice agent) ----------
+    // tools the agent can call
     const tools = {
       load_major({ major }) {
         const m = parseMajor(major);
@@ -182,7 +181,6 @@
         if (!q) return { ok: false, error: `Couldn't understand quarter "${to_quarter}". Use format like Y2-Winter.` };
         const before = snapshot();
         removeEverywhere(id); state.plan[q].push(id);
-        if (state.closed[id] && state.closed[id] !== q) { /* moving out of a closed quarter is fine */ }
         return result({ changes: diff(before) });
       },
       set_study_abroad({ quarter }) {
@@ -194,11 +192,11 @@
         const q = parseQuarter(quarter);
         if (!q) return { ok: false, error: `Couldn't understand quarter "${quarter}".` };
         state.abroad = q;
-        // Displace courses that can't be taken abroad.
+        // anything you can't take abroad gets bumped
         const displaced = state.plan[q].filter(id => !courses[id]?.abroad_eligible);
         state.plan[q] = state.plan[q].filter(id => courses[id]?.abroad_eligible);
         state.tray.push(...displaced);
-        // Pull Civ courses into the abroad quarter (abroad programs cover the Civ sequence).
+        // abroad programs usually cover the whole Civ sequence, so pull it in
         const civ = catalog.courses.filter(c => c.category === "CIV" && c.abroad_eligible).map(c => c.id);
         const pulled = [];
         civ.forEach(id => { if (whereIs(id) !== q && state.plan[q].length < MAX_COURSES) { removeEverywhere(id); state.plan[q].push(id); pulled.push(id); } });

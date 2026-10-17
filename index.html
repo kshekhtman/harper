@@ -3,89 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Harper · Talk through your four years</title>
-<style>
-  :root {
-    --paper: #f7f4ee; --card: #fffdf9; --ink: #1d1b18; --muted: #7a746a; --rule: #e2dccf; --rule2: #d3ccbc;
-    --maroon: #800000; --maroon-ink: #5c0000; --red: #a8261b; --red-bg: #fbecea; --amber: #a86b00; --amber-bg: #fdf4e3;
-    --green: #2f6b45; --blue: #2d4f7c; --abroad-bg: #eef2f6;
-    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-    --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --mono: "SF Mono", ui-monospace, Menlo, monospace;
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; font-family: var(--sans); background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }
-  header { display: flex; align-items: flex-end; justify-content: space-between; padding: 22px 32px 16px; border-bottom: 1px solid var(--ink); margin: 0 32px; padding-left: 0; padding-right: 0; }
-  .brand { display: flex; align-items: baseline; gap: 14px; }
-  .logo { display: none; }
-  h1 { font-family: var(--serif); font-weight: 600; font-size: 30px; margin: 0; letter-spacing: -.4px; color: var(--maroon); }
-  .sub { color: var(--muted); font-size: 13px; font-family: var(--serif); font-style: italic; }
-  .status-pill { font-size: 12px; letter-spacing: .4px; display: flex; align-items: center; gap: 8px; color: var(--muted); }
-  .status-pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--rule2); }
-  .status-pill.valid { color: var(--green); } .status-pill.valid::before { background: var(--green); }
-  .status-pill.invalid { color: var(--red); } .status-pill.invalid::before { background: var(--red); }
-  main { display: grid; grid-template-columns: 1fr 320px; gap: 32px; padding: 22px 32px; }
-  .grid { display: grid; grid-template-columns: 96px repeat(3, 1fr); gap: 0; border-top: 1px solid var(--rule2); }
-  .colhead { font-size: 11px; text-transform: uppercase; letter-spacing: 1.6px; color: var(--muted); padding: 10px 10px 8px; border-bottom: 1px solid var(--rule2); }
-  .grid > div:first-child { border-bottom: 1px solid var(--rule2); }
-  .rowhead { display: flex; flex-direction: column; justify-content: flex-start; padding: 12px 8px 12px 0; font-size: 11px; color: var(--muted); border-bottom: 1px solid var(--rule); }
-  .rowhead b { font-family: var(--serif); font-weight: 600; color: var(--ink); font-size: 17px; margin-bottom: 2px; }
-  .cell { padding: 10px; min-height: 136px; border-bottom: 1px solid var(--rule); border-left: 1px solid var(--rule); transition: background .35s; position: relative; }
-  .cell.warn { background: var(--amber-bg); }
-  .cell.abroad { background: var(--abroad-bg); }
-  .cellhead { display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; color: var(--muted); margin-bottom: 8px; font-variant-numeric: tabular-nums; }
-  .badge { font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
-  .badge.abroad { color: var(--blue); }
-  .badge.warn { color: var(--amber); }
-  .cards { display: flex; flex-direction: column; gap: 5px; }
-  .card { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--c, #999); border-radius: 3px; padding: 5px 8px 6px; font-size: 12px; position: relative; }
-  .card .id { font-family: var(--mono); font-size: 11px; font-weight: 600; letter-spacing: .2px; }
-  .card .t { color: var(--muted); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
-  .card.bad { background: var(--red-bg); border-color: #e9c3be; border-left-color: var(--red); }
-  .card.bad .why { color: var(--red); font-size: 10.5px; margin-top: 3px; line-height: 1.3; }
-  .card.changed { animation: flash 1.8s ease-out; }
-  .card.fixed { border-color: #b9d3c1; border-left-color: var(--green); }
-  @keyframes flash { 0% { background: #fff1c9; } 100% { background: var(--card); } }
-  .tray { margin-top: 18px; padding: 12px 0 0; border-top: 1px solid var(--rule2); min-height: 56px; }
-  .tray h3 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.6px; color: var(--muted); font-weight: 500; }
-  .tray.has h3 { color: var(--red); }
-  .tray .cards { flex-direction: row; flex-wrap: wrap; }
-  .tray .card { width: 190px; }
-  aside { display: flex; flex-direction: column; gap: 22px; }
-  .panel { border-top: 1px solid var(--ink); padding-top: 12px; }
-  .panel:first-child { border-top: 0; padding-top: 0; }
-  #talk { width: 100%; padding: 14px 16px; font-size: 15px; font-weight: 500; letter-spacing: .2px; border: 0; border-radius: 4px; cursor: pointer; background: var(--maroon); color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--sans); transition: background .2s; }
-  #talk:hover { background: var(--maroon-ink); }
-  #talk.live { background: var(--ink); }
-  .orb { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.7); }
-  #talk.live .orb { background: #7fd19b; animation: pulse 1.4s infinite; }
-  #talk.speaking .orb { background: #fff; animation: pulse .7s infinite; }
-  @keyframes pulse { 50% { opacity: .25; } }
-  #mode { text-align: center; color: var(--muted); font-size: 11.5px; margin-top: 8px; }
-  #log { height: 290px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 13px; line-height: 1.45; }
-  .msg::before { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--muted); margin-bottom: 1px; }
-  .msg.user::before { content: "You"; }
-  .msg.ai { font-family: var(--serif); font-size: 14px; }
-  .msg.ai::before { content: "Harper"; color: var(--maroon); font-family: var(--sans); }
-  .msg.tool { color: var(--muted); font-size: 11px; font-family: var(--mono); padding-left: 10px; border-left: 2px solid var(--rule2); }
-  .panel h2 { font-size: 11px; margin: 0 0 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.6px; font-weight: 500; }
-  #problems { font-size: 12px; color: var(--red); margin: 0; padding-left: 16px; line-height: 1.5; }
-  #problems li.w { color: var(--amber); }
-  #problems.empty { color: var(--green); list-style: none; padding: 0; }
-  details { font-size: 12px; color: var(--muted); }
-  summary { cursor: pointer; }
-  details button { margin: 6px 4px 0 0; background: transparent; color: var(--ink); border: 1px solid var(--rule2); border-radius: 3px; padding: 4px 8px; cursor: pointer; font-size: 11.5px; font-family: var(--sans); }
-  details button:hover { border-color: var(--ink); }
-  .legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 10.5px; color: var(--muted); margin-top: 14px; letter-spacing: .3px; }
-  .legend i { display: inline-block; width: 3px; height: 10px; margin-right: 5px; vertical-align: -1px; }
-  @media (max-width: 1100px) { main { grid-template-columns: 1fr; } .grid { grid-template-columns: 70px repeat(3, minmax(0,1fr)); } }
-  footer { color: var(--muted); font-size: 11px; padding: 6px 32px 24px; font-family: var(--serif); font-style: italic; }
-</style>
+<title>Harper · Four-year course planner</title>
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header>
   <div class="brand">
-    <div><h1>Harper</h1><div class="sub" id="subtitle">Talk through your four years</div></div>
+    <img src="uchicago-logo.png" alt="University of Chicago" width="108" height="44" onerror="this.remove()" />
+    <div>
+      <h1>Harper</h1>
+      <div class="sub" id="subtitle">Talk through your four years</div>
+    </div>
   </div>
   <div class="status-pill" id="pill">No plan loaded</div>
 </header>
@@ -127,14 +55,17 @@
 <script type="module">
 
   // ======== PASTE YOUR ELEVENLABS AGENT ID HERE ========
-  const AGENT_ID = "PASTE_YOUR_AGENT_ID_HERE";
+  const AGENT_ID = "agent_8001m55rpa9nejzsf0wm3jdt3maq";
   // =====================================================
 
   const P = window.Planner.createPlanner(window.CATALOG);
-  const COLORS = { CS: "#2d4f7c", ECON: "#2f6b45", MATH: "#5e4a87", STAT: "#8a4b6e", HUM: "#9a6a2e", SOSC: "#9b4a33",
-                   CIV: "#2f7072", ARTS: "#a08428", BIO: "#5f7d33", PHYS: "#4b5b94", ELECTIVE: "#9a948a" };
+  const COLORS = { CS: "#38bdf8", ECON: "#f59e0b", MATH: "#818cf8", STAT: "#c084fc", HUM: "#fb7185", SOSC: "#e879f9",
+                   CIV: "#2dd4bf", ARTS: "#facc15", BIO: "#4ade80", PHYS: "#60a5fa", ELECTIVE: "#94a3b8" };
   const YEARS = ["First year", "Second year", "Third year", "Fourth year"];
   let lastBad = new Set();
+
+  // UChicago students say "CMSC 141", not "CMSC 14100"
+  const short = s => String(s).replace(/\b([A-Z]{3,4}) (\d{3})00\b/g, "$1 $2");
 
   const $ = id => document.getElementById(id);
   $("legend").innerHTML = Object.entries(COLORS).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("");
@@ -143,12 +74,12 @@
     const c = P.courses[id];
     const cls = ["card", issues ? "bad" : "", changed ? "changed" : "", fixed ? "fixed" : ""].join(" ");
     return `<div class="${cls}" data-id="${id}" style="--c:${COLORS[c.category] || "#666"}">
-      <div class="id">${id}</div><div class="t">${c.title}</div>
-      ${issues ? `<div class="why">${issues.join("; ")}</div>` : ""}</div>`;
+      <div class="id">${short(id)}</div><div class="t">${c.title}</div>
+      ${issues ? `<div class="why" title="${short(issues.join("; "))}">${short(issues.join("; "))}</div>` : ""}</div>`;
   }
 
   function render() {
-    // FLIP animation: remember where every card was.
+    // remember where each card was so we can animate it to its new spot
     const first = {};
     document.querySelectorAll(".card").forEach(el => (first[el.dataset.id] = el.getBoundingClientRect()));
 
@@ -170,13 +101,11 @@
     $("tray").classList.toggle("has", s.tray.length > 0);
     lastBad = new Set([...bad, ...s.tray]);
 
-    // Status
     const hard = Object.keys(v.courseIssues).length + s.tray.length;
     const pill = $("pill");
     if (!s.major) { pill.textContent = "No plan loaded"; pill.className = "status-pill"; }
     else if (hard) { pill.textContent = `${hard} issue${hard > 1 ? "s" : ""} to resolve`; pill.className = "status-pill invalid"; }
     else { pill.textContent = "On track to graduate"; pill.className = "status-pill valid"; }
-    if (s.major) $("subtitle").textContent = `${s.major === "CS" ? "Computer Science" : "Economics"} · four-year plan${s.abroad ? ` · abroad ${s.abroad.replace("-", " ")}` : ""}`;
 
     const items = [];
     Object.entries(v.courseIssues).forEach(([id, ps]) => items.push(`<li>${id}: ${ps.join("; ")}</li>`));
@@ -184,9 +113,9 @@
     Object.entries(v.quarterWarnings).forEach(([q, ws]) => items.push(`<li class="w">${q}: ${ws.join("; ")}</li>`));
     const ul = $("problems");
     ul.className = items.length || !s.major ? "" : "empty";
-    ul.innerHTML = s.major ? (items.join("") || "<li>All prerequisites and offerings check out.</li>") : "<li>Load a major to begin.</li>";
+    ul.innerHTML = s.major ? (short(items.join("")) || "<li>All prerequisites and offerings check out.</li>") : "<li>Load a major to begin.</li>";
 
-    // FLIP: animate cards from old position to new.
+    // slide cards from old position to new
     document.querySelectorAll(".card").forEach(el => {
       const f = first[el.dataset.id], l = el.getBoundingClientRect();
       if (!f) { el.animate([{ opacity: 0, transform: "scale(.85)" }, { opacity: 1, transform: "none" }], { duration: 450, easing: "ease-out" }); return; }
@@ -201,21 +130,21 @@
     $("log").appendChild(d); $("log").scrollTop = $("log").scrollHeight;
   }
 
-  // Wrap each tool: run it, re-render, log, and return JSON text to the agent.
+  // Each tool runs, redraws the grid, logs, and sends JSON back to the agent.
   const clientTools = {};
   Object.entries(P.tools).forEach(([name, fn]) => {
     clientTools[name] = async (params = {}) => {
       const res = fn(params || {});
       render();
-      log("tool", `${name.replace(/_/g, " ")}${Object.keys(params || {}).length ? " · " + Object.values(params).join(", ") : ""}`);
-      return JSON.stringify(res);
+      log("tool", short(`${name.replace(/_/g, " ")}${Object.keys(params || {}).length ? " · " + Object.values(params).join(", ") : ""}`));
+      return short(JSON.stringify(res));
     };
   });
-  window.QT = clientTools; // for console testing
+  window.QT = clientTools;
 
   document.querySelectorAll("details button").forEach(b => b.onclick = () => { const [n, a] = JSON.parse(b.dataset.t); clientTools[n](a); });
 
-  // ---- Voice ----
+  // voice
   let convo = null;
   const talk = $("talk");
   talk.onclick = async () => {
