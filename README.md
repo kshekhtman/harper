@@ -1,27 +1,22 @@
 # Harper
 
-A four-year course planner you talk to. Built for the KTP Fall Voice AI Mini-Hack (Oct 17, 2026) with ElevenLabs.
+Hi! Harper is an interactive tool that helps you talk to someone about your four-year graduation plan. I made this as part of my submission for the UChicago KTP Fall Voice AI Mini-Hack (Oct 17, 2026) with ElevenLabs.
 
-You tell Harper your major and it lays out a 12-quarter plan. Then you change things out loud: "I want to do Paris in the fall of third year," or "CMSC 14300 just filled up." The grid updates as Harper talks, any course that breaks turns red, and you can ask it to fix the plan.
+Through this tool, you can talk to Harper about your four-year graduation plan. You speak with Harper and it helps you plan your time here in college. You tell Harper your major and it lays out a possible 12-quarter plan. Then you can talk to Harper about it, "I want to do Paris in the fall of third year," or "CMSC 14300 just filled up." The grid then automatically updates as you talk with Harper. If a course is incompatiable with another course or isn't satisfied in your plan, it will turn red, and Harper will fix the plan on your behalf, taking into account your evolving preferences.
 
 ## Why
 
-Planning four years here is annoying. Core sequences only run in certain quarters, prereq chains are long, and one change (a full class, a quarter abroad) can push something back a year without you noticing until it's too late. Advisors help, but you only see them a few times a year.
+UChicago is a very unique university, with its CORE cirriculum, complicated majors, and quarter system. Ensuring you have all the requirements to graduate is quite hard, as one change (a full class, a quarter abroad) can push something back a year without you noticing until it's too late. Plus, you only see your academic advisor on average no more than once a quarter, and they don't have as much time to help you plan as we would like. So, my tool, Harper can fill in this gap, acting as a personalized academic advisor available 24/7.
 
 ## How it works
 
-- The voice side is an ElevenLabs agent.
-- The agent doesn't edit the plan itself. It calls one of six tools in the browser: `load_major`, `move_course`, `set_study_abroad`, `mark_course_closed`, `auto_fix`, `get_plan`.
-- `planner.js` does the actual checking (prereqs, which quarters a course is offered, study abroad rules, overloaded quarters) and tells the agent what changed.
-- The agent then explains the result out loud.
+- The voice side is powered by ElevenLabs. Harper doesn't edit the plan itself. Instead, it calls one of six functions: `load_major`, `move_course`, `set_study_abroad`, `mark_course_closed`, `auto_fix`, `get_plan`.
+- `planner.js` does the actual checking (prereqs, which quarters a course is offered, study abroad rules, overloaded quarters) and tells Harper what changed.
+- Harper then speaks the result out loud using text-to-speech.
 
 We split it this way so the model can't make up a plan that breaks the rules. Whatever shows on screen has been checked.
 
-```
-voice -> ElevenLabs agent -> tool call -> planner.js -> grid updates
-                 ^                              |
-                 '------- result (JSON) --------'
-```
+![System Architecture](docs/arch.svg)
 
 ## Files
 
@@ -36,9 +31,7 @@ voice -> ElevenLabs agent -> tool call -> planner.js -> grid updates
 1. Set up the agent using `AGENT_SETUP.md`.
 2. Put your agent ID in `index.html` where it says `AGENT_ID`.
 3. Open `index.html` in Chrome and click "Talk to Harper."
-
-If Chrome won't give the page the mic, run `python3 -m http.server` in this folder and go to `localhost:8000`.
-
+    
 You can also try everything without voice using "Manual controls" on the right.
 
 ## About the data

@@ -45,10 +45,10 @@
       let year = null;
       const d = s.match(/[1-4]/);
       if (d) year = +d[0];
-      else if (/first|freshman/.test(s)) year = 1;
-      else if (/second|sophomore/.test(s)) year = 2;
-      else if (/third|junior/.test(s)) year = 3;
-      else if (/fourth|senior/.test(s)) year = 4;
+      else if (/first|freshman|\bone\b/.test(s)) year = 1;
+      else if (/second|sophomore|\btwo\b/.test(s)) year = 2;
+      else if (/third|junior|\bthree\b/.test(s)) year = 3;
+      else if (/fourth|senior|\bfour\b/.test(s)) year = 4;
       return season && year ? `Y${year}-${season}` : null;
     }
     function parseMajor(input) {
@@ -219,6 +219,52 @@
         diff(before);
         state.changed = [id, ...Object.keys(v.courseIssues)];
         return result({ message: `${id} is closed for ${q} and has been unscheduled.`, now_broken: Object.keys(v.courseIssues), hint: "Offer to call auto_fix." });
+      },
+      lighten_load({ period, max_hours }) {
+        // period can be a whole year ("Y2", "second year") or one quarter ("Y2-Autumn")
+        const s = String(period || "").toLowerCase();
+        let qs = [];
+        const q1 = parseQuarter(period);
+        if (q1) qs = [q1];
+        else {
+          const d = s.match(/[1-4]/);
+          const y = d ? +d[0] : /first|freshman|\bone\b/.test(s) ? 1 : /second|sophomore|\btwo\b/.test(s) ? 2 : /third|junior|\bthree\b/.test(s) ? 3 : /fourth|senior|\bfour\b/.test(s) ? 4 : null;
+          if (y) qs = SEASONS.map(x => `Y${y}-${x}`);
+        }
+        if (!qs.length) return { ok: false, error: `Couldn't understand "${period}". Use a year like "Y2" or a quarter like "Y2-Autumn".` };
+        const goal = Number(max_hours) || 34;
+        const before = snapshot();
+        const dependents = id => catalog.courses.filter(c => c.prereqs.includes(id)).map(c => c.id);
+        const stuck = new Set();
+        for (let n = 0; n < 20; n++) {
+          const heavy = qs.filter(q => hoursIn(q) > goal && !stuck.has(q)).sort((a, b) => hoursIn(b) - hoursIn(a))[0];
+          if (!heavy) break;
+          const hi = qIndex(heavy);
+          const movable = [...state.plan[heavy]].sort((a, b) => courses[b].hours_per_week - courses[a].hours_per_week);
+          const targets = QUARTERS.map((q, i) => i).filter(i => !qs.includes(QUARTERS[i])).sort((a, b) => Math.abs(a - hi) - Math.abs(b - hi));
+          let moved = false;
+          for (const id of movable) {
+            for (const t of targets) {
+              const tq = QUARTERS[t];
+              if (hoursIn(tq) + courses[id].hours_per_week > goal + 4) continue;
+              const deps = dependents(id).map(whereIs).filter(w => w && w !== "TRAY");
+              if (deps.some(w => qIndex(w) <= t)) continue;
+              removeEverywhere(id);
+              if (canPlace(id, t, MAX_COURSES)) { state.plan[tq].push(id); moved = true; break; }
+              state.plan[heavy].push(id);
+            }
+            if (moved) break;
+          }
+          if (!moved) stuck.add(heavy);
+        }
+        const changes = diff(before);
+        const still = qs.filter(q => hoursIn(q) > goal).map(q => `${q} is still ~${hoursIn(q)} hrs/week`);
+        return result({
+          changes,
+          hours_now: Object.fromEntries(qs.map(q => [q, hoursIn(q)])),
+          message: changes.length ? `Moved ${changes.length} course(s) out of ${qs.join(", ")}.` : "Couldn't move anything without breaking a prerequisite.",
+          still_heavy: still
+        });
       },
       auto_fix() {
         const before = snapshot();

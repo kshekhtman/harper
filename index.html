@@ -36,8 +36,7 @@
       <details>
         <summary>Manual controls</summary>
         <div>
-          <button data-t='["load_major",{"major":"CS"}]'>Load CS</button>
-          <button data-t='["load_major",{"major":"Econ"}]'>Load Econ</button>
+          <span id="majorbuttons"></span>
           <button data-t='["set_study_abroad",{"quarter":"Y3-Autumn"}]'>Abroad Y3-Autumn</button>
           <button data-t='["mark_course_closed",{"course_id":"CMSC 14300"}]'>Close CMSC 14300</button>
           <button data-t='["mark_course_closed",{"course_id":"ECON 20100"}]'>Close ECON 20100</button>
@@ -60,22 +59,23 @@
 
   const P = window.Planner.createPlanner(window.CATALOG);
   const COLORS = { CS: "#38bdf8", ECON: "#f59e0b", MATH: "#818cf8", STAT: "#c084fc", HUM: "#fb7185", SOSC: "#e879f9",
-                   CIV: "#2dd4bf", ARTS: "#facc15", BIO: "#4ade80", PHYS: "#60a5fa", ELECTIVE: "#94a3b8" };
+                   CIV: "#2dd4bf", ARTS: "#facc15", BIO: "#4ade80", PHYS: "#60a5fa", ELECTIVE: "#94a3b8",
+                   DATA: "#22d3ee", PBPL: "#fb923c", PLSC: "#f472b6", BIOS: "#a3e635" };
   const YEARS = ["First year", "Second year", "Third year", "Fourth year"];
   let lastBad = new Set();
 
-  // UChicago students say "CMSC 141", not "CMSC 14100"
+  // what Harper hears: "CMSC 141" instead of "CMSC 14100", so that's how she says it.
+  // the screen still shows full numbers.
   const short = s => String(s).replace(/\b([A-Z]{3,4}) (\d{3})00\b/g, "$1 $2");
 
   const $ = id => document.getElementById(id);
-  $("legend").innerHTML = Object.entries(COLORS).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("");
 
   function cardHTML(id, issues, changed, fixed) {
     const c = P.courses[id];
     const cls = ["card", issues ? "bad" : "", changed ? "changed" : "", fixed ? "fixed" : ""].join(" ");
     return `<div class="${cls}" data-id="${id}" style="--c:${COLORS[c.category] || "#666"}">
-      <div class="id">${short(id)}</div><div class="t">${c.title}</div>
-      ${issues ? `<div class="why" title="${short(issues.join("; "))}">${short(issues.join("; "))}</div>` : ""}</div>`;
+      <div class="id">${id}</div><div class="t">${c.title}</div>
+      ${issues ? `<div class="why" title="${issues.join("; ")}">${issues.join("; ")}</div>` : ""}</div>`;
   }
 
   function render() {
@@ -97,6 +97,8 @@
       }
     }
     $("grid").innerHTML = html;
+    const cats = new Set([...P.QUARTERS.flatMap(q => s.plan[q]), ...s.tray].map(id => P.courses[id].category));
+    $("legend").innerHTML = [...cats].map(k => `<span><i style="background:${COLORS[k] || "#666"}"></i>${k}</span>`).join("");
     $("traycards").innerHTML = s.tray.map(id => cardHTML(id, ["unscheduled"], changed.has(id))).join("");
     $("tray").classList.toggle("has", s.tray.length > 0);
     lastBad = new Set([...bad, ...s.tray]);
@@ -113,7 +115,7 @@
     Object.entries(v.quarterWarnings).forEach(([q, ws]) => items.push(`<li class="w">${q}: ${ws.join("; ")}</li>`));
     const ul = $("problems");
     ul.className = items.length || !s.major ? "" : "empty";
-    ul.innerHTML = s.major ? (short(items.join("")) || "<li>All prerequisites and offerings check out.</li>") : "<li>Load a major to begin.</li>";
+    ul.innerHTML = s.major ? (items.join("") || "<li>All prerequisites and offerings check out.</li>") : "<li>Load a major to begin.</li>";
 
     // slide cards from old position to new
     document.querySelectorAll(".card").forEach(el => {
@@ -136,12 +138,14 @@
     clientTools[name] = async (params = {}) => {
       const res = fn(params || {});
       render();
-      log("tool", short(`${name.replace(/_/g, " ")}${Object.keys(params || {}).length ? " · " + Object.values(params).join(", ") : ""}`));
+      log("tool", `${name.replace(/_/g, " ")}${Object.keys(params || {}).length ? " · " + Object.values(params).join(", ") : ""}`);
       return short(JSON.stringify(res));
     };
   });
   window.QT = clientTools;
 
+  $("majorbuttons").innerHTML = Object.keys(window.CATALOG.plans)
+    .map(m => `<button data-t='${JSON.stringify(["load_major", { major: m }])}'>${m}</button>`).join("");
   document.querySelectorAll("details button").forEach(b => b.onclick = () => { const [n, a] = JSON.parse(b.dataset.t); clientTools[n](a); });
 
   // voice
@@ -159,7 +163,11 @@
         clientTools,
         onConnect: () => { talk.classList.add("live"); $("talklabel").textContent = "End conversation"; $("mode").textContent = "Listening…"; },
         onDisconnect: () => { convo = null; talk.className = ""; $("talklabel").textContent = "Talk to Harper"; $("mode").textContent = "Disconnected"; },
-        onMessage: ({ message, source }) => log(source === "user" ? "user" : "ai", message),
+        onMessage: ({ message, source }) => {
+          // hide voice cues like [happy] or [warmly] from the transcript
+          const text = String(message).replace(/\[[^\]]*\]\s*/g, "").trim();
+          if (text) log(source === "user" ? "user" : "ai", text);
+        },
         onModeChange: ({ mode }) => { talk.classList.toggle("speaking", mode === "speaking"); $("mode").textContent = mode === "speaking" ? "Harper is speaking…" : "Listening…"; },
         onError: (e) => { console.error(e); $("mode").textContent = "Error: " + (e?.message || e); }
       });
