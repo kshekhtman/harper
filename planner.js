@@ -1,4 +1,4 @@
-// QuarterTetris rule engine: deterministic plan state + validation + tools.
+// Harper rule engine: deterministic plan state + validation + tools.
 // The voice agent never edits the plan directly; it calls these tools and
 // explains the results. Works in the browser (window.Planner) and Node (tests).
 (function (root) {

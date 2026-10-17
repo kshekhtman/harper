@@ -1,4 +1,4 @@
-// QuarterTetris course data. Sample data based on the UChicago College Catalog,
+// Harper course data. Sample data based on the UChicago College Catalog,
 // simplified for the demo (see README). To add a major: add courses + a plan.
 window.CATALOG = {
   courses: [

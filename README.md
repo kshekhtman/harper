@@ -1,10 +1,10 @@
-# QuarterTetris 🎓🧩
-**A voice-driven 4-year degree planner for UChicago students.**
+# Harper
+**Talk through your four years.** A voice-driven degree planner for UChicago students.
 Built at the KTP Fall Voice AI Mini-Hack with ElevenLabs Conversational AI.
 
 > "I want to study abroad in Paris Autumn of junior year — does that break my CS major?"
 
-Instead of a wall of text, **Harper**, QuarterTetris's voice agent, *talks you through it* while your 12-quarter plan
+Instead of a wall of text, Harper *talks you through it* while your 12-quarter plan
 rearranges itself live on screen: displaced courses fly out, broken prerequisites turn red,
 and one "fix it" turns the board green again.
 
@@ -48,6 +48,9 @@ It's just data: add courses and a 12-quarter plan to `catalog.js`. The engine wo
 ## Data disclaimer
 Course data is a simplified sample based on the UChicago College Catalog (single prerequisite
 paths, generic Core courses, estimated weekly hours). Not official advising.
+
+## Why "Harper"?
+Named for William Rainey Harper, UChicago's first president (and the library on the quad).
 
 ## Next steps
 Double majors and minors with double-counting rules · live catalog scraping · real course
