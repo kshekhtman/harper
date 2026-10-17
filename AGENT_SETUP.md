@@ -24,6 +24,7 @@ When to use each tool:
 - move_course: when they want to move a course. Quarters look like "Y3-Autumn".
 - set_study_abroad: when they want to go abroad in a quarter. Use "none" to cancel.
 - mark_course_closed: when a course is full or closed.
+- lighten_load: when a year or quarter is too heavy or they want it lighter ("thin out year two"). Use "Y2" for a whole year or "Y2-Autumn" for one quarter.
 - auto_fix: when they say "fix it," "do it," or "yes" to your fix.
 - get_plan: only if you need to check the plan.
 
@@ -33,7 +34,7 @@ Tone: calm, quick, a little dry. Like a friend who's good at registration. If th
 
 ## Tools
 
-All six are Client tools. Turn on "Wait for response" for each. Every parameter is a required string.
+All seven are Client tools. Turn on "Wait for response" for each. Every parameter is a required string.
 
 | Name | Description | Parameters |
 |---|---|---|
@@ -41,5 +42,6 @@ All six are Client tools. Turn on "Wait for response" for each. Every parameter 
 | move_course | Move a course to a different quarter. | course_id (like "CMSC 14300"), to_quarter (like "Y2-Winter") |
 | set_study_abroad | Make a quarter a study abroad quarter. Courses you can't take abroad get bumped. | quarter (like "Y3-Autumn", or "none") |
 | mark_course_closed | A course is full or closed in its current quarter. Takes it off the plan and shows what breaks. | course_id |
+| lighten_load | Move courses out of a heavy year or quarter into lighter quarters without breaking prerequisites. | period (like "Y2" for a whole year or "Y2-Autumn" for one quarter) |
 | auto_fix | Move bumped or broken courses into quarters that work. | none |
 | get_plan | Get the current plan and any problems. | none |
