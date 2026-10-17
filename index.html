@@ -15,8 +15,19 @@
       <div class="sub" id="subtitle">Talk through your four years</div>
     </div>
   </div>
-  <div class="status-pill" id="pill">No plan loaded</div>
+  <div class="header-right">
+    <button id="exportbtn" type="button">Export for adviser</button>
+    <div class="status-pill" id="pill">No plan loaded</div>
+  </div>
 </header>
+
+<div id="sheet" hidden>
+  <div class="sheet-actions">
+    <button type="button" id="printbtn">Print or save as PDF</button>
+    <button type="button" id="closesheet">Close</button>
+  </div>
+  <article class="paper" id="paper"></article>
+</div>
 
 <main>
   <section>
@@ -40,9 +51,13 @@
           <button data-t='["set_study_abroad",{"quarter":"Y3-Autumn"}]'>Abroad Y3-Autumn</button>
           <button data-t='["mark_course_closed",{"course_id":"CMSC 14300"}]'>Close CMSC 14300</button>
           <button data-t='["mark_course_closed",{"course_id":"ECON 20100"}]'>Close ECON 20100</button>
-          <button data-t='["move_course",{"course_id":"SOSC 1","to_quarter":"Y1-Winter"}]'>Move SOSC 1 to Y1-Winter</button>
+          <button data-t='["choose_core",{"area":"Hum","option":"Human Being and Citizen"}]'>Hum: Human Being and Citizen</button>
+          <button data-t='["choose_core",{"area":"Civ","option":"Paris"}]'>Civ in Paris</button>
           <button data-t='["lighten_load",{"period":"Y2"}]'>Lighten year 2</button>
+          <button data-t='["add_second_major",{"major":"Econ"}]'>Add Econ as second major</button>
           <button data-t='["auto_fix",{}]'>Auto-fix</button>
+          <button data-t='["squeeze_in",{}]'>Squeeze in (5th course)</button>
+          <button data-t='["export_plan",{}]'>Export for adviser</button>
         </div>
       </details>
     </div>
@@ -59,9 +74,17 @@
   // =====================================================
 
   const P = window.Planner.createPlanner(window.CATALOG);
-  const COLORS = { CS: "#38bdf8", ECON: "#f59e0b", MATH: "#818cf8", STAT: "#c084fc", HUM: "#fb7185", SOSC: "#e879f9",
-                   CIV: "#2dd4bf", ARTS: "#facc15", BIO: "#4ade80", PHYS: "#60a5fa", ELECTIVE: "#94a3b8",
-                   DATA: "#22d3ee", PBPL: "#fb923c", PLSC: "#f472b6", BIOS: "#a3e635" };
+  // three groups on screen: Core, the student's major, and everything else
+  const GROUPS = { Core: "#fb7185", Major: "#38bdf8", Elective: "#fbbf24" };
+  const CORE = ["HUM", "SOSC", "CIV", "ARTS", "BIO", "PHYS"];
+  function groupOf(id) {
+    const c = P.courses[id];
+    if (CORE.includes(c.category)) return "Core";
+    const cats = window.CATALOG.major_categories || {};
+    const mine = [...(cats[P.state.major] || []), ...(cats[P.state.second] || [])];
+    if (mine.includes(c.category)) return "Major";
+    return "Elective";
+  }
   const YEARS = ["First year", "Second year", "Third year", "Fourth year"];
   let lastBad = new Set();
 
@@ -73,9 +96,9 @@
 
   function cardHTML(id, issues, changed, fixed) {
     const c = P.courses[id];
-    const cls = ["card", issues ? "bad" : "", changed ? "changed" : "", fixed ? "fixed" : ""].join(" ");
-    return `<div class="${cls}" data-id="${id}" style="--c:${COLORS[c.category] || "#666"}">
-      <div class="id">${id}</div><div class="t">${c.title}</div>
+    const cls = ["card", issues ? "bad" : "", changed ? "changed" : "", fixed ? "fixed" : "", c.placeholder ? "pick" : ""].join(" ");
+    return `<div class="${cls}" data-id="${id}" style="--c:${GROUPS[groupOf(id)]}">
+      <div class="id">${c.placeholder ? { HUM: "Hum", SOSC: "Sosc", CIV: "Civ", ARTS: "Arts", BIO: "Bio sci", PHYS: "Phys sci" }[c.category] + " " + id.split(" ")[1] : id}</div><div class="t">${c.title}</div>
       ${issues ? `<div class="why" title="${issues.join("; ")}">${issues.join("; ")}</div>` : ""}</div>`;
   }
 
@@ -98,8 +121,7 @@
       }
     }
     $("grid").innerHTML = html;
-    const cats = new Set([...P.QUARTERS.flatMap(q => s.plan[q]), ...s.tray].map(id => P.courses[id].category));
-    $("legend").innerHTML = [...cats].map(k => `<span><i style="background:${COLORS[k] || "#666"}"></i>${k}</span>`).join("");
+    $("legend").innerHTML = s.major ? Object.entries(GROUPS).map(([k, c]) => `<span><i style="background:${c}"></i>${k === "Major" ? (s.second ? `${s.major} + ${s.second} majors` : `${s.major} major`) : k === "Elective" ? "Electives" : "Core"}</span>`).join("") : "";
     $("traycards").innerHTML = s.tray.map(id => cardHTML(id, ["unscheduled"], changed.has(id))).join("");
     $("tray").classList.toggle("has", s.tray.length > 0);
     lastBad = new Set([...bad, ...s.tray]);
@@ -143,6 +165,69 @@
       return short(JSON.stringify(res));
     };
   });
+
+  // one-page summary to bring to an adviser
+  function coreChoices() {
+    const out = [];
+    const names = { HUM: "Humanities", SOSC: "Social Sciences", CIV: "Civilization", ARTS: "Arts", BIO: "Biological Sciences", PHYS: "Physical Sciences" };
+    Object.entries(window.CATALOG.core_options || {}).forEach(([a, list]) => {
+      const scheduled = P.QUARTERS.flatMap(q => P.state.plan[q]);
+      const cur = list.find(o => o.courses.every(c => scheduled.includes(c.id)));
+      const open = P.QUARTERS.flatMap(q => P.state.plan[q]).some(id => P.courses[id].placeholder && P.courses[id].category === a);
+      if (open) out.push([names[a] || a, "Not picked yet"]);
+      else if (cur) out.push([names[a] || a, cur.name + (cur.abroad && !cur.name.includes(cur.abroad) ? ` (abroad in ${cur.abroad})` : "")]);
+    });
+    return out;
+  }
+  function advisorQuestions(v) {
+    const s = P.state, qs = [];
+    if (s.abroad) qs.push(`Can you confirm how my ${s.abroad.replace("-", " ")} study abroad quarter counts toward the Core and my major?`);
+    Object.entries(v.quarterWarnings).forEach(([q, w]) => qs.push(`${q.replace("-", " ")} looks heavy (${P.hoursIn(q)} hrs/week). Is that manageable, or should I move something?`));
+    Object.entries(v.courseIssues).forEach(([id, ps]) => qs.push(`${id}: ${ps.join("; ")}. What's the best fix?`));
+    s.tray.forEach(id => qs.push(`Where should ${id} go? It's currently unscheduled.`));
+    const unpicked = [...new Set(P.QUARTERS.flatMap(q => s.plan[q]).filter(id => P.courses[id].placeholder).map(id => P.courses[id].category))];
+    if (unpicked.length) qs.push(`Which ${unpicked.map(a => ({ HUM: "Hum", SOSC: "Sosc", CIV: "Civ", ARTS: "Arts", BIO: "Bio sci", PHYS: "Phys sci" })[a]).join(", ")} sequence${unpicked.length > 1 ? "s" : ""} would you recommend?`);
+    if (s.second) qs.push(`Is a double major in ${s.major} and ${s.second} realistic with this schedule?`);
+    qs.push("Are there any major requirements this plan is missing?");
+    return qs.slice(0, 6);
+  }
+  function showSheet() {
+    const s = P.state, v = P.validate();
+    if (!s.major) return false;
+    const full = m => ({ CS: "Computer Science", Econ: "Economics" }[m] || m);
+    const majorName = s.second ? `${full(s.major)} and ${full(s.second)}` : full(s.major);
+    const total = P.QUARTERS.reduce((n, q) => n + s.plan[q].length, 0);
+    const hard = Object.keys(v.courseIssues).length + s.tray.length;
+    let rows = "";
+    for (let y = 1; y <= 4; y++) {
+      rows += `<tr><th>Year ${y}</th>` + P.SEASONS.map(se => {
+        const q = `Y${y}-${se}`;
+        return `<td class="${s.abroad === q ? "ab" : ""}">${s.abroad === q ? '<div class="tag">Study abroad</div>' : ""}` +
+          s.plan[q].map(id => `<div class="c${v.courseIssues[id] ? " x" : ""}"><b>${id}</b> ${P.courses[id].title}</div>`).join("") +
+          `<div class="h">${P.hoursIn(q)} hrs/week</div></td>`;
+      }).join("") + "</tr>";
+    }
+    const date = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    $("paper").innerHTML = `
+      <div class="p-head"><div><div class="p-kicker">Four-year plan</div><h2>${majorName}</h2></div>
+        <div class="p-meta">${date}<br>${total} courses · ${hard ? `${hard} open issue${hard > 1 ? "s" : ""}` : "no open issues"}</div></div>
+      <table class="p-grid"><colgroup><col class="yr"><col><col><col></colgroup><thead><tr><th></th>${P.SEASONS.map(x => `<th>${x}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
+      <div class="p-cols">
+        <section><h3>Core</h3><dl>${coreChoices().map(([a, n]) => `<dt>${a}</dt><dd>${n}</dd>`).join("")}</dl></section>
+        <section><h3>Questions for my adviser</h3><ol>${advisorQuestions(v).map(q => `<li>${q}</li>`).join("")}</ol></section>
+      </div>
+      <div class="p-foot">Made with Harper. Course data is a simplified sample, so double-check everything with your adviser and the College Catalog.</div>`;
+    $("sheet").hidden = false;
+    return true;
+  }
+  $("exportbtn").onclick = () => { if (!showSheet()) alert("Load a major first."); };
+  $("printbtn").onclick = () => window.print();
+  $("closesheet").onclick = () => ($("sheet").hidden = true);
+  clientTools.export_plan = async () => {
+    const ok = showSheet();
+    log("tool", "export plan");
+    return JSON.stringify(ok ? { ok: true, message: "The one-page summary is open on screen. They can click 'Print or save as PDF' to download it." } : { ok: false, error: "No plan loaded yet." });
+  };
   window.QT = clientTools;
 
   $("majorbuttons").innerHTML = Object.keys(window.CATALOG.plans)
@@ -166,7 +251,9 @@
         onDisconnect: () => { convo = null; talk.className = ""; $("talklabel").textContent = "Talk to Harper"; $("mode").textContent = "Disconnected"; },
         onMessage: ({ message, source }) => {
           // hide voice cues like [happy] or [warmly] from the transcript
-          const text = String(message).replace(/\[[^\]]*\]\s*/g, "").trim();
+          let text = String(message).replace(/\[[^\]]*\]\s*/g, "").trim();
+          // Harper spells these out so they sound right; show the normal spelling
+          if (source !== "user") text = text.replace(/\bHume\b/g, "Hum").replace(/\bSosh\b/g, "Sosc").replace(/\bSiv\b/g, "Civ");
           if (text) log(source === "user" ? "user" : "ai", text);
         },
         onModeChange: ({ mode }) => { talk.classList.toggle("speaking", mode === "speaking"); $("mode").textContent = mode === "speaking" ? "Harper is speaking…" : "Listening…"; },

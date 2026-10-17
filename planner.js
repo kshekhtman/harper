@@ -14,7 +14,7 @@
     const byNorm = {};
     catalog.courses.forEach(c => (byNorm[norm(c.id)] = c.id));
 
-    const state = { major: null, plan: emptyPlan(), tray: [], abroad: null, closed: {}, changed: [], origin: {} };
+    const state = { major: null, second: null, plan: emptyPlan(), tray: [], abroad: null, closed: {}, changed: [], origin: {} };
     const listeners = [];
 
     function emptyPlan() { const p = {}; QUARTERS.forEach(q => (p[q] = [])); return p; }
@@ -65,9 +65,13 @@
       const s = String(input || "").toLowerCase().trim();
       const names = Object.keys(catalog.plans);
       const opts = m => [m, ...((catalog.aliases || {})[m] || [])].map(x => x.toLowerCase());
-      return names.find(m => opts(m).includes(s))
-        || names.find(m => opts(m).some(o => new RegExp(`\\b${o.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(s)))
-        || null;
+      const exact = names.find(m => opts(m).includes(s));
+      if (exact) return exact;
+      let best = null, len = 0;
+      names.forEach(m => opts(m).forEach(o => {
+        if (o.length > len && new RegExp(`\\b${o.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(s)) { best = m; len = o.length; }
+      }));
+      return best;
     }
 
     function whereIs(id) {
@@ -89,6 +93,15 @@
     const pretty = q => (q === "TRAY" ? "unscheduled" : q);
 
     // validation
+    // a prereq on a Core course is met by whatever course fills that Core area
+    function prereqAt(pid) {
+      const w = whereIs(pid);
+      if (w && w !== "TRAY") return w;
+      const cat = courses[pid]?.category;
+      if (!(catalog.core_options || {})[cat]) return w;
+      const q = QUARTERS.find(q => state.plan[q].some(x => courses[x]?.category === cat));
+      return q || w;
+    }
     function courseProblems(id, q) {
       const c = courses[id], i = qIndex(q), out = [];
       if (!c) return out;
@@ -97,7 +110,7 @@
       else if (!c.offered.includes(seasonOf(q))) out.push(`only offered ${c.offered.join("/")}`);
       c.prereqs.forEach(p => {
         if (!courses[p]) return;
-        const pq = whereIs(p);
+        const pq = prereqAt(p);
         if (!pq || pq === "TRAY") out.push(`needs ${p}, which is unscheduled`);
         else if (qIndex(pq) > i || (qIndex(pq) === i && state.abroad !== q)) out.push(`needs ${p} first (it's in ${pq})`);
       });
@@ -141,19 +154,20 @@
       if (state.closed[id] === q) return false;
       if (state.abroad === q) { if (!c.abroad_eligible) return false; }
       else if (!c.offered.includes(seasonOf(q))) return false;
-      return c.prereqs.every(p => { if (!courses[p]) return true; const pq = whereIs(p); return pq && pq !== "TRAY" && (qIndex(pq) < i || (qIndex(pq) === i && state.abroad === q)); });
+      return c.prereqs.every(p => { if (!courses[p]) return true; const pq = prereqAt(p); return pq && pq !== "TRAY" && (qIndex(pq) < i || (qIndex(pq) === i && state.abroad === q)); });
     }
     function placeBest(id, pref) {
-      const order = QUARTERS.map((_, i) => i).sort((a, b) => (Math.abs(a - pref) - Math.abs(b - pref)) || (b - a));
-      const tiers = [[3, HEAVY_HOURS], [MAX_COURSES, HEAVY_HOURS], [MAX_COURSES, Infinity]];
-      for (const [maxLoad, maxHrs] of tiers) {
-        for (const i of order) {
-          if (canPlace(id, i, maxLoad) && hoursIn(QUARTERS[i]) + courses[id].hours_per_week <= maxHrs) {
-            state.plan[QUARTERS[i]].push(id); return true;
-          }
-        }
-      }
-      return false;
+      // closest valid quarter wins; busy or heavy quarters cost a little extra
+      let best = -1, bestScore = Infinity;
+      QUARTERS.forEach((q, i) => {
+        if (!canPlace(id, i, MAX_COURSES)) return;
+        const heavy = hoursIn(q) + courses[id].hours_per_week > HEAVY_HOURS;
+        const score = Math.abs(i - pref) + (state.plan[q].length >= 3 ? 1.2 : 0) + (heavy ? 3 : 0) + (i < pref ? 0.1 : 0);
+        if (score < bestScore) { bestScore = score; best = i; }
+      });
+      if (best < 0) return false;
+      state.plan[QUARTERS[best]].push(id);
+      return true;
     }
     function runAutoFix() {
       const home = {};
@@ -176,11 +190,66 @@
       load_major({ major }) {
         const m = parseMajor(major);
         if (!m || !catalog.plans[m]) return { ok: false, error: `Unknown major "${major}". Available: ${Object.keys(catalog.plans).join(", ")}` };
-        state.major = m; state.plan = emptyPlan(); state.tray = []; state.abroad = null; state.closed = {}; state.origin = {};
+        state.major = m; state.second = null; state.plan = emptyPlan(); state.tray = []; state.abroad = null; state.closed = {}; state.origin = {};
         QUARTERS.forEach(q => (state.plan[q] = [...(catalog.plans[m][q] || [])]));
+        // leave the Core open so the student picks it
+        const open = [];
+        Object.keys(catalog.core_options || {}).forEach(area => {
+          const slots = [];
+          QUARTERS.forEach(q => state.plan[q].forEach(id => { if (courses[id]?.category === area) slots.push([q, id]); }));
+          slots.forEach(([q, id], i) => {
+            const pid = `${area} ${i + 1}`;
+            if (!courses[pid]) {
+              const base = courses[id];
+              const pc = { id: pid, title: "Not picked yet", category: area, offered: base.offered, prereqs: i ? [`${area} ${i}`] : [],
+                           abroad_eligible: base.abroad_eligible, hours_per_week: base.hours_per_week, placeholder: true };
+              catalog.courses.push(pc); courses[pid] = pc; byNorm[norm(pid)] = pid;
+            }
+            state.plan[q] = state.plan[q].map(x => (x === id ? pid : x));
+          });
+          if (slots.length) open.push(area);
+        });
         state.changed = QUARTERS.flatMap(q => state.plan[q]);
-        const n = state.changed.length;
-        return result({ message: `Loaded the sample ${m} 4-year plan: ${n} courses across 12 quarters.` });
+        return result({ message: `Loaded the ${m} plan.`, core_not_picked_yet: open });
+      },
+      add_second_major({ major }) {
+        const m2 = parseMajor(major);
+        if (!state.major) return { ok: false, error: "Load a first major before adding a second one." };
+        if (!m2 || !catalog.plans[m2]) return { ok: false, error: `Unknown major "${major}". Available: ${Object.keys(catalog.plans).join(", ")}` };
+        if (m2 === state.major) return { ok: false, error: `${m2} is already the first major.` };
+        const cats = catalog.major_categories || {};
+        const mine1 = cats[state.major] || [], mine2 = cats[m2] || [];
+        const core = Object.keys(catalog.core_options || {});
+        const before = snapshot();
+        const scheduled = () => QUARTERS.flatMap(q => state.plan[q]).concat(state.tray);
+        const needed = QUARTERS.flatMap(q => catalog.plans[m2][q]).filter(id => mine2.includes(courses[id]?.category));
+        const shared = needed.filter(id => scheduled().includes(id));
+        const toAdd = needed.filter(id => !scheduled().includes(id));
+        // free up space: drop electives that neither major needs
+        const dropped = [];
+        QUARTERS.forEach(q => state.plan[q].forEach(id => {
+          const c = courses[id];
+          if (core.includes(c.category) || mine1.includes(c.category) || needed.includes(id)) return;
+          dropped.push(id);
+        }));
+        dropped.forEach(removeEverywhere);
+        // second-major courses go roughly where that major normally takes them
+        const home2 = {};
+        QUARTERS.forEach((q, i) => catalog.plans[m2][q].forEach(id => (home2[id] = i)));
+        const reshuffle = shared.filter(id => !core.includes(courses[id].category) &&
+          (!mine1.includes(courses[id].category) || qIndex(whereIs(id)) > (home2[id] ?? 99)));
+        reshuffle.forEach(removeEverywhere);
+        [...toAdd, ...reshuffle].forEach(id => (state.origin[id] = home2[id] ?? 0));
+        state.second = m2;
+        state.tray.push(...toAdd, ...reshuffle);
+        runAutoFix();
+        const changes = diff(before);
+        const left = state.tray.length;
+        return result({
+          message: left ? `Added ${m2} as a second major, but ${left} course(s) don't fit in four years.` : `Added ${m2} as a second major and it fits.`,
+          courses_added: toAdd.length, counted_for_both: shared, electives_dropped: dropped, still_unscheduled: [...state.tray],
+          hint: left ? "Suggest lighten_load won't help here; they'd need a fifth course in some quarters or to drop something. Ask what they'd like." : undefined
+        });
       },
       get_plan() {
         const plan = {}; QUARTERS.forEach(q => (plan[q] = state.plan[q].join(", ") || "(empty)"));
@@ -209,7 +278,7 @@
         state.plan[q] = state.plan[q].filter(id => courses[id]?.abroad_eligible);
         state.tray.push(...displaced);
         // abroad programs usually cover the whole Civ sequence, so pull it in
-        const civ = catalog.courses.filter(c => c.category === "CIV" && c.abroad_eligible).map(c => c.id);
+        const civ = catalog.courses.filter(c => c.category === "CIV" && c.abroad_eligible && whereIs(c.id)).map(c => c.id);
         const pulled = [];
         civ.forEach(id => { if (whereIs(id) !== q && state.plan[q].length < MAX_COURSES) { removeEverywhere(id); state.plan[q].push(id); pulled.push(id); } });
         return result({
@@ -234,8 +303,21 @@
         const a = coreArea(area);
         const opts = catalog.core_options || {};
         if (!a) return { ok: true, areas: Object.keys(opts), hint: "Ask which area they want: Hum, Sosc, Civ, science (Phys or Bio), or Arts." };
-        const current = state.plan ? catalog.courses.filter(c => c.category === a && whereIs(c.id) && whereIs(c.id) !== "TRAY").map(c => c.id) : [];
-        return { ok: true, area: a, options: (opts[a] || []).map(o => ({ name: o.name, abroad: o.abroad || undefined, current: o.courses.every(c => current.includes(c.id)) || undefined })) };
+        const scheduled = QUARTERS.flatMap(q => state.plan[q]);
+        const rec = ((catalog.core_suggestions || {})[state.major] || {})[a];
+        // try each option on a copy of the plan to see if it fits cleanly
+        const saved = JSON.stringify({ plan: state.plan, tray: state.tray, abroad: state.abroad, origin: state.origin });
+        const list = (opts[a] || []).map(o => {
+          tools.choose_core({ area: a, option: o.name });
+          const fits = state.tray.length === 0 && Object.keys(validate().courseIssues).length === 0;
+          Object.assign(state, JSON.parse(saved));
+          return { name: o.name, abroad: o.abroad || undefined, fits_your_plan: fits, current: o.courses.every(c => scheduled.includes(c.id)) || undefined,
+                   recommended_for_your_major: o.name === rec || undefined };
+        });
+        list.sort((x, y) => (y.recommended_for_your_major ? 1 : 0) - (x.recommended_for_your_major ? 1 : 0) || (y.fits_your_plan ? 1 : 0) - (x.fits_your_plan ? 1 : 0));
+        state.changed = [];
+        emit();
+        return { ok: true, area: a, options: list, hint: "Suggest the recommended option first if there is one, and only options that fit." };
       },
       choose_core({ area, option }) {
         const a = coreArea(area);
@@ -327,11 +409,28 @@
           still_heavy: still
         });
       },
+      squeeze_in() {
+        // last resort: allow a fifth course in the lightest quarters that work
+        const before = snapshot();
+        const todo = [...state.tray].sort((a, b) => depth(a) - depth(b));
+        const stuck = [];
+        todo.forEach(id => {
+          removeEverywhere(id);
+          const ok = QUARTERS.map((q, i) => i).filter(i => canPlace(id, i, MAX_COURSES + 1))
+            .sort((a, b) => hoursIn(QUARTERS[a]) - hoursIn(QUARTERS[b]))[0];
+          if (ok === undefined) stuck.push(id); else state.plan[QUARTERS[ok]].push(id);
+        });
+        state.tray.push(...stuck);
+        const changes = diff(before);
+        return result({ changes, message: stuck.length ? `Squeezed in ${todo.length - stuck.length}, but ${stuck.length} still won't fit.` : `Squeezed everything in with a fifth course where needed.` });
+      },
       auto_fix() {
         const before = snapshot();
         runAutoFix();
         const changes = diff(before);
-        return result({ changes, message: changes.length ? `Moved ${changes.length} course(s).` : "Nothing needed fixing." });
+        const left = state.tray.length;
+        return result({ changes, message: (changes.length ? `Moved ${changes.length} course(s).` : "Nothing needed fixing.") +
+          (left ? ` ${left} course(s) can't fit in four years without a fifth course in some quarter.` : "") });
       }
     };
 

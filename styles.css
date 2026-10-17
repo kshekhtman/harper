@@ -738,3 +738,98 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
   .legend { display: none; }
   .brand small { display: none; }
 }
+
+/* export button + one-page adviser summary */
+.header-right { display: flex; align-items: center; gap: 12px; justify-self: end; }
+#exportbtn {
+  padding: 7px 14px;
+  border: 1px solid var(--rule2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ink-secondary);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+#exportbtn:hover { border-color: var(--maroon-bright); color: #fff; background: rgba(184, 29, 36, 0.25); }
+
+#sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  overflow-y: auto;
+  background: rgba(5, 5, 8, 0.82);
+  backdrop-filter: blur(6px);
+}
+#sheet[hidden] { display: none; }
+.sheet-actions { display: flex; gap: 8px; }
+.sheet-actions button {
+  padding: 9px 16px;
+  border: 1px solid var(--rule2);
+  border-radius: 8px;
+  background: var(--bg-panel);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sheet-actions button:first-child { background: var(--maroon); border-color: var(--maroon-bright); }
+
+.paper {
+  width: 8.5in;
+  max-width: 100%;
+  padding: 0.5in 0.55in;
+  background: #fff;
+  color: #1d1b18;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 11px;
+  line-height: 1.35;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+}
+.p-head { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 10px; border-bottom: 2px solid #800000; margin-bottom: 12px; }
+.p-kicker { font-family: Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #800000; }
+.paper h2 { margin: 2px 0 0; font-size: 26px; font-weight: 400; }
+.p-meta { text-align: right; font-family: Helvetica, Arial, sans-serif; font-size: 10px; color: #555; }
+.p-grid { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.p-grid th { font-family: Helvetica, Arial, sans-serif; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #800000; text-align: left; padding: 4px 6px; }
+.p-grid col.yr { width: 54px; }
+.p-grid tbody th { vertical-align: top; color: #1d1b18; padding-top: 6px; }
+.p-grid td { vertical-align: top; padding: 5px 6px; border: 1px solid #ddd6cc; }
+.p-grid td.ab { background: #eef4f6; }
+.p-grid .c { margin-bottom: 2px; }
+.p-grid .c b { font-family: Menlo, monospace; font-size: 9.5px; }
+.p-grid .c.x { color: #a8261b; }
+.p-grid .h { margin-top: 3px; font-family: Helvetica, Arial, sans-serif; font-size: 9px; color: #888; }
+.p-grid .tag { font-family: Helvetica, Arial, sans-serif; font-size: 8.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #2d5f6e; margin-bottom: 2px; }
+.p-cols { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; margin-top: 14px; }
+.paper h3 { margin: 0 0 6px; font-family: Helvetica, Arial, sans-serif; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #800000; }
+.paper dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; }
+.paper dt { font-family: Helvetica, Arial, sans-serif; font-size: 9.5px; color: #666; }
+.paper dd { margin: 0; }
+.paper ol { margin: 0; padding-left: 16px; }
+.paper ol li + li { margin-top: 3px; }
+.p-foot { display: block; margin-top: 16px; padding-top: 8px; border-top: 1px solid #ddd6cc; font-size: 9px; color: #777; font-style: italic; }
+
+@media print {
+  @page { size: letter; margin: 0; }
+  html, body { height: auto !important; overflow: visible !important; background: #fff !important; display: block !important; }
+  body > *:not(#sheet) { display: none !important; }
+  #sheet { position: static; padding: 0; background: none; backdrop-filter: none; overflow: visible; }
+  .sheet-actions { display: none; }
+  .paper { box-shadow: none; width: 100%; }
+}
+
+/* Core slot the student hasn't picked yet */
+.card.pick { border-style: dashed; border-left-style: solid; background: rgba(255, 255, 255, 0.02); box-shadow: none; }
+.card.pick .id { color: var(--ink-secondary); font-family: var(--sans); }
+.card.pick .t { color: var(--muted); font-style: italic; }

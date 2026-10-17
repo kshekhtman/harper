@@ -34,9 +34,15 @@ We split it this way so the model can't make up a plan that breaks the rules. Wh
     
 You can also pick your own Core sequences ("switch my Sosc to Power, Identity, and Resistance," "do Civ in Rome"), and ask Harper to lighten a heavy year.
 
+You can add a second major ("add econ as a second major"). Shared courses count once, and Harper tells you if it doesn't fit in four years.
+
+Say "send this to my adviser" (or click Export for adviser) to get a one-page summary you can print or save as a PDF.
+
 You can also try everything without voice using "Manual controls" on the right.
 
 ## About the data
+
+The Core course numbers were checked against the College Catalog. The Paris and Rome Civ course numbers are placeholders.
 
 The course data is a simplified sample loosely based on the College Catalog. Core courses are generic (HUM 1, SOSC 2, etc.), some courses really have several ways to satisfy a prereq and we only list one, and the hours per week are rough guesses. Don't use this to plan your actual schedule.
 
