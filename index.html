@@ -108,7 +108,7 @@
 
   // "The Inca And Aztec States" -> "The Inca and Aztec States"
   const SMALL = new Set(["a", "an", "and", "as", "at", "but", "by", "for", "in", "of", "on", "or", "the", "to", "vs", "with"]);
-  const titleCase = s => String(s).split(" ").map((w, i) => (i > 0 && SMALL.has(w.toLowerCase()) ? w.toLowerCase() : w)).join(" ");
+  const titleCase = s => String(s).split(" ").map((w, i, a) => (i > 0 && !/[:\-–]$/.test(a[i - 1]) && SMALL.has(w.toLowerCase()) ? w.toLowerCase() : w)).join(" ");
   function cardHTML(id, issues, changed, fixed) {
     const c = P.courses[id];
     const elective = /^ELECTIVE \d/.test(id);
@@ -323,7 +323,7 @@
       if (res.detected_major) log("tool", `detected major · ${res.detected_major}`);
       const note = t ? `The student just uploaded their transcript: ${t.completed_courses} courses through ${t.completed_through} are now marked completed. ${t.on_track ? "Everything left fits in the remaining quarters, so they're on track." : `${t.unscheduled.length} course(s) don't fit in the remaining quarters.`} ${t.test_credit_note || ""} Tell them in one or two short sentences.`
                      : `The student just uploaded their transcript (${entries.length} courses). Ask for their major so you can plan the rest.`;
-      if (convo && typeof convo.sendContextualUpdate === "function") convo.sendContextualUpdate(note);
+      tellHarper(note);
     } catch (e) { console.error(e); alert("Couldn't read that file: " + e.message); }
   };
   window.QT = clientTools;
@@ -331,6 +331,16 @@
   $("majorbuttons").innerHTML = Object.keys(window.CATALOG.plans)
     .map(m => `<button data-t='${JSON.stringify(["load_major", { major: m + " standard" }])}'>${m}</button>`).join("");
   document.querySelectorAll("details button").forEach(b => b.onclick = () => { const [n, a] = JSON.parse(b.dataset.t); clientTools[n](a); });
+
+  // let Harper know about something that happened on the page, and get her to respond
+  let pendingNote = null;
+  function tellHarper(note) {
+    if (!convo) { pendingNote = note; return; } // she'll hear about it when the conversation starts
+    try {
+      if (typeof convo.sendContextualUpdate === "function") convo.sendContextualUpdate(note);
+      if (typeof convo.sendUserMessage === "function") convo.sendUserMessage("I just uploaded my transcript.");
+    } catch (e) { console.error(e); }
+  }
 
   // voice
   let convo = null;
@@ -345,7 +355,7 @@
       convo = await Conversation.startSession({
         agentId: AGENT_ID,
         clientTools,
-        onConnect: () => { talk.classList.add("live"); $("talklabel").textContent = "End conversation"; $("mode").textContent = "Listening…"; },
+        onConnect: () => { if (pendingNote) { const n = pendingNote; pendingNote = null; setTimeout(() => tellHarper(n), 1500); } talk.classList.add("live"); $("talklabel").textContent = "End conversation"; $("mode").textContent = "Listening…"; },
         onDisconnect: () => { convo = null; talk.className = ""; $("talklabel").innerHTML = 'Talk to <span class="brandword">Harper</span>'; $("mode").textContent = "Disconnected"; },
         onMessage: ({ message, source }) => {
           // hide voice cues like [happy] or [warmly] from the transcript

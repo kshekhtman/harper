@@ -860,7 +860,7 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
 
 /* "Harper" on the talk button uses the logo font */
 /* whole label in the logo font */
-#talklabel { font-family: var(--serif); font-weight: 400; font-size: 25px; letter-spacing: -0.01em; line-height: 1; display: inline-flex; align-items: center; }
+#talklabel { font-family: var(--serif); font-weight: 400; font-size: 25px; letter-spacing: -0.01em; line-height: 1; display: inline-block; white-space: nowrap; }
 #talk .brandword { font: inherit; }
 
 /* quarters with 5+ courses: tighten so nothing is cut off */

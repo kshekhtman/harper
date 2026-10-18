@@ -479,6 +479,7 @@
         removeEverywhere(id);
         if (q && canPlace(id, qIndex(q), MAX_COURSES)) state.plan[q].push(id);
         else if (!placeBest(id, q ? qIndex(q) : (slot ? qIndex(slot[0]) : 6))) state.tray.push(id);
+        state.reviewing = null; // they picked one, so the recommendations panel can go
         return result({ message: `Added ${id}${slot ? ` in place of ${slot[1]}` : ""}.`, changes: diff(before) });
       },
       start_over() {
