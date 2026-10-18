@@ -183,9 +183,19 @@
       if (!w || w === "TRAY" || w === "CREDIT" || state.locked.includes(w)) return false; // credit and completed quarters stay put
       const cur = qIndex(w);
       removeEverywhere(id);
+      const dependentsAt = x => catalog.courses.filter(c => c.prereqs.includes(x)).map(c => whereIs(c.id)).filter(w => w && w !== "TRAY" && w !== "CREDIT").map(qIndex);
       const tryPlace = () => {
         for (let i = 0; i < cur; i++) {
-          if (canPlace(id, i, MAX_COURSES) && hoursIn(QUARTERS[i]) + courses[id].hours_per_week <= HEAVY_HOURS + 6) { state.plan[QUARTERS[i]].push(id); return true; }
+          const qi = QUARTERS[i];
+          if (canPlace(id, i, MAX_COURSES) && hoursIn(qi) + courses[id].hours_per_week <= HEAVY_HOURS + 6) { state.plan[qi].push(id); return true; }
+          // the quarter is just full: trade places with a course that can move to where this one was
+          if (!canPlace(id, i, MAX_COURSES + 1)) continue;
+          for (const x of [...state.plan[qi]]) {
+            removeEverywhere(x);
+            const ok = canPlace(x, cur, MAX_COURSES) && dependentsAt(x).every(d => d > cur) && canPlace(id, i, MAX_COURSES);
+            if (ok) { state.plan[w].push(x); state.plan[qi].push(id); return true; }
+            state.plan[qi].push(x);
+          }
         }
         return false;
       };

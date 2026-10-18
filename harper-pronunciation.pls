@@ -9,8 +9,9 @@
   <lexeme><grapheme>Hum</grapheme><alias>hyoom</alias></lexeme>
   <lexeme><grapheme>Hume</grapheme><alias>hyoom</alias></lexeme>
   <lexeme><grapheme>Hyoom</grapheme><alias>hyoom</alias></lexeme>
-  <lexeme><grapheme>SOSC</grapheme><alias>sosh</alias></lexeme>
-  <lexeme><grapheme>Sosc</grapheme><alias>sosh</alias></lexeme>
+  <lexeme><grapheme>SOSC</grapheme><alias>sohsh</alias></lexeme>
+  <lexeme><grapheme>Sosc</grapheme><alias>sohsh</alias></lexeme>
+  <lexeme><grapheme>Sosh</grapheme><alias>sohsh</alias></lexeme>
   <lexeme><grapheme>CIV</grapheme><alias>siv</alias></lexeme>
   <lexeme><grapheme>Civ</grapheme><alias>siv</alias></lexeme>
   <lexeme><grapheme>CMSC</grapheme><alias>C M S C</alias></lexeme>

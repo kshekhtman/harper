@@ -391,7 +391,7 @@
           // hide voice cues like [happy] or [warmly] from the transcript
           let text = String(message).replace(/\[[^\]]*\]\s*/g, "").trim();
           // Harper spells these out so they sound right; show the normal spelling
-          if (source !== "user") text = text.replace(/\b(Hume|Hyoom|Hum)\b/gi, "HUM").replace(/\b(Sosh|Sosc)\b/gi, "SOSC").replace(/\b(Siv|Civ)\b/gi, "CIV");
+          if (source !== "user") text = text.replace(/\b(Hume|Hyoom|Hum)\b/gi, "HUM").replace(/\b(Sohsh|Sosh|Sosc)\b/gi, "SOSC").replace(/\b(Siv|Civ)\b/gi, "CIV");
           // "Econ two oh two" -> "ECON 202" on screen (she still says it the spoken way)
           const num = { zero: 0, oh: 0, o: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9 };
           text = text.replace(/\b(C[ .-]?M[ .-]?S[ .-]?C|cmsc|econ|math|stat|huma|sosc|hist|bios|data|pbpl|plsc|psyc|engl|phys|chem|astr|artv|busn|musi|taps|arth)((?:[ -](?:zero|oh|o|one|two|three|four|five|six|seven|eight|nine)\b){3,5})/gi,
