@@ -841,16 +841,37 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
 .badge.done { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
 
 /* AP / placement credit */
-.tray.credit { border-style: solid; border-color: var(--green-border); background: rgba(46, 229, 157, 0.05); }
-.tray.credit h3 { color: var(--green); }
+.tray.credit { border-style: solid; }
+/* credited courses themselves are what turn green */
+.card.credited { border-color: var(--green-border); border-left-color: var(--green); background: linear-gradient(90deg, rgba(46, 229, 157, 0.14) 0%, rgba(22, 33, 32, 0.95) 100%); }
+.card.credited .id { color: var(--green); }
 
 /* course feedback panel (sample data) */
 .sample-tag { margin-left: 6px; padding: 1px 6px; border: 1px solid var(--amber-border); border-radius: 999px; color: var(--amber); font-size: 9.5px; letter-spacing: 0.06em; }
-#fbbody { display: flex; flex-direction: column; gap: 8px; }
+#fbbody { display: flex; flex-direction: column; gap: 12px; }
 .fb-sub { color: var(--muted); font-family: var(--mono); font-size: 11px; }
-.fb-row, .fb-sec { font-size: 12.5px; line-height: 1.35; }
+.fb-row, .fb-sec { font-size: 13px; line-height: 1.45; }
+.fb-row > div:first-child { display: flex; flex-direction: column; gap: 1px; }
 .fb-sec { padding-left: 10px; border-left: 2px solid var(--rule2); }
-.fb-id { font-family: var(--mono); font-weight: 700; color: #fff; }
-.fb-meta { color: var(--ink-secondary); font-size: 11.5px; margin-top: 2px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-.fb-stars { display: inline-block; width: 52px; height: 9px; background: linear-gradient(90deg, var(--amber) var(--r), rgba(255,255,255,0.12) var(--r)); border-radius: 2px; }
+.fb-id { font-family: var(--mono); font-weight: 700; color: #fff; font-size: 12px; }
+.fb-meta { color: var(--ink-secondary); font-size: 11.5px; margin-top: 5px; display: flex; align-items: center; gap: 6px 10px; flex-wrap: wrap; }
+.fb-stars { display: inline-block; width: 64px; height: 8px; margin-right: -4px; background: linear-gradient(90deg, var(--amber) var(--r), rgba(255,255,255,0.12) var(--r)); border-radius: 2px; }
 .fb-note { margin-top: 8px; color: var(--muted); font-size: 10.5px; font-style: italic; }
+
+/* "Harper" on the talk button uses the logo font */
+#talk .brandword { font-family: var(--serif); font-weight: 400; font-size: 1.45em; letter-spacing: -0.01em; margin-left: 2px; line-height: 1; }
+
+/* quarters with 5+ courses: tighten so nothing is cut off */
+.cell { overflow-y: auto; scrollbar-width: none; }
+.cell.dense .cards { gap: 2px; }
+.cell.dense .card { padding: 2px 8px; }
+.cell.dense .card .id, .cell.dense .card .t { font-size: 11.5px; }
+.cell.dense .cellhead { margin-bottom: 3px; }
+
+/* chat uses its own neutral/violet colors so it doesn't look like course groups */
+.msg.user { border-left: 3px solid #8b93a7; background: rgba(139, 147, 167, 0.08); color: var(--ink-secondary); }
+.msg.user::before { color: #aab2c5; }
+.msg.ai { border-left: 3px solid #a78bfa; background: linear-gradient(90deg, rgba(167, 139, 250, 0.12) 0%, rgba(255, 255, 255, 0.02) 100%); }
+.msg.ai::before { color: #c4b5fd; }
+.msg.tool { border-left: 3px solid #4b5262; background: #0b0c11; }
+.msg.tool::before { color: #8b93a7; }

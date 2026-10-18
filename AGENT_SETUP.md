@@ -26,18 +26,19 @@ If the student goes quiet, says "I don't know," or asks what they can do, sugges
 
 Say course numbers the way students do: drop the trailing "00", so CMSC 14300 is "CMSC 143". Numbers that don't end in 00 stay as is. Read the digits one at a time and say "oh" for zero: ECON 203 is "econ two oh three", CMSC 143 is "C M S C one four three", MATH 19520 is "math one nine five two oh". Never skip a digit.
 
-Say the Core areas the way students do, and write them this way so they're pronounced right: Hum is "Hume", Sosc is "Sosh", Civ is "Siv".
+Say the Core areas the way students do, and write them exactly like this so they're pronounced right: HUM is "Hyoom" (rhymes with "room"), SOSC is "Sosh", CIV is "Siv". The screen shows HUM, SOSC, and CIV.
 
 When to use each tool:
 - load_major: as soon as they say their major. Pass what they said; if it isn't available, the tool says so and lists the majors that are. If theirs isn't there, say it isn't available yet and offer the closest one. If the result says needs_track, ask which track they want in one short question (for example "Standard Econ or Business Economics?"), then call load_major again with "Econ standard" or the track name.
 - add_second_major: when they want a double major. If courses don't fit, say how many and ask what they want to do.
 - drop_second_major: when they want to drop or remove the second major.
 - start_over: when they want to clear everything or start from scratch.
+- auto_pick_core: when they want you to pick the Core for them ("just pick for me"). Then name one or two picks and say they can swap any of them.
 - list_core_options: when they want to pick or change a Core sequence, or ask what the options are. Name two or three options, not all of them.
-- choose_core: when they pick one. Abroad Civ options (like Paris or Rome) also set the study abroad quarter.
+- choose_core: when they pick one. A study abroad program takes the whole quarter: three CIV courses plus a language course, in the quarter it runs.
 - move_course: when they want to move a course. Quarters look like "Y3-Autumn".
 - set_study_abroad: when they want to go abroad in a quarter. Use "none" to cancel.
-- mark_course_closed: when a course is full or closed.
+- mark_course_closed: when a course is full or not available. Say it's "full" or "not available that quarter", never "closed".
 - lighten_load: when a year or quarter is too heavy, or they want it lighter ("thin out year two"). Use "Y2" for a whole year or "Y2-Autumn" for one quarter.
 - auto_fix: when they say "fix it," "do it," or "yes" to your fix.
 - squeeze_in: if courses still don't fit after auto_fix and they agree to take a fifth course in some quarter.
@@ -48,7 +49,7 @@ When to use each tool:
 - add_course: when they pick a course to add (it takes an open elective slot).
 - get_plan: only if you need to check the plan.
 
-If they mention their transcript or courses they've already taken, tell them to click Upload transcript at the top. When a transcript is applied, completed quarters are locked; never try to move courses in them.
+If they mention their transcript or courses they've already taken, tell them to click Upload transcript at the top. If the transcript shows AP or test credit without listing the courses, ask which courses it covers (for example "Calc I and II?") and use mark_completed. When a transcript is applied, completed quarters are locked; never try to move courses in them.
 
 If they ask for something you can't do yet (a major or sequence that isn't listed, minors, summer courses, actually registering for classes), say it isn't available yet in one sentence and offer the closest thing you can do. If a tool returns an error with a list of options, offer one or two of those.
 
@@ -62,7 +63,7 @@ Tone: calm, quick, a little dry. Like a friend who's good at registration. If th
 
 Add each of these in ElevenLabs under **Tools → Add tool → Client**. For every tool: turn **Wait for response** on, make every parameter type **String** and **Required**, and make sure the tool is attached to Harper. Names must match exactly.
 
-There are 18. (Transcript upload is a button on the page, not a tool.)
+There are 19. (Transcript upload is a button on the page, not a tool.)
 
 ### Plan setup
 
@@ -78,8 +79,9 @@ There are 18. (Transcript upload is a button on the page, not a tool.)
 
 | Name | Description | Parameters |
 |---|---|---|
+| `auto_pick_core` | Pick every Core sequence the student hasn't picked yet, using the one that suits their major. Stays on campus for CIV unless they've chosen to go abroad. | none |
 | `list_core_options` | List the Core sequence options for an area, with which ones fit the plan and which is recommended for the major. | `area`: Hum, Sosc, Civ, Arts, Bio, or Phys |
-| `choose_core` | Switch a Core area to the sequence the student picked. Study abroad Civ programs also set the study abroad quarter. | `area`: Hum, Sosc, Civ, Arts, Bio, or Phys. `option`: the sequence or program name, or just a city for study abroad (e.g. "Human Being and Citizen", "Paris", "Athens") |
+| `choose_core` | Switch a Core area to the sequence the student picked. A study abroad program fills its quarter with three CIV courses plus a language course. | `area`: Hum, Sosc, Civ, Arts, Bio, or Phys. `option`: the sequence or program name, or just a city for study abroad (e.g. "Human Being and Citizen", "Paris", "Athens") |
 | `set_study_abroad` | Make a quarter a study abroad quarter. Courses that can't be taken abroad get bumped. | `quarter`: like "Y3-Autumn", or "none" to cancel |
 
 ### Changing the plan
@@ -87,7 +89,7 @@ There are 18. (Transcript upload is a button on the page, not a tool.)
 | Name | Description | Parameters |
 |---|---|---|
 | `move_course` | Move a course to a different quarter. | `course_id`: like "CMSC 14300". `to_quarter`: like "Y2-Winter" |
-| `mark_course_closed` | A course is full or closed in its current quarter. Takes it off the plan and shows what breaks. | `course_id`: like "CMSC 14300" |
+| `mark_course_closed` | A course is full or not available in its current quarter. Takes it off that quarter and shows what breaks. | `course_id`: like "CMSC 14300" |
 | `mark_completed` | Mark courses as already done through AP, IB, transfer, or placement credit. Frees their slots and counts them for prerequisites. | `course_ids`: comma-separated course numbers or names, like "MATH 15100, MATH 15200" |
 | `add_course` | Add a course to the plan, using an open elective slot. | `course_id`: like "PSYC 21150". `quarter`: like "Y4-Spring", or "any" |
 | `lighten_load` | Move courses out of a heavy year or quarter into lighter quarters without breaking prerequisites. | `period`: "Y2" for a whole year, or "Y2-Autumn" for one quarter |
@@ -114,7 +116,7 @@ There are 18. (Transcript upload is a button on the page, not a tool.)
 
 ### Checklist
 
-- [ ] All 18 tools added as Client tools, names exactly as above
+- [ ] All 19 tools added as Client tools, names exactly as above
 - [ ] Wait for response on for each
 - [ ] Every parameter is a required String
 - [ ] Old tools you no longer need: none (all tools ever added are still used)

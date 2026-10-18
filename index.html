@@ -12,7 +12,6 @@
     <img src="uchicago-logo.png" alt="University of Chicago" width="108" height="44" onerror="this.remove()" />
     <div>
       <h1>Harper</h1>
-      <div class="sub" id="subtitle">Talk through your four years</div>
     </div>
   </div>
   <div class="header-right">
@@ -41,7 +40,7 @@
 
   <aside>
     <div class="panel">
-      <button id="talk"><span class="orb"></span><span id="talklabel">Talk to Harper</span></button>
+      <button id="talk"><span class="orb"></span><span id="talklabel">Talk to <span class="brandword">Harper</span></span></button>
       <div id="mode">Click and allow microphone access</div>
     </div>
     <div class="panel"><h2>Conversation</h2><div id="log"></div></div>
@@ -64,6 +63,7 @@
           <button data-t='["lighten_load",{"period":"Y2"}]'>Lighten year 2</button>
           <button data-t='["add_second_major",{"major":"Econ"}]'>Add Econ as second major</button>
           <button data-t='["auto_fix",{}]'>Auto-fix</button>
+          <button data-t='["auto_pick_core",{}]'>Pick my Core for me</button>
           <button data-t='["mark_completed",{"course_ids":"MATH 15100, MATH 15200"}]'>AP credit: Calc I and II</button>
           <button data-t='["recommend_electives",{"quarter":"Y3-Spring"}]'>Recommend an elective (Y3 Spring)</button>
           <button data-t='["course_reviews",{"course_id":"ECON 20100"}]'>Reviews: ECON 20100</button>
@@ -106,11 +106,18 @@
 
   const $ = id => document.getElementById(id);
 
+  // "The Inca And Aztec States" -> "The Inca and Aztec States"
+  const SMALL = new Set(["a", "an", "and", "as", "at", "but", "by", "for", "in", "of", "on", "or", "the", "to", "vs", "with"]);
+  const titleCase = s => String(s).split(" ").map((w, i) => (i > 0 && SMALL.has(w.toLowerCase()) ? w.toLowerCase() : w)).join(" ");
   function cardHTML(id, issues, changed, fixed) {
     const c = P.courses[id];
-    const cls = ["card", issues ? "bad" : "", changed ? "changed" : "", fixed ? "fixed" : "", c.placeholder ? "pick" : ""].join(" ");
+    const elective = /^ELECTIVE \d/.test(id);
+    const credit = (P.state.credit || []).includes(id);
+    const cls = ["card", issues ? "bad" : "", changed ? "changed" : "", fixed ? "fixed" : "", c.placeholder || elective ? "pick" : "", credit ? "credited" : ""].join(" ");
+    const label = c.placeholder ? { HUM: "HUM", SOSC: "SOSC", CIV: "CIV", ARTS: "ARTS", BIO: "BIO SCI", PHYS: "PHYS SCI" }[c.category] + " " + id.split(" ")[1] : id;
+    const title = elective ? "Open elective" : c.placeholder ? "Not picked yet" : titleCase(c.title);
     return `<div class="${cls}" data-id="${id}" style="--c:${GROUPS[groupOf(id)]}">
-      <div class="id">${c.placeholder ? { HUM: "Hum", SOSC: "Sosc", CIV: "Civ", ARTS: "Arts", BIO: "Bio sci", PHYS: "Phys sci" }[c.category] + " " + id.split(" ")[1] : id}</div><div class="t">${c.title}</div>
+      <div class="id">${label}</div><div class="t">${title}</div>
       ${issues ? `<div class="why" title="${issues.join("; ")}">${issues.join("; ")}</div>` : ""}</div>`;
   }
 
@@ -123,9 +130,9 @@
     box.hidden = false;
     if (rv.list) {
       $("fbbody").innerHTML = `<div class="fb-sub">Top picks${rv.quarter ? ` for ${rv.quarter.replace("-", " ")}` : ""}${rv.interest ? ` · ${rv.interest}` : ""}</div>` +
-        rv.list.map(r => `<div class="fb-row"><div><span class="fb-id">${r.course}</span> ${r.title}</div><div class="fb-meta">${stars(r.rating)} · ${r.hours_per_week} hrs/wk · best: ${r.best_section}</div></div>`).join("");
+        rv.list.map(r => `<div class="fb-row"><div><span class="fb-id">${r.course}</span><span>${titleCase(r.title)}</span></div><div class="fb-meta">${stars(r.rating)} · ${r.hours_per_week} hrs/wk · best: ${r.best_section}</div></div>`).join("");
     } else {
-      $("fbbody").innerHTML = `<div class="fb-row"><div><span class="fb-id">${rv.course}</span> ${rv.title}</div><div class="fb-meta">${stars(rv.rating)} · ${rv.hours_per_week} hrs/wk · ${rv.responses} responses</div></div>` +
+      $("fbbody").innerHTML = `<div class="fb-row"><div><span class="fb-id">${rv.course}</span><span>${titleCase(rv.title)}</span></div><div class="fb-meta">${stars(rv.rating)} · ${rv.hours_per_week} hrs/wk · ${rv.responses} responses</div></div>` +
         rv.sections.map(sct => `<div class="fb-sec"><div><b>${sct.instructor}</b> ${stars(sct.rating)}</div><div class="fb-meta">${sct.would_recommend}% recommend · ${sct.hours_per_week} hrs/wk · ${sct.known_for.join(", ")}</div></div>`).join("");
     }
   }
@@ -142,7 +149,7 @@
       for (const season of P.SEASONS) {
         const q = `Y${y}-${season}`, warn = v.quarterWarnings[q], abroad = s.abroad === q;
         const done = (s.locked || []).includes(q);
-        html += `<div class="cell ${warn ? "warn" : ""} ${abroad ? "abroad" : ""} ${done ? "done" : ""}">
+        html += `<div class="cell ${warn ? "warn" : ""} ${abroad ? "abroad" : ""} ${done ? "done" : ""} ${s.plan[q].length >= 5 ? "dense" : ""}">
           <div class="cellhead"><span>${P.hoursIn(q)} hrs / week</span>
             <span>${done ? '<span class="badge done">Completed</span>' : ""}${abroad ? '<span class="badge abroad">Study abroad</span>' : ""} ${warn ? `<span class="badge warn">Heavy load</span>` : ""}</span></div>
           <div class="cards">${s.plan[q].map(id => cardHTML(id, v.courseIssues[id], changed.has(id), lastBad.has(id) && !bad.has(id))).join("")}</div></div>`;
@@ -152,8 +159,9 @@
     $("legend").innerHTML = s.major ? Object.entries(GROUPS).map(([k, c]) => `<span><i style="background:${c}"></i>${k === "Major" ? (s.second ? `${s.major} + ${s.second} majors` : `${s.major} major`) : k === "Elective" ? "Electives" : "Core"}</span>`).join("") : "";
     $("traycards").innerHTML = s.tray.map(id => cardHTML(id, ["unscheduled"], changed.has(id))).join("");
     $("tray").classList.toggle("has", s.tray.length > 0);
-    $("creditcards").innerHTML = (s.credit || []).map(id => cardHTML(id, null, changed.has(id))).join("");
-    $("creditstrip").hidden = !(s.credit || []).length;
+    $("creditcards").innerHTML = (s.credit || []).map(id => cardHTML(id, null, changed.has(id))).join("") +
+      (s.testCredits ? `<div class="card credited test"><div class="id">AP / TEST × ${s.testCredits}</div><div class="t">Courses not listed on transcript</div></div>` : "");
+    $("creditstrip").hidden = !((s.credit || []).length || s.testCredits);
     renderFeedback(s.reviewing);
     lastBad = new Set([...bad, ...s.tray]);
 
@@ -306,13 +314,14 @@
       const text = /\.pdf$/i.test(file.name) ? await pdfText(file) : await file.text();
       const entries = parseTranscript(text);
       const program = (text.match(/(?:Program|Major|Degree)[^\n:]*:\s*([^\n]+)/i) || [])[1] || "";
-      const res = P.tools.import_transcript({ entries, program });
+      const testUnits = +((text.match(/Test Credits[\s\S]{0,300}?Totals?:\s*(\d+)/i) || [])[1] || 0);
+      const res = P.tools.import_transcript({ entries, program, test_units: testUnits });
       render();
       log("tool", `transcript · ${entries.length} courses found`);
       if (!res.ok) { alert("Couldn't find any courses in that file. It needs course numbers like CMSC 14100 under quarter headings like Autumn 2024."); return; }
       const t = res.transcript;
       if (res.detected_major) log("tool", `detected major · ${res.detected_major}`);
-      const note = t ? `The student just uploaded their transcript: ${t.completed_courses} courses through ${t.completed_through} are now marked completed. ${t.on_track ? "Everything left fits in the remaining quarters, so they're on track." : `${t.unscheduled.length} course(s) don't fit in the remaining quarters.`} Tell them in one sentence.`
+      const note = t ? `The student just uploaded their transcript: ${t.completed_courses} courses through ${t.completed_through} are now marked completed. ${t.on_track ? "Everything left fits in the remaining quarters, so they're on track." : `${t.unscheduled.length} course(s) don't fit in the remaining quarters.`} ${t.test_credit_note || ""} Tell them in one or two short sentences.`
                      : `The student just uploaded their transcript (${entries.length} courses). Ask for their major so you can plan the rest.`;
       if (convo && typeof convo.sendContextualUpdate === "function") convo.sendContextualUpdate(note);
     } catch (e) { console.error(e); alert("Couldn't read that file: " + e.message); }
@@ -337,12 +346,12 @@
         agentId: AGENT_ID,
         clientTools,
         onConnect: () => { talk.classList.add("live"); $("talklabel").textContent = "End conversation"; $("mode").textContent = "Listening…"; },
-        onDisconnect: () => { convo = null; talk.className = ""; $("talklabel").textContent = "Talk to Harper"; $("mode").textContent = "Disconnected"; },
+        onDisconnect: () => { convo = null; talk.className = ""; $("talklabel").innerHTML = 'Talk to <span class="brandword">Harper</span>'; $("mode").textContent = "Disconnected"; },
         onMessage: ({ message, source }) => {
           // hide voice cues like [happy] or [warmly] from the transcript
           let text = String(message).replace(/\[[^\]]*\]\s*/g, "").trim();
           // Harper spells these out so they sound right; show the normal spelling
-          if (source !== "user") text = text.replace(/\bHume\b/g, "Hum").replace(/\bSosh\b/g, "Sosc").replace(/\bSiv\b/g, "Civ");
+          if (source !== "user") text = text.replace(/\b(Hume|Hyoom|Hum)\b/gi, "HUM").replace(/\b(Sosh|Sosc)\b/gi, "SOSC").replace(/\b(Siv|Civ)\b/gi, "CIV");
           // "Econ two oh two" -> "ECON 202" on screen (she still says it the spoken way)
           const num = { zero: 0, oh: 0, o: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9 };
           text = text.replace(/\b(C[ .-]?M[ .-]?S[ .-]?C|cmsc|econ|math|stat|huma|sosc|hist|bios|data|pbpl|plsc|psyc|engl|phys|chem|astr|artv|busn|musi|taps|arth)((?:[ -](?:zero|oh|o|one|two|three|four|five|six|seven|eight|nine)\b){3,5})/gi,

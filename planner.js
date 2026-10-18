@@ -111,7 +111,7 @@
       const c = courses[id], i = qIndex(q), out = [];
       if (state.locked.includes(q)) return out; // already taken
       if (!c) return out;
-      if (state.closed[id] === q) out.push(`closed in ${q}`);
+      if (state.closed[id] === q) out.push(`full in ${q}`);
       if (state.abroad === q) { if (!c.abroad_eligible) out.push(`not available while studying abroad`); }
       else if (!c.offered.includes(seasonOf(q))) out.push(`only offered ${c.offered.join("/")}`);
       c.prereqs.forEach(p => {
@@ -180,7 +180,7 @@
     // move a course (and, if needed, its prerequisites) into an earlier quarter
     function pullEarlier(id, depth) {
       const w = whereIs(id);
-      if (!w || w === "TRAY") return false;
+      if (!w || w === "TRAY" || w === "CREDIT" || state.locked.includes(w)) return false; // credit and completed quarters stay put
       const cur = qIndex(w);
       removeEverywhere(id);
       const tryPlace = () => {
@@ -281,6 +281,10 @@
       QUARTERS.forEach(q => state.plan[q].forEach(id => { if (extras > 0 && /^ELECTIVE \d/.test(id)) { removeEverywhere(id); extras--; } }));
       // 4. put each course in the quarter they actually took it
       entries.forEach(e => { removeEverywhere(e.id); state.plan[e.quarter].push(e.id); });
+      // AP / test credit with no course list: each 100 units fills an open elective slot
+      let tc = state.testCredits || 0;
+      state.testUsed = [];
+      QUARTERS.forEach(q => [...state.plan[q]].forEach(id => { if (tc > 0 && /^ELECTIVE \d/.test(id)) { removeEverywhere(id); state.testUsed.push(id); tc--; } }));
       const last = Math.max(...entries.map(e => qIndex(e.quarter)));
       const past = QUARTERS.slice(0, last + 1);
       // 5. anything planned for a past quarter that they didn't take needs a new home
@@ -288,7 +292,8 @@
       state.locked = past;
       runAutoFix();
       diff(before);
-      return { completed_courses: ids.length, completed_through: QUARTERS[last], still_to_take: QUARTERS.slice(last + 1).reduce((n, q) => n + state.plan[q].length, 0),
+      return { completed_courses: ids.length, completed_through: QUARTERS[last], test_credits: state.testCredits || 0,
+               test_credit_note: state.testCredits ? `The transcript shows ${state.testCredits} course(s) of AP/test credit but not which courses. Ask which courses they cover, then use mark_completed.` : undefined, still_to_take: QUARTERS.slice(last + 1).reduce((n, q) => n + state.plan[q].length, 0),
                unscheduled: [...state.tray], on_track: state.tray.length === 0 };
     }
 
@@ -357,7 +362,7 @@
         const mine1 = cats[state.major] || [], mine2 = cats[m2] || [];
         const core = Object.keys(catalog.core_options || {});
         const before = snapshot();
-        const scheduled = () => QUARTERS.flatMap(q => state.plan[q]).concat(state.tray);
+        const scheduled = () => QUARTERS.flatMap(q => state.plan[q]).concat(state.tray, state.credit);
         const needed = QUARTERS.flatMap(q => catalog.plans[m2][q]).filter(id => mine2.includes(courses[id]?.category));
         const shared = needed.filter(id => scheduled().includes(id));
         const toAdd = needed.filter(id => !scheduled().includes(id));
@@ -372,7 +377,7 @@
         // second-major courses go roughly where that major normally takes them
         const home2 = {};
         QUARTERS.forEach((q, i) => catalog.plans[m2][q].forEach(id => (home2[id] = i)));
-        const reshuffle = shared.filter(id => !core.includes(courses[id].category) &&
+        const reshuffle = shared.filter(id => !state.credit.includes(id) && !state.locked.includes(whereIs(id)) && !core.includes(courses[id].category) &&
           (!mine1.includes(courses[id].category) || qIndex(whereIs(id)) > (home2[id] ?? 99)));
         reshuffle.forEach(removeEverywhere);
         [...toAdd, ...reshuffle].forEach(id => (state.origin[id] = home2[id] ?? 0));
@@ -392,7 +397,8 @@
         state.changed = [];
         return result({ major: state.major, study_abroad: state.abroad || "none", plan });
       },
-      import_transcript({ entries, program }) {
+      import_transcript({ entries, program, test_units }) {
+        state.testCredits = Math.floor((Number(test_units) || 0) / 100);
         const list = (entries || []).filter(e => e && e.id && QUARTERS.includes(e.quarter));
         if (!list.length) return { ok: false, error: "No courses found in that transcript." };
         if (!state.major) {
@@ -424,6 +430,12 @@
         if (!found.length) return { ok: false, error: `Couldn't find ${course_ids}. Use course numbers like "MATH 15100".` };
         const before = snapshot();
         found.forEach(id => { removeEverywhere(id); if (!state.credit.includes(id)) state.credit.push(id); });
+        // these are the transcript's unlisted test credits being named: give back the elective slots they were holding
+        if (state.testCredits) {
+          const n = Math.min(found.length, state.testCredits);
+          state.testCredits -= n;
+          (state.testUsed || []).splice(0, n).forEach(id => state.tray.push(id));
+        }
         runAutoFix();
         return result({ message: `Marked ${found.join(", ")} as completed (credit).`, not_found: missing.length ? missing : undefined, changes: diff(before),
                         hint: "That freed up space. Offer to pick an elective for the open slot or to lighten a heavy year." });
@@ -470,7 +482,7 @@
         return result({ message: `Added ${id}${slot ? ` in place of ${slot[1]}` : ""}.`, changes: diff(before) });
       },
       start_over() {
-        state.major = null; state.second = null; state.coreChoices = {}; state.locked = []; state.transcript = null; state.credit = []; state.reviewing = null; state.plan = emptyPlan();
+        state.major = null; state.second = null; state.coreChoices = {}; state.locked = []; state.transcript = null; state.credit = []; state.testCredits = 0; state.reviewing = null; state.plan = emptyPlan();
         state.tray = []; state.abroad = null; state.closed = {}; state.origin = {}; state.changed = [];
         emit();
         return { ok: true, message: "Cleared everything. Ask for their major to start again." };
@@ -533,7 +545,23 @@
         const v = validate();
         diff(before);
         state.changed = [id, ...Object.keys(v.courseIssues)];
-        return result({ message: `${id} is closed for ${q} and has been unscheduled.`, now_broken: Object.keys(v.courseIssues), hint: "Offer to call auto_fix." });
+        return result({ message: `${id} is full in ${q}, so it's been taken off that quarter.`, now_broken: Object.keys(v.courseIssues), hint: "Offer to call auto_fix." });
+      },
+      auto_pick_core() {
+        const before = snapshot(), picked = [];
+        const sugg = (catalog.core_suggestions || {})[state.major] || {};
+        Object.entries(catalog.core_options || {}).forEach(([a, list]) => {
+          const open = QUARTERS.flatMap(q => state.plan[q]).some(id => courses[id]?.placeholder && courses[id].category === a);
+          if (!open) return;
+          // their major's suggested pick, but stay on campus unless they've asked to go abroad
+          let pick = list.find(o => o.name === sugg[a] && (!o.abroad || state.abroad));
+          if (!pick) pick = list.find(o => !o.abroad) || list[0];
+          tools.choose_core({ area: a, option: pick.name });
+          picked.push(`${a}: ${pick.name}`);
+        });
+        runAutoFix();
+        return result({ message: picked.length ? `Picked ${picked.length} Core sequence(s).` : "The Core is already picked.", picked, changes: diff(before),
+                        hint: "Name one or two picks, not all. Mention they can swap any of them, or study abroad for Civ." });
       },
       list_core_options({ area }) {
         const a = coreArea(area);
@@ -578,15 +606,25 @@
         QUARTERS.forEach(q => state.plan[q].forEach(id => { if (courses[id]?.category === a) slots.push([q, id]); }));
         state.tray.filter(id => courses[id]?.category === a).forEach(id => slots.push(["TRAY", id]));
         const before = snapshot();
-        // register the chosen courses (each one requires the one before it)
+        // switching away from a study abroad program: drop its language course and give back the elective slots it used
+        if (a === "CIV") {
+          QUARTERS.forEach(q => state.plan[q].filter(id => courses[id]?.abroad_extra).forEach(id => removeEverywhere(id)));
+          state.tray = state.tray.filter(id => !courses[id]?.abroad_extra);
+          (state.abroadElectives || []).forEach(id => state.tray.push(id));
+          state.abroadElectives = [];
+          if (state.abroad && !pick.abroad) state.abroad = null;
+        }
+        // register the chosen courses (each one in a sequence requires the one before it)
         pick.courses.forEach((c, i) => {
           if (!courses[c.id]) {
             const prev = courses[slots[0]?.[1]] || {};
-            const nc = { id: c.id, title: c.title, category: a, offered: c.offered, prereqs: [],
-                         abroad_eligible: !!pick.abroad || a === "CIV" || a === "ARTS", hours_per_week: prev.hours_per_week || 8 };
+            const nc = { id: c.id, title: c.title, category: c.category || a, offered: c.offered, prereqs: [],
+                         abroad_eligible: !!pick.abroad || a === "CIV" || a === "ARTS", hours_per_week: prev.hours_per_week || 8,
+                         abroad_extra: !!c.category && c.category !== a };
             catalog.courses.push(nc); courses[c.id] = nc; byNorm[norm(c.id)] = c.id;
           }
-          courses[c.id].prereqs = i > 0 ? [pick.courses[i - 1].id] : [];
+          const prevSame = pick.courses.slice(0, i).reverse().find(x => (x.category || a) === (c.category || a));
+          courses[c.id].prereqs = prevSame ? [prevSame.id] : [];
         });
         slots.forEach(([q, id], i) => {
           removeEverywhere(id);
@@ -594,14 +632,25 @@
           if (!nid) return;
           if (q === "TRAY") state.tray.push(nid); else state.plan[q].push(nid);
         });
-        pick.courses.slice(slots.length).forEach(c => state.tray.push(c.id));
+        pick.courses.slice(slots.length).forEach(c => { removeEverywhere(c.id); state.tray.push(c.id); });
         if (pick.abroad) {
-          // abroad programs run in a set quarter; default to that quarter in third year
-          let q = state.abroad || `Y3-${pick.quarter || "Autumn"}`;
+          // a program is the whole quarter: its 3 CIV courses plus a language course, in the quarter it runs
+          state.abroad = null;
+          let q = `Y3-${pick.quarter || "Autumn"}`;
           if (state.locked.includes(q)) q = `Y4-${pick.quarter || "Autumn"}`;
           state.abroad = q;
+          state.plan[q].filter(id => !pick.courses.some(c => c.id === id)).forEach(id => { removeEverywhere(id); state.tray.push(id); });
           pick.courses.forEach(c => { removeEverywhere(c.id); state.plan[q].push(c.id); });
-          state.plan[q].filter(id => !courses[id]?.abroad_eligible).forEach(id => { removeEverywhere(id); state.tray.push(id); });
+          // the extra courses beyond the CIV requirement count as electives
+          const extra = Math.max(0, pick.courses.length - slots.length);
+          state.abroadElectives = [];
+          for (const x of QUARTERS.filter(x => !state.locked.includes(x) && x !== q)) {
+            for (const id of [...state.plan[x]]) {
+              if (state.abroadElectives.length >= extra) break;
+              if (/^ELECTIVE \d/.test(id)) { removeEverywhere(id); state.abroadElectives.push(id); }
+            }
+          }
+          state.tray.filter(id => /^ELECTIVE \d/.test(id)).forEach(id => { if (state.abroadElectives.length < extra) { removeEverywhere(id); state.abroadElectives.push(id); } });
         }
         state.coreChoices = { ...(state.coreChoices || {}), [a]: pick.name };
         runAutoFix(); // slot the new sequence in cleanly
