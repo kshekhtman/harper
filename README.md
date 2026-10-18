@@ -2,15 +2,15 @@
 
 Hi! Harper is an interactive tool that helps you talk to someone about your four-year graduation plan. I made this as part of my submission for the UChicago KTP Fall Voice AI Mini-Hack (Oct 17, 2026) with ElevenLabs.
 
-Through this tool, you can talk to Harper about your four-year graduation plan. You speak with Harper and it helps you plan your time here in college. You tell Harper your major and it lays out a possible 12-quarter plan. Then you can talk to Harper about it, "I want to do Paris in the fall of third year," or "CMSC 14300 just filled up." The grid then automatically updates as you talk with Harper. If a course is incompatiable with another course or isn't satisfied in your plan, it will turn red, and Harper will fix the plan on your behalf, taking into account your evolving preferences.
+Through this tool, you can talk to Harper about your four-year graduation plan. You speak with Harper and it helps you plan your time here in college. You tell Harper your major and it lays out a possible 12-quarter plan. Then you can talk to Harper about it, "I want to do Paris in the fall of third year," or "CMSC 14300 just filled up." The grid then automatically updates as you talk with Harper. If a course is incompatible with another course or isn't satisfied in your plan, it will turn red, and Harper will fix the plan on your behalf, taking into account your evolving preferences.
 
 ## Why
 
-UChicago is a very unique university, with its CORE cirriculum, complicated majors, and quarter system. Ensuring you have all the requirements to graduate is quite hard, as one change (a full class, a quarter abroad) can push something back a year without you noticing until it's too late. Plus, you only see your academic advisor on average no more than once a quarter, and they don't have as much time to help you plan as we would like. So, my tool, Harper can fill in this gap, acting as a personalized academic advisor available 24/7.
+UChicago is a very unique university, with its CORE curriculum, complicated majors, and quarter system. Ensuring you have all the requirements to graduate is quite hard, as one change (a full class, a quarter abroad) can push something back a year without you noticing until it's too late. Plus, you only see your academic advisor on average no more than once a quarter, and they don't have as much time to help you plan as we would like. So, my tool, Harper can fill in this gap, acting as a personalized academic advisor available 24/7.
 
 ## How it works
 
-- The voice side is powered by ElevenLabs. Harper doesn't edit the plan itself. Instead, it calls one of six functions: `load_major`, `move_course`, `set_study_abroad`, `mark_course_closed`, `auto_fix`, `get_plan`.
+- The voice side is powered by ElevenLabs. Harper doesn't edit the plan itself. Instead, it calls one of 19 tools (like `load_major`, `choose_core`, `set_study_abroad`, `mark_course_closed`, `add_second_major`, `auto_fix`, and `export_plan`). The full list is in `AGENT_SETUP.md`.
 - `planner.js` does the actual checking (prereqs, which quarters a course is offered, study abroad rules, overloaded quarters) and tells Harper what changed.
 - Harper then speaks the result out loud using text-to-speech.
 
@@ -23,7 +23,7 @@ We split it this way so the model can't make up a plan that breaks the rules. Wh
 - `index.html`: the page and the voice connection
 - `styles.css`: styling
 - `planner.js`: rules, auto-fix, and the tools
-- `catalog.js`: course data and the starting plans for CS and Econ
+- `catalog.js`: course data, starting plans for 46 majors and tracks, Core options, and 24 study abroad programs
 - `AGENT_SETUP.md`: prompt and tool settings for the ElevenLabs agent
 
 ## Running it
@@ -50,7 +50,7 @@ You can also try everything without voice using "Manual controls" on the right.
 
 The Core course numbers were checked against the College Catalog. Study abroad programs whose course numbers we couldn't verify show as "[City] Civ I/II" instead of a number.
 
-The course data is a simplified sample loosely based on the College Catalog. Core courses are generic (HUM 1, SOSC 2, etc.), some courses really have several ways to satisfy a prereq and we only list one, and the hours per week are rough guesses. Don't use this to plan your actual schedule.
+The course data is a simplified sample based on the College Catalog. Some courses really have several ways to satisfy a prereq and we only list one, the quarters are usual offerings (not a guarantee for future years), and the hours per week are rough guesses. Don't use this to plan your actual schedule without checking with your adviser.
 
 Adding a major just means adding its courses and a starting plan to `catalog.js`.
 
@@ -60,9 +60,9 @@ After William Rainey Harper, UChicago's first president, and the library on the 
 
 ## What we'd add next
 
-- Double majors and minors, including which courses can count for both
+- Minors, and rules for which courses can count for two programs
 - Pulling course data straight from the catalog
 - Real workload numbers from course evaluations
-- Exporting a plan to bring to your advisor
+- Summer quarters
 
 Independent student project, not affiliated with the University of Chicago.

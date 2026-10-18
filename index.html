@@ -315,13 +315,17 @@
       const entries = parseTranscript(text);
       const program = (text.match(/(?:Program|Major|Degree)[^\n:]*:\s*([^\n]+)/i) || [])[1] || "";
       const testUnits = +((text.match(/Test Credits[\s\S]{0,300}?Totals?:\s*(\d+)/i) || [])[1] || 0);
-      const res = P.tools.import_transcript({ entries, program, test_units: testUnits });
+      // degree programs like "Economics (B.A.)" and an optional "Specialization in ..."
+      const degrees = [...text.matchAll(/^[ \t]*([A-Z][A-Za-z ,&'\-]+?)\s*\((?:B\.A\.|B\.S\.)\)/gm)].map(m => m[1].trim());
+      const specialization = ((text.match(/Specialization in ([^\n]+)/i) || [])[1] || "").trim();
+      const res = P.tools.import_transcript({ entries, program, test_units: testUnits, degrees, specialization });
       render();
       log("tool", `transcript · ${entries.length} courses found`);
       if (!res.ok) { alert("Couldn't find any courses in that file. It needs course numbers like CMSC 14100 under quarter headings like Autumn 2024."); return; }
       const t = res.transcript;
-      if (res.detected_major) log("tool", `detected major · ${res.detected_major}`);
-      const note = t ? `The student just uploaded their transcript: ${t.completed_courses} courses through ${t.completed_through} are now marked completed. ${t.on_track ? "Everything left fits in the remaining quarters, so they're on track." : `${t.unscheduled.length} course(s) don't fit in the remaining quarters.`} ${t.test_credit_note || ""} Tell them in one or two short sentences.`
+      if (res.detected_major) log("tool", `detected major · ${res.detected_major}${res.detected_second_major ? " + " + res.detected_second_major : ""}`);
+      const majorNote = res.detected_major ? `Their major was loaded from ${res.detected_from}: ${res.detected_major}${res.detected_second_major ? `, plus ${res.detected_second_major} as a second major` : ""}. Mention it in a few words so they can correct it. ` : "";
+      const note = t ? majorNote + `The student just uploaded their transcript: ${t.completed_courses} courses through ${t.completed_through} are now marked completed. ${t.on_track ? "Everything left fits in the remaining quarters, so they're on track." : `${t.unscheduled.length} course(s) don't fit in the remaining quarters.`} ${t.test_credit_note || ""} Tell them in one or two short sentences.`
                      : `The student just uploaded their transcript (${entries.length} courses). Ask for their major so you can plan the rest.`;
       tellHarper(note);
     } catch (e) { console.error(e); alert("Couldn't read that file: " + e.message); }

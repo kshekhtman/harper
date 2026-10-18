@@ -397,12 +397,27 @@
         state.changed = [];
         return result({ major: state.major, study_abroad: state.abroad || "none", plan });
       },
-      import_transcript({ entries, program, test_units }) {
+      import_transcript({ entries, program, test_units, degrees, specialization }) {
         state.testCredits = Math.floor((Number(test_units) || 0) / 100);
         const list = (entries || []).filter(e => e && e.id && QUARTERS.includes(e.quarter));
         if (!list.length) return { ok: false, error: "No courses found in that transcript." };
+        if (!state.major && (degrees || []).length) {
+          // the transcript lists their degree programs, e.g. "Economics (B.A.)", plus maybe "Specialization in ..."
+          const majors = degrees.map(parseMajor).filter(Boolean);
+          let first = majors[0];
+          const track = specialization ? parseMajor(specialization) : null;
+          if (track && first && track.startsWith(first + " - ")) first = track;
+          if (first) {
+            state.transcript = list;
+            const r = tools.load_major({ major: first.includes(" - ") ? first : first + " standard" });
+            let second = null;
+            if (majors[1] && majors[1] !== first && !first.startsWith(majors[1])) { second = majors[1]; tools.add_second_major({ major: second }); }
+            return result({ ...r, detected_major: first, detected_second_major: second || undefined, detected_from: "degree programs listed on the transcript",
+              transcript: r.transcript, message: `Loaded ${first}${second ? ` with ${second} as a second major` : ""} from the degree programs on the transcript.` });
+          }
+        }
         if (!state.major) {
-          // figure out the major: the "Program:" line first, then whichever major's departments they took most
+          // no degree lines: try the "Program:" line, then whichever major's departments they took most
           let m = program ? parseMajor(program) : null;
           if (!m) {
             const cats = catalog.major_categories || {};
@@ -418,7 +433,7 @@
           if (!m) { state.transcript = list; return { ok: true, message: `Read ${list.length} courses. Ask for their major to plan the rest.`, needs_major: true }; }
           state.transcript = list;
           const r = tools.load_major({ major: m + " standard" });
-          return { ...r, detected_major: m };
+          return { ...r, detected_major: m, detected_from: "a guess from the courses they've taken (confirm it with them)" };
         }
         state.transcript = list;
         const t = applyTranscript(list);
@@ -627,13 +642,18 @@
           const prevSame = pick.courses.slice(0, i).reverse().find(x => (x.category || a) === (c.category || a));
           courses[c.id].prereqs = prevSame ? [prevSame.id] : [];
         });
-        slots.forEach(([q, id], i) => {
+        // courses they already have (AP credit, or completed on the transcript) fill a slot instead of being scheduled again
+        const done = id => state.credit.includes(id) || state.locked.includes(whereIs(id));
+        const todo = pick.courses.filter(c => !done(c.id));
+        const usedSlots = slots.slice(0, slots.length - (pick.courses.length - todo.length));
+        slots.slice(usedSlots.length).forEach(([q, id]) => removeEverywhere(id));
+        usedSlots.forEach(([q, id], i) => {
           removeEverywhere(id);
-          const nid = pick.courses[i]?.id;
+          const nid = todo[i]?.id;
           if (!nid) return;
           if (q === "TRAY") state.tray.push(nid); else state.plan[q].push(nid);
         });
-        pick.courses.slice(slots.length).forEach(c => { removeEverywhere(c.id); state.tray.push(c.id); });
+        todo.slice(usedSlots.length).forEach(c => { removeEverywhere(c.id); state.tray.push(c.id); });
         if (pick.abroad) {
           // a program is the whole quarter: its 3 CIV courses plus a language course, in the quarter it runs
           state.abroad = null;
@@ -641,7 +661,7 @@
           if (state.locked.includes(q)) q = `Y4-${pick.quarter || "Autumn"}`;
           state.abroad = q;
           state.plan[q].filter(id => !pick.courses.some(c => c.id === id)).forEach(id => { removeEverywhere(id); state.tray.push(id); });
-          pick.courses.forEach(c => { removeEverywhere(c.id); state.plan[q].push(c.id); });
+          todo.forEach(c => { removeEverywhere(c.id); state.plan[q].push(c.id); });
           // the extra courses beyond the CIV requirement count as electives
           const extra = Math.max(0, pick.courses.length - slots.length);
           state.abroadElectives = [];
@@ -701,7 +721,8 @@
           changes,
           hours_now: Object.fromEntries(qs.map(q => [q, hoursIn(q)])),
           message: changes.length ? `Moved ${changes.length} course(s) out of ${qs.join(", ")}.` : "Couldn't move anything without breaking a prerequisite.",
-          still_heavy: still
+          still_heavy: still,
+          next_step: still.length ? "This is as light as it gets. Say so once, don't offer to lighten or auto-fix it again; a heavy quarter is a warning, not a problem." : undefined
         });
       },
       squeeze_in() {
@@ -732,7 +753,7 @@
         runAutoFix();
         const changes = diff(before);
         const left = state.tray.length;
-        return result({ changes, message: (changes.length ? `Moved ${changes.length} course(s).` : "Nothing needed fixing.") +
+        return result({ changes, note: changes.length ? undefined : "Nothing to fix. Heavy-load warnings are fine; don't offer this again.", message: (changes.length ? `Moved ${changes.length} course(s).` : "Nothing needed fixing.") +
           (left ? ` ${left} course(s) can't fit in four years without a fifth course in some quarter.` : ""),
           verdict: left ? "needs_fifth_course" : "fixed",
           next_step: left ? "Tell them it doesn't fit with four courses a quarter and ask if they're okay taking five in a quarter (squeeze_in). Don't move courses one by one." : undefined });
