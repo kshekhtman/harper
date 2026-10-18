@@ -35,6 +35,7 @@
   <section>
     <div class="grid" id="grid"></div>
     <div class="tray" id="tray"><h3>Unscheduled</h3><div class="cards" id="traycards"></div></div>
+    <div class="tray credit" id="creditstrip" hidden><h3>Credit (AP / placement)</h3><div class="cards" id="creditcards"></div></div>
     <div class="legend" id="legend"></div>
   </section>
 
@@ -44,6 +45,11 @@
       <div id="mode">Click and allow microphone access</div>
     </div>
     <div class="panel"><h2>Conversation</h2><div id="log"></div></div>
+    <div class="panel" id="feedback" hidden>
+      <h2>Course feedback <span class="sample-tag">Sample data</span></h2>
+      <div id="fbbody"></div>
+      <div class="fb-note">Demo ratings, not real UChicago course evaluations.</div>
+    </div>
     <div class="panel"><h2>Plan audit</h2><ul id="problems" class="empty"><li>Load a major to begin.</li></ul></div>
     <div class="panel">
       <details>
@@ -58,6 +64,9 @@
           <button data-t='["lighten_load",{"period":"Y2"}]'>Lighten year 2</button>
           <button data-t='["add_second_major",{"major":"Econ"}]'>Add Econ as second major</button>
           <button data-t='["auto_fix",{}]'>Auto-fix</button>
+          <button data-t='["mark_completed",{"course_ids":"MATH 15100, MATH 15200"}]'>AP credit: Calc I and II</button>
+          <button data-t='["recommend_electives",{"quarter":"Y3-Spring"}]'>Recommend an elective (Y3 Spring)</button>
+          <button data-t='["course_reviews",{"course_id":"ECON 20100"}]'>Reviews: ECON 20100</button>
           <button data-t='["start_over",{}]'>Start over</button>
           <button data-t='["squeeze_in",{}]'>Squeeze in (5th course)</button>
           <button data-t='["export_plan",{}]'>Export for adviser</button>
@@ -105,6 +114,21 @@
       ${issues ? `<div class="why" title="${issues.join("; ")}">${issues.join("; ")}</div>` : ""}</div>`;
   }
 
+
+  // course feedback panel (sample data)
+  function stars(r) { return `<span class="fb-stars" style="--r:${(r / 5) * 100}%"></span><b>${r.toFixed(1)}</b>`; }
+  function renderFeedback(rv) {
+    const box = $("feedback");
+    if (!rv) { box.hidden = true; return; }
+    box.hidden = false;
+    if (rv.list) {
+      $("fbbody").innerHTML = `<div class="fb-sub">Top picks${rv.quarter ? ` for ${rv.quarter.replace("-", " ")}` : ""}${rv.interest ? ` · ${rv.interest}` : ""}</div>` +
+        rv.list.map(r => `<div class="fb-row"><div><span class="fb-id">${r.course}</span> ${r.title}</div><div class="fb-meta">${stars(r.rating)} · ${r.hours_per_week} hrs/wk · best: ${r.best_section}</div></div>`).join("");
+    } else {
+      $("fbbody").innerHTML = `<div class="fb-row"><div><span class="fb-id">${rv.course}</span> ${rv.title}</div><div class="fb-meta">${stars(rv.rating)} · ${rv.hours_per_week} hrs/wk · ${rv.responses} responses</div></div>` +
+        rv.sections.map(sct => `<div class="fb-sec"><div><b>${sct.instructor}</b> ${stars(sct.rating)}</div><div class="fb-meta">${sct.would_recommend}% recommend · ${sct.hours_per_week} hrs/wk · ${sct.known_for.join(", ")}</div></div>`).join("");
+    }
+  }
   function render() {
     // remember where each card was so we can animate it to its new spot
     const first = {};
@@ -128,6 +152,9 @@
     $("legend").innerHTML = s.major ? Object.entries(GROUPS).map(([k, c]) => `<span><i style="background:${c}"></i>${k === "Major" ? (s.second ? `${s.major} + ${s.second} majors` : `${s.major} major`) : k === "Elective" ? "Electives" : "Core"}</span>`).join("") : "";
     $("traycards").innerHTML = s.tray.map(id => cardHTML(id, ["unscheduled"], changed.has(id))).join("");
     $("tray").classList.toggle("has", s.tray.length > 0);
+    $("creditcards").innerHTML = (s.credit || []).map(id => cardHTML(id, null, changed.has(id))).join("");
+    $("creditstrip").hidden = !(s.credit || []).length;
+    renderFeedback(s.reviewing);
     lastBad = new Set([...bad, ...s.tray]);
 
     const hard = Object.keys(v.courseIssues).length + s.tray.length;
@@ -217,6 +244,7 @@
         <div class="p-meta">${date}<br>${total} courses · ${hard ? `${hard} open issue${hard > 1 ? "s" : ""}` : "no open issues"}</div></div>
       <table class="p-grid"><colgroup><col class="yr"><col><col><col></colgroup><thead><tr><th></th>${P.SEASONS.map(x => `<th>${x}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
       <div class="p-cols">
+        ${(s.credit || []).length ? `<section><h3>Credit (AP / placement)</h3><p>${s.credit.join(", ")}</p></section>` : ""}
         <section><h3>Core</h3><dl>${coreChoices().map(([a, n]) => `<dt>${a}</dt><dd>${n}</dd>`).join("")}</dl></section>
         <section><h3>Questions for my adviser</h3><ol>${advisorQuestions(v).map(q => `<li>${q}</li>`).join("")}</ol></section>
       </div>
@@ -236,19 +264,19 @@
   // ---- transcript upload (read in the browser, never sent anywhere) ----
   function parseTranscript(text) {
     const order = { Autumn: 0, Winter: 1, Spring: 2 };
-    const out = []; let term = null; const terms = [];
+    const out = []; let term = null; const terms = []; let pending = [];
     text.split(/\r?\n/).forEach(line => {
       const t = line.match(/\b(Autumn|Fall|Winter|Spring|Summer)\s+(?:Quarter\s+|Term\s+)?(\d{4})\b/i);
       if (t) {
         let se = t[1][0].toUpperCase() + t[1].slice(1).toLowerCase(); if (se === "Fall") se = "Autumn";
         const y = +t[2]; term = se === "Summer" ? null : { s: se, ay: se === "Autumn" ? y : y - 1 };
-        if (term) terms.push(term);
+        if (term) { terms.push(term); pending.forEach(e => (e.term = term)); out.push(...pending); pending = []; }
       }
-      const re = /\b([A-Z]{4})\s?(\d{5})\b\s*([^\n]*)/g; let m;
+      const re = /\b([A-Z]{4})[ \t ]+(\d{5})\b[ \t]*([^\n]*)/g; let m;
       while ((m = re.exec(line))) {
-        if (!term) continue;
         const title = m[3].replace(/\s{2,}.*$/, "").replace(/\s+(A|A-|B\+|B|B-|C\+|C|C-|D|F|P|W|I)\s.*$/, "").trim().slice(0, 40);
-        out.push({ id: `${m[1]} ${m[2]}`, title, term });
+        const entry = { id: `${m[1]} ${m[2]}`, title, term };
+        if (!term) pending.push(entry); else out.push(entry);
       }
     });
     if (!out.length) return [];
@@ -277,11 +305,13 @@
     try {
       const text = /\.pdf$/i.test(file.name) ? await pdfText(file) : await file.text();
       const entries = parseTranscript(text);
-      const res = P.tools.import_transcript({ entries });
+      const program = (text.match(/(?:Program|Major|Degree)[^\n:]*:\s*([^\n]+)/i) || [])[1] || "";
+      const res = P.tools.import_transcript({ entries, program });
       render();
       log("tool", `transcript · ${entries.length} courses found`);
       if (!res.ok) { alert("Couldn't find any courses in that file. It needs course numbers like CMSC 14100 under quarter headings like Autumn 2024."); return; }
       const t = res.transcript;
+      if (res.detected_major) log("tool", `detected major · ${res.detected_major}`);
       const note = t ? `The student just uploaded their transcript: ${t.completed_courses} courses through ${t.completed_through} are now marked completed. ${t.on_track ? "Everything left fits in the remaining quarters, so they're on track." : `${t.unscheduled.length} course(s) don't fit in the remaining quarters.`} Tell them in one sentence.`
                      : `The student just uploaded their transcript (${entries.length} courses). Ask for their major so you can plan the rest.`;
       if (convo && typeof convo.sendContextualUpdate === "function") convo.sendContextualUpdate(note);

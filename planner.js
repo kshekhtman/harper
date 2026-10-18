@@ -14,7 +14,7 @@
     const byNorm = {};
     catalog.courses.forEach(c => (byNorm[norm(c.id)] = c.id));
 
-    const state = { major: null, second: null, plan: emptyPlan(), tray: [], abroad: null, closed: {}, changed: [], origin: {}, locked: [], transcript: null };
+    const state = { major: null, second: null, plan: emptyPlan(), tray: [], abroad: null, closed: {}, changed: [], origin: {}, locked: [], transcript: null, credit: [] };
     const listeners = [];
 
     function emptyPlan() { const p = {}; QUARTERS.forEach(q => (p[q] = [])); return p; }
@@ -33,9 +33,13 @@
         const hit = Object.keys(byNorm).find(k => k.endsWith(digits));
         if (hit) return byNorm[hit];
       }
-      const low = String(input).toLowerCase();
-      const t = catalog.courses.find(c => c.title.toLowerCase().includes(low) || low.includes(c.title.toLowerCase()));
-      return t ? t.id : null;
+      const low = String(input).toLowerCase().trim();
+      const exact = catalog.courses.find(c => c.title.toLowerCase() === low);
+      if (exact) return exact.id;
+      // longest title mentioned wins, so "Calculus III" doesn't match "Calculus I"
+      const hits = catalog.courses.filter(c => !c.placeholder && (c.title.toLowerCase().includes(low) || low.includes(c.title.toLowerCase())))
+        .sort((a, b) => Math.abs(a.title.length - low.length) - Math.abs(b.title.length - low.length));
+      return hits[0] ? hits[0].id : null;
     }
     function parseQuarter(input) {
       const s = String(input || "").toLowerCase();
@@ -75,6 +79,7 @@
     }
 
     function whereIs(id) {
+      if (state.credit.includes(id)) return "CREDIT"; // AP / placement credit counts as done before year 1
       for (const q of QUARTERS) if (state.plan[q].includes(id)) return q;
       return state.tray.includes(id) ? "TRAY" : null;
     }
@@ -192,18 +197,44 @@
       state.plan[w].push(id);
       return false;
     }
+    // a stuck course has a valid quarter that's just full: move something flexible out of it
+    function makeRoom(id) {
+      const dependents = x => catalog.courses.filter(c => c.prereqs.includes(x)).map(c => c.id);
+      for (let i = 0; i < QUARTERS.length; i++) {
+        if (!canPlace(id, i, MAX_COURSES + 1)) continue; // valid apart from being full
+        const q = QUARTERS[i];
+        const movable = [...state.plan[q]].sort((a, b) => (courses[a].placeholder || /^ELECTIVE/.test(a) ? -1 : 0) - (courses[b].placeholder || /^ELECTIVE/.test(b) ? -1 : 0));
+        for (const x of movable) {
+          removeEverywhere(x);
+          const depAt = dependents(x).map(d => whereIs(d)).filter(w => w && w !== "TRAY").map(qIndex);
+          const j = QUARTERS.map((_, k) => k).filter(k => k !== i && canPlace(x, k, MAX_COURSES) && depAt.every(d => d > k))
+            .sort((a, b) => Math.abs(a - i) - Math.abs(b - i))[0];
+          if (j !== undefined && canPlace(id, i, MAX_COURSES)) { state.plan[QUARTERS[j]].push(x); state.plan[q].push(id); return true; }
+          state.plan[q].push(x);
+        }
+      }
+      return false;
+    }
     function rescueStuck() {
       for (let round = 0; round < 4 && state.tray.length; round++) {
         let progress = false;
         [...state.tray].sort((a, b) => depth(a) - depth(b)).forEach(id => {
           removeEverywhere(id);
           (courses[id].prereqs || []).forEach(pr => pullEarlier(pr, 3));
-          if (placeBest(id, state.origin[id] ?? 0)) progress = true; else state.tray.push(id);
+          if (placeBest(id, state.origin[id] ?? 0) || makeRoom(id)) progress = true; else state.tray.push(id);
         });
         if (!progress) break;
       }
     }
+    // keep running passes while each one places more courses
     function runAutoFix() {
+      for (let k = 0; k < 4; k++) {
+        const before = state.tray.length;
+        runAutoFixOnce();
+        if (!state.tray.length || state.tray.length >= before && k > 0) break;
+      }
+    }
+    function runAutoFixOnce() {
       const home = {};
       for (let pass = 0; pass < 30; pass++) {
         const v = validate();
@@ -261,6 +292,22 @@
                unscheduled: [...state.tray], on_track: state.tray.length === 0 };
     }
 
+    // ---- SAMPLE course feedback (demo data, NOT real UChicago course evaluations) ----
+    function hash(s) { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+    function sampleReviews(id) {
+      const c = courses[id]; if (!c || c.placeholder) return null;
+      const h = hash(id), tags = ["clear lectures", "helpful TAs", "heavy problem sets", "great discussions", "fair grading", "tough exams", "lots of reading", "engaging projects", "fast-paced", "well organized"];
+      const section = (k, name) => {
+        const hk = hash(id + name);
+        return { instructor: name, rating: +(3.3 + (hk % 160) / 100).toFixed(1), would_recommend: 60 + (hk % 38),
+                 hours_per_week: Math.max(4, c.hours_per_week + ((hk >> 5) % 5) - 2), known_for: [tags[hk % tags.length], tags[(hk >>> 7) % tags.length]].filter((t, i, a) => a.indexOf(t) === i) };
+      };
+      const sections = [section(0, "Instructor A"), section(1, "Instructor B")];
+      const rating = +((sections[0].rating + sections[1].rating) / 2).toFixed(1);
+      return { course: id, title: c.title, rating, hours_per_week: Math.round((sections[0].hours_per_week + sections[1].hours_per_week) / 2),
+               responses: 20 + (h % 180), sections, sample_data: true };
+    }
+
     // tools the agent can call
     const tools = {
       load_major({ major }) {
@@ -273,7 +320,7 @@
                    tracks: [`${m} (standard)`, ...tracks.map(t => t.slice(m.length + 3))],
                    hint: `Ask which ${m} track they want. Then call load_major with "${m} standard" or the track name.` };
         }
-        state.major = m; state.second = null; state.coreChoices = {}; state.locked = []; state.plan = emptyPlan(); state.tray = []; state.abroad = null; state.closed = {}; state.origin = {};
+        state.major = m; state.second = null; state.coreChoices = {}; state.locked = []; state.reviewing = null; state.plan = emptyPlan(); state.tray = []; state.abroad = null; state.closed = {}; state.origin = {};
         QUARTERS.forEach(q => (state.plan[q] = [...(catalog.plans[m][q] || [])]));
         // leave the Core open so the student picks it
         const open = [];
@@ -292,6 +339,7 @@
           });
           if (slots.length) open.push(area);
         });
+        QUARTERS.forEach(q => (state.plan[q] = state.plan[q].filter(id => !state.credit.includes(id))));
         state.changed = QUARTERS.flatMap(q => state.plan[q]);
         if (state.transcript) {
           const t = applyTranscript(state.transcript);
@@ -344,16 +392,85 @@
         state.changed = [];
         return result({ major: state.major, study_abroad: state.abroad || "none", plan });
       },
-      import_transcript({ entries }) {
+      import_transcript({ entries, program }) {
         const list = (entries || []).filter(e => e && e.id && QUARTERS.includes(e.quarter));
         if (!list.length) return { ok: false, error: "No courses found in that transcript." };
+        if (!state.major) {
+          // figure out the major: the "Program:" line first, then whichever major's departments they took most
+          let m = program ? parseMajor(program) : null;
+          if (!m) {
+            const cats = catalog.major_categories || {};
+            const taken = list.map(e => e.id.split(" ")[0]);
+            const deptOf = c => (catalog.courses.find(x => x.category === c) || {}).id?.split(" ")[0];
+            let best = 0;
+            Object.entries(cats).forEach(([name, cs]) => {
+              const main = deptOf(cs[0]);
+              const score = taken.filter(d => d === main).length * 2 + taken.filter(d => cs.some(c => deptOf(c) === d)).length;
+              if (score > best && !name.includes(" - ")) { best = score; m = name; }
+            });
+          }
+          if (!m) { state.transcript = list; return { ok: true, message: `Read ${list.length} courses. Ask for their major to plan the rest.`, needs_major: true }; }
+          state.transcript = list;
+          const r = tools.load_major({ major: m + " standard" });
+          return { ...r, detected_major: m };
+        }
         state.transcript = list;
-        if (!state.major) return { ok: true, message: `Read ${list.length} courses from the transcript. Ask for their major to plan the rest.`, needs_major: true };
         const t = applyTranscript(list);
         return result({ message: t.on_track ? `Applied the transcript. Everything left fits, so they're on track to graduate.` : `Applied the transcript, but ${t.unscheduled.length} course(s) don't fit in the remaining quarters.`, transcript: t });
       },
+      mark_completed({ course_ids }) {
+        const ids = String(course_ids || "").split(/,|\band\b|&/).map(s => s.trim()).filter(Boolean).map(findCourse);
+        const found = ids.filter(Boolean), missing = String(course_ids).split(/,|\band\b|&/).filter((s, i) => !ids[i]).map(s => s.trim()).filter(Boolean);
+        if (!found.length) return { ok: false, error: `Couldn't find ${course_ids}. Use course numbers like "MATH 15100".` };
+        const before = snapshot();
+        found.forEach(id => { removeEverywhere(id); if (!state.credit.includes(id)) state.credit.push(id); });
+        runAutoFix();
+        return result({ message: `Marked ${found.join(", ")} as completed (credit).`, not_found: missing.length ? missing : undefined, changes: diff(before),
+                        hint: "That freed up space. Offer to pick an elective for the open slot or to lighten a heavy year." });
+      },
+      course_reviews({ course_id }) {
+        const id = findCourse(course_id);
+        if (!id) return { ok: false, error: `Couldn't find course "${course_id}".` };
+        const r = sampleReviews(id);
+        state.reviewing = r; emit();
+        return { ok: true, ...r, note: "These are SAMPLE ratings for the demo, not real course evaluations. Say that briefly." };
+      },
+      recommend_electives({ quarter, interest }) {
+        const q = quarter ? parseQuarter(quarter) : null;
+        const cats = catalog.major_categories || {}, core = Object.keys(catalog.core_options || {});
+        const scheduled = new Set(QUARTERS.flatMap(x => state.plan[x]).concat(state.tray, state.credit));
+        const words = String(interest || "").toLowerCase().split(/[^a-z]+/).filter(w => w.length > 2 && !["any", "anything", "none", "whatever"].includes(w));
+        let pool = catalog.courses.filter(c => !c.placeholder && !c.external && !core.includes(c.category) && c.category !== "ELECTIVE" && !scheduled.has(c.id));
+        // only courses whose prerequisites are already in the plan (or credited)
+        pool = pool.filter(c => c.prereqs.every(pr => { const w = prereqAt(pr); return w && w !== "TRAY"; }));
+        if (q) pool = pool.filter(c => canPlace(c.id, qIndex(q), MAX_COURSES + 1));
+        if (words.length) {
+          const match = pool.filter(c => words.some(w => (c.title + " " + c.category + " " + c.id).toLowerCase().includes(w.slice(0, 5))));
+          if (match.length) pool = match;
+        }
+        const recs = pool.map(c => sampleReviews(c.id)).sort((a, b) => b.rating - a.rating || a.hours_per_week - b.hours_per_week).slice(0, 3)
+          .map(r => ({ course: r.course, title: r.title, rating: r.rating, hours_per_week: r.hours_per_week, best_section: [...r.sections].sort((a, b) => b.rating - a.rating)[0].instructor }));
+        state.reviewing = recs.length ? { list: recs, quarter: q, interest } : null; emit();
+        return { ok: true, quarter: q || "any", recommendations: recs, note: "SAMPLE ratings for the demo, not real evaluations. Mention that once, briefly." };
+      },
+      add_course({ course_id, quarter }) {
+        const id = findCourse(course_id);
+        if (!id) return { ok: false, error: `Couldn't find course "${course_id}".` };
+        if (whereIs(id) && whereIs(id) !== "TRAY") return { ok: false, error: `${id} is already in the plan (${whereIs(id)}).` };
+        const q = quarter ? parseQuarter(quarter) : null;
+        if (q && state.locked.includes(q)) return { ok: false, error: `${q} is already completed.` };
+        const before = snapshot();
+        // use up an open elective slot, preferring one in the same quarter
+        const slots = QUARTERS.filter(x => !state.locked.includes(x)).flatMap(x => state.plan[x].filter(i => /^ELECTIVE \d/.test(i)).map(i => [x, i]));
+        const slot = slots.find(([x]) => x === q) || slots[0];
+        if (slot) removeEverywhere(slot[1]);
+        removeEverywhere(id);
+        if (q && canPlace(id, qIndex(q), MAX_COURSES)) state.plan[q].push(id);
+        else if (!placeBest(id, q ? qIndex(q) : (slot ? qIndex(slot[0]) : 6))) state.tray.push(id);
+        return result({ message: `Added ${id}${slot ? ` in place of ${slot[1]}` : ""}.`, changes: diff(before) });
+      },
       start_over() {
-        state.major = null; state.second = null; state.coreChoices = {}; state.locked = []; state.transcript = null; state.plan = emptyPlan();
+        state.major = null; state.second = null; state.coreChoices = {}; state.locked = []; state.transcript = null; state.credit = []; state.reviewing = null; state.plan = emptyPlan();
         state.tray = []; state.abroad = null; state.closed = {}; state.origin = {}; state.changed = [];
         emit();
         return { ok: true, message: "Cleared everything. Ask for their major to start again." };
@@ -443,7 +560,13 @@
         const opts = (catalog.core_options || {})[a] || [];
         if (!a || !opts.length) return { ok: false, error: `No options for "${area}". Areas: ${Object.keys(catalog.core_options || {}).join(", ")}` };
         const low = String(option || "").toLowerCase();
-        const pick = opts.find(o => o.name.toLowerCase() === low)
+        // best match: exact name, else the option sharing the most words with what they said
+        const words = low.split(/[^a-z\u00c0-\u017f]+/).filter(w => w.length > 2 && !["the", "and", "civ", "civilization", "civilizations", "in", "abroad", "study"].includes(w));
+        const scored = opts.map((o, i) => { const text = (o.name + " " + (o.abroad || "") + " " + o.courses.map(c => c.title).join(" ")).toLowerCase();
+          return { o, i, s: words.filter(w => text.includes(w.slice(0, 5))).length + (o.abroad && words.includes(o.abroad.toLowerCase()) ? 0.5 : 0) }; })
+          .filter(x => x.s > 0).sort((a, b) => b.s - a.s || a.i - b.i);
+        const pick = opts.find(o => o.name.toLowerCase() === low) || scored[0]?.o
+          || opts.find(o => o.name.toLowerCase() === low)
           || opts.find(o => o.name.toLowerCase().includes(low) || low.includes(o.name.toLowerCase()))
           || opts.find(o => o.abroad && low.includes(o.abroad.toLowerCase()))
           || opts.find(o => low.split(/\s+/).filter(w => w.length > 3).some(w => o.name.toLowerCase().includes(w)))
@@ -473,7 +596,9 @@
         });
         pick.courses.slice(slots.length).forEach(c => state.tray.push(c.id));
         if (pick.abroad) {
-          const q = state.abroad || "Y3-Autumn";
+          // abroad programs run in a set quarter; default to that quarter in third year
+          let q = state.abroad || `Y3-${pick.quarter || "Autumn"}`;
+          if (state.locked.includes(q)) q = `Y4-${pick.quarter || "Autumn"}`;
           state.abroad = q;
           pick.courses.forEach(c => { removeEverywhere(c.id); state.plan[q].push(c.id); });
           state.plan[q].filter(id => !courses[id]?.abroad_eligible).forEach(id => { removeEverywhere(id); state.tray.push(id); });

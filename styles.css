@@ -839,3 +839,18 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
 .cell.done .card { opacity: 0.62; box-shadow: none; }
 .cell.done .card .id::after { content: " \2713"; color: var(--green); }
 .badge.done { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+
+/* AP / placement credit */
+.tray.credit { border-style: solid; border-color: var(--green-border); background: rgba(46, 229, 157, 0.05); }
+.tray.credit h3 { color: var(--green); }
+
+/* course feedback panel (sample data) */
+.sample-tag { margin-left: 6px; padding: 1px 6px; border: 1px solid var(--amber-border); border-radius: 999px; color: var(--amber); font-size: 9.5px; letter-spacing: 0.06em; }
+#fbbody { display: flex; flex-direction: column; gap: 8px; }
+.fb-sub { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+.fb-row, .fb-sec { font-size: 12.5px; line-height: 1.35; }
+.fb-sec { padding-left: 10px; border-left: 2px solid var(--rule2); }
+.fb-id { font-family: var(--mono); font-weight: 700; color: #fff; }
+.fb-meta { color: var(--ink-secondary); font-size: 11.5px; margin-top: 2px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.fb-stars { display: inline-block; width: 52px; height: 9px; background: linear-gradient(90deg, var(--amber) var(--r), rgba(255,255,255,0.12) var(--r)); border-radius: 2px; }
+.fb-note { margin-top: 8px; color: var(--muted); font-size: 10.5px; font-style: italic; }

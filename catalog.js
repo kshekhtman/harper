@@ -2,6 +2,128 @@
 // To add a major, add its courses, a few aliases, its categories, and a 12-quarter plan.
 window.CATALOG = {
   courses: [
+    { id: "ANTH 10100", title: "Introduction to Anthropology", category: "ANTH", offered: ["Autumn","Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ANTH 21107", title: "Anthropological Theory", category: "ANTH", offered: ["Autumn","Winter"], prereqs: ["ANTH 10100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ANTH 21420", title: "Ethnographic Methods", category: "ANTH", offered: ["Winter","Spring"], prereqs: ["ANTH 10100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ANTH 20007", title: "People's Garbage: Intro to Archaeology", category: "ANTH", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ANTH 20014", title: "Animal Magnetism: Human-Animal History", category: "ANTH", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ANTH 20100", title: "The Inca And Aztec States", category: "ANTH", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ANTH 20200", title: "Research Practicum for Undergraduates", category: "ANTH", offered: ["Winter"], prereqs: ["ANTH 10100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ANTH 21265", title: "The Celts: Ancient, Modern, Postmodern", category: "ANTH", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ANTH 21270", title: "Material Worlds Premodern East Asia", category: "ANTH", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ANTH 26100", title: "Ancient Celtic Societies", category: "ANTH", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ANTH 26330", title: "Making the Maya World", category: "ANTH", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ANTH 26825", title: "Heritage, Memory, and Affective Turn", category: "ANTH", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ANTH 26900", title: "Archaeological Data Sets", category: "ANTH", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ANTH 28400", title: "Bioarchaeology & Forensic Anthropology", category: "ANTH", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ANTH 29500", title: "Archaeology Laboratory Practicum", category: "ANTH", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "NEAA 20100", title: "Introduction to Archaeology", category: "NEAA", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "NEAA 20330", title: "Archaeological Theory", category: "NEAA", offered: ["Autumn"], prereqs: ["NEAA 20100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ARKE 20200", title: "World Archaeology", category: "ARKE", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "NEAA 20035", title: "Introduction to Zooarchaeology", category: "NEAA", offered: ["Winter"], prereqs: ["NEAA 20100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "NEAA 20061", title: "Ancient Landscapes I", category: "NEAA", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "NEAA 20062", title: "Ancient Landscapes II", category: "NEAA", offered: ["Winter"], prereqs: ["NEAA 20061"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ARKE 20002", title: "Archaeology of Ancient Near East II", category: "ARKE", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ARKE 20030", title: "Rise of State in Ancient Near East", category: "ARKE", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ARKE 20121", title: "Ancient Israel in Bible & Archaeology", category: "ARKE", offered: ["Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ARKE 20322", title: "Ancient Levant-II: Iron Age & Persian", category: "ARKE", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ARKE 20511", title: "The Archaeology of Egypt I", category: "ARKE", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ARTH 10100", title: "Introduction to Art", category: "ARTH", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: true, hours_per_week: 8 },
+    { id: "ARTH 14107", title: "Greek Art and Archaeology", category: "ARTH", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ARTH 16100", title: "Art of the East: China", category: "ARTH", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "ARTH 20603", title: "Image & Text in Mesoamerican Codices", category: "ARTH", offered: ["Autumn"], prereqs: ["ARTH 10100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ARTH 23010", title: "Visual Culture of Ancient Near East", category: "ARTH", offered: ["Winter"], prereqs: ["ARTH 10100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ARTH 24602", title: "Chinese Pictorial Art", category: "ARTH", offered: ["Spring"], prereqs: ["ARTH 10100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ARTH 25105", title: "Chichen Itza", category: "ARTH", offered: ["Autumn"], prereqs: ["ARTH 10100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ARTH 25106", title: "Art & Urbanism at Teotihuacan", category: "ARTH", offered: ["Winter"], prereqs: ["ARTH 10100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ARTH 25300", title: "Art & Pilgrimage Antiquity to Christ.", category: "ARTH", offered: ["Spring"], prereqs: ["ARTH 10100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ARTH 28330", title: "Art & Religion Roman to Christian", category: "ARTH", offered: ["Autumn"], prereqs: ["ARTH 10100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "ARTH 29600", title: "Doing Art History", category: "ARTH", offered: ["Winter","Spring"], prereqs: ["ARTH 10100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "ASTR 13300", title: "Introduction to Astrophysics", category: "ASTR", offered: ["Spring"], prereqs: ["PHYS 13200"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ASTR 20500", title: "Intro to Python in Astrophysics", category: "ASTR", offered: ["Autumn"], prereqs: ["ASTR 13300"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ASTR 21000", title: "Statistical Techniques in Astrophysics", category: "ASTR", offered: ["Autumn"], prereqs: ["ASTR 20500"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "ASTR 21100", title: "Computational Tech in Astrophysics", category: "ASTR", offered: ["Winter"], prereqs: ["ASTR 20500"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "ASTR 21200", title: "Observational Tech in Astrophysics", category: "ASTR", offered: ["Spring"], prereqs: ["ASTR 13300"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "ASTR 25400", title: "Radiation Processes in Astrophysics", category: "ASTR", offered: ["Autumn"], prereqs: ["PHYS 22500"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "ASTR 24100", title: "The Physics of Stars", category: "ASTR", offered: ["Winter"], prereqs: ["ASTR 25400"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "ASTR 23900", title: "Physics of Galaxies", category: "ASTR", offered: ["Spring"], prereqs: ["ASTR 24100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "ASTR 25800", title: "Astrophysics of Exoplanets", category: "ASTR", offered: ["Spring"], prereqs: ["ASTR 24100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "ASTR 24300", title: "Cosmological Physics", category: "ASTR", offered: ["Winter"], prereqs: ["ASTR 24100"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CMST 10100", title: "Introduction to Film Analysis", category: "CMST", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CMST 28500", title: "History of Intl Cinema I: Silent Era", category: "CMST", offered: ["Autumn"], prereqs: ["CMST 10100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CMST 28600", title: "History of Intl Cinema II: Sound-1960", category: "CMST", offered: ["Winter"], prereqs: ["CMST 10100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CMST 28700", title: "History of Intl Cinema III: 1960-Now", category: "CMST", offered: ["Spring"], prereqs: ["CMST 10100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CMST 29201", title: "Advanced Seminar: Autumn", category: "CMST", offered: ["Autumn"], prereqs: ["CMST 10100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "CMST 29202", title: "Advanced Seminar: Spring", category: "CMST", offered: ["Spring"], prereqs: ["CMST 10100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "CMST 23930", title: "Documentary Production I", category: "CMST", offered: ["Autumn"], prereqs: ["CMST 10100"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CMST 23931", title: "Documentary Production II", category: "CMST", offered: ["Winter"], prereqs: ["CMST 23930"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CMST 28921", title: "Narrative Production I", category: "CMST", offered: ["Autumn","Winter"], prereqs: ["CMST 10100"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CMST 28922", title: "Narrative Production II", category: "CMST", offered: ["Winter","Spring"], prereqs: ["CMST 28921"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CMST 27299", title: "Intensive Track: Written Thesis Wkshp", category: "CMST", offered: ["Autumn"], prereqs: ["CMST 28500"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CMST 28999", title: "Intensive Track: Prod Thesis Wkshp", category: "CMST", offered: ["Autumn"], prereqs: ["CMST 28500"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "LATN 10100", title: "Elementary Latin I", category: "LATN", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "LATN 10200", title: "Elementary Latin II", category: "LATN", offered: ["Winter"], prereqs: ["LATN 10100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "LATN 10300", title: "Elementary Latin III", category: "LATN", offered: ["Spring"], prereqs: ["LATN 10200"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "LATN 20100", title: "Intermediate Latin I", category: "LATN", offered: ["Autumn"], prereqs: ["LATN 10300"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "LATN 20200", title: "Intermediate Latin II", category: "LATN", offered: ["Winter"], prereqs: ["LATN 20100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "LATN 20300", title: "Intermediate Latin III", category: "LATN", offered: ["Spring"], prereqs: ["LATN 20200"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CLCV 20100", title: "This is Sparta (or Is It?)", category: "CLCV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "CLCV 20407", title: "Roman Civil War: History & Memory", category: "CLCV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "CLCV 20700", title: "Ancient Mediterranean World I: Greece", category: "CLCV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "CLCV 21700", title: "Archaeology for Ancient Historians", category: "CLCV", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "CLCV 23024", title: "Gender Archaeology", category: "CLCV", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "CLCV 24622", title: "Death and Burial", category: "CLCV", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "CLCV 29500", title: "Senior Seminar", category: "CLCV", offered: ["Autumn"], prereqs: ["LATN 20300"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CCSG 19000", title: "The Climate and Growth Challenge", category: "CCSG", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CCSG 20100", title: "The Science of Climate Change", category: "CCSG", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CCSG 20300", title: "Economics of Climate Change & Energy", category: "CCSG", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CCSG 20500", title: "Energy: Science, Tech, and Human Usage", category: "CCSG", offered: ["Autumn","Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CCSG 20700", title: "Climate Change: Law and Ethics", category: "CCSG", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CCSG 20900", title: "Politics & Law of Climate & Energy", category: "CCSG", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CCSG 21100", title: "Climate Change: Impacts and Adaptation", category: "CCSG", offered: ["Autumn"], prereqs: ["CCSG 20100"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CCSG 25000", title: "Climate, Energy, and Development", category: "CCSG", offered: ["Autumn","Spring"], prereqs: ["CCSG 19000"], abroad_eligible: true, hours_per_week: 10 },
+    { id: "CCSG 29001", title: "Capstone Seminar", category: "CCSG", offered: ["Autumn"], prereqs: ["CCSG 20100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CCSG 29002", title: "Capstone Project", category: "CCSG", offered: ["Winter"], prereqs: ["CCSG 29001"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "GEOS 22060", title: "What Makes a Planet Habitable?", category: "GEOS", offered: ["Autumn","Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "GEOS 24800", title: "Climate Systems Engineering", category: "GEOS", offered: ["Spring"], prereqs: ["CCSG 20100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "ENSC 23600", title: "Chemical Oceanography", category: "ENSC", offered: ["Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "COGS 20001", title: "Mind, Brain and Meaning", category: "COGS", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 20002", title: "Cognitive Models", category: "COGS", offered: ["Winter"], prereqs: ["COGS 20001"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 20003", title: "Exp & Comp Methods in Linguistics", category: "COGS", offered: ["Spring"], prereqs: ["COGS 20002"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "COGS 25001", title: "Foundations of Neurolinguistics", category: "COGS", offered: ["Autumn","Winter"], prereqs: ["COGS 20001"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "LING 20001", title: "Introduction to Linguistics", category: "LING", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "NSCI 21620", title: "Structure & Circuits of the Forebrain", category: "NSCI", offered: ["Autumn","Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "NSCI 21625", title: "Cognitive Neuroscience", category: "NSCI", offered: ["Winter","Spring"], prereqs: ["NSCI 21620"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "NSCI 22600", title: "Cognition and Overcoming its Limits", category: "NSCI", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 17050", title: "Health and Society in Chicago", category: "CHDV", offered: ["Autumn","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
+    { id: "CHDV 20000", title: "Introduction to Human Development", category: "CHDV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 20100", title: "Human Development Research Design", category: "CHDV", offered: ["Winter"], prereqs: ["CHDV 20000"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CMLT 20030", title: "Short Russian Novels", category: "CMLT", offered: ["Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CMLT 20109", title: "Introduction to Literary Theory", category: "CMLT", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CAAM 21450", title: "Applied Partial Differential Equations", category: "CAAM", offered: ["Autumn","Winter"], prereqs: ["MATH 27300"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CAAM 21460", title: "Applied Fourier Analysis", category: "CAAM", offered: ["Spring"], prereqs: ["MATH 20300"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CAAM 21470", title: "Applied Complex Analysis", category: "CAAM", offered: ["Spring"], prereqs: ["MATH 20300"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CAAM 28200", title: "Dynamical Systems with Applications", category: "CAAM", offered: ["Winter"], prereqs: ["MATH 27300"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CRWR 10206", title: "Fiction Workshop I", category: "CRWR", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CRWR 10306", title: "Poetry Workshop I", category: "CRWR", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CRWR 10406", title: "Literary Nonfiction Workshop I", category: "CRWR", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHIN 10100", title: "Elementary Modern Chinese I", category: "CHIN", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CHIN 10200", title: "Elementary Modern Chinese II", category: "CHIN", offered: ["Winter"], prereqs: ["CHIN 10100"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CHIN 10300", title: "Elementary Modern Chinese III", category: "CHIN", offered: ["Spring"], prereqs: ["CHIN 10200"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CHIN 20100", title: "Intermediate Modern Chinese I", category: "CHIN", offered: ["Autumn"], prereqs: ["CHIN 10300"], abroad_eligible: true, hours_per_week: 10 },
+    { id: "CHIN 20200", title: "Intermediate Modern Chinese II", category: "CHIN", offered: ["Winter"], prereqs: ["CHIN 20100"], abroad_eligible: true, hours_per_week: 10 },
+    { id: "CHIN 20300", title: "Intermediate Modern Chinese III", category: "CHIN", offered: ["Spring"], prereqs: ["CHIN 20200"], abroad_eligible: true, hours_per_week: 10 },
+    { id: "EALC 28010", title: "Archaeology of Anyang: Bronzes", category: "EALC", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "EALC 28015", title: "Archaeology of Bronze Age China", category: "EALC", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "EALC 28901", title: "Discovering Ancient East Asia", category: "EALC", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 20001", title: "Climate Change, Environment, & Society", category: "CEGU", offered: ["Autumn","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 20002", title: "Politics of Environmental Knowledge", category: "CEGU", offered: ["Autumn","Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 20003", title: "Global Environmental Change", category: "CEGU", offered: ["Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 24776", title: "International Environmental Policy", category: "CEGU", offered: ["Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 29801", title: "BA/MA Colloquium I", category: "CEGU", offered: ["Autumn"], prereqs: ["CEGU 20001"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CEGU 29802", title: "BA/MA Colloquium II", category: "CEGU", offered: ["Winter"], prereqs: ["CEGU 29801"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CEGU 29901", title: "CEGU in the Community I", category: "CEGU", offered: ["Autumn"], prereqs: ["CEGU 20001"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "CEGU 29902", title: "CEGU in the Community II", category: "CEGU", offered: ["Winter"], prereqs: ["CEGU 29901"], abroad_eligible: false, hours_per_week: 10 },
     // Core
     { id: "HUMA 11000", title: "Readings in World Literature I", category: "HUM", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
     { id: "HUMA 11100", title: "Readings in World Literature II", category: "HUM", offered: ["Winter"], prereqs: ["HUMA 11000"], abroad_eligible: false, hours_per_week: 8 },
@@ -37,6 +159,9 @@ window.CATALOG = {
     { id: "MATH 18500", title: "Mathematical Methods: Physical Sci III", category: "MATH", offered: ["Autumn","Winter","Spring"], prereqs: ["MATH 15300","MATH 19620"], abroad_eligible: false, hours_per_week: 10 },
     { id: "MATH 18600", title: "Mathematics of Quantum Mechanics", category: "MATH", offered: ["Autumn","Winter","Spring"], prereqs: ["MATH 18400","MATH 18500"], abroad_eligible: false, hours_per_week: 10 },
     { id: "MATH 23500", title: "Markov Chains and Brownian Motion", category: "MATH", offered: ["Autumn","Spring"], prereqs: ["STAT 24400"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "MATH 18300", title: "Math Methods in Physical Sciences I", category: "MATH", offered: ["Autumn","Winter"], prereqs: ["MATH 15200"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "MATH 21100", title: "Basic Numerical Analysis", category: "MATH", offered: ["Autumn","Winter"], prereqs: ["MATH 20300"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "MATH 21200", title: "Advanced Numerical Analysis", category: "MATH", offered: ["Winter","Spring"], prereqs: ["MATH 21100"], abroad_eligible: false, hours_per_week: 12 },
     { id: "STAT 23400", title: "Statistical Models and Methods", category: "STAT", offered: ["Autumn","Winter","Spring"], prereqs: ["MATH 15300"], abroad_eligible: false, hours_per_week: 10 },
     { id: "STAT 24300", title: "Numerical Linear Algebra", category: "STAT", offered: ["Autumn","Winter","Spring"], prereqs: ["MATH 15200"], abroad_eligible: false, hours_per_week: 11 },
     { id: "STAT 22400", title: "Applied Regression Analysis", category: "STAT", offered: ["Autumn","Spring"], prereqs: ["STAT 23400","MATH 15200"], abroad_eligible: false, hours_per_week: 10 },
@@ -49,6 +174,8 @@ window.CATALOG = {
     { id: "STAT 26100", title: "Time Dependent Data", category: "STAT", offered: ["Autumn"], prereqs: ["STAT 24500"], abroad_eligible: false, hours_per_week: 10 },
     { id: "STAT 26300", title: "Introduction to Statistical Genetics", category: "STAT", offered: ["Spring"], prereqs: ["STAT 24500"], abroad_eligible: false, hours_per_week: 10 },
     { id: "STAT 27400", title: "Nonparametric Inference", category: "STAT", offered: ["Winter"], prereqs: ["STAT 24400"], abroad_eligible: false, hours_per_week: 10 },
+    { id: "STAT 25100", title: "Intro to Mathematical Probability", category: "STAT", offered: ["Autumn","Winter","Spring"], prereqs: ["MATH 20300"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "STAT 28000", title: "Optimization", category: "STAT", offered: ["Winter","Spring"], prereqs: ["STAT 24300"], abroad_eligible: false, hours_per_week: 11 },
     // Computer Science
     { id: "CMSC 14100", title: "Intro to Computer Science I", category: "CS", offered: ["Autumn","Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 12 },
     { id: "CMSC 14200", title: "Intro to Computer Science II", category: "CS", offered: ["Autumn","Winter","Spring"], prereqs: ["CMSC 14100"], abroad_eligible: false, hours_per_week: 14 },
@@ -136,12 +263,23 @@ window.CATALOG = {
     { id: "BIOS 23262", title: "Mammalian Evolutionary Biology", category: "BIOS", offered: ["Autumn"], prereqs: ["BIOS 20186","BIOS 20187","BIOS 20188"], abroad_eligible: false, hours_per_week: 12 },
     { id: "BIOS 23266", title: "Evolutionary Adaptation", category: "BIOS", offered: ["Autumn"], prereqs: ["BIOS 20153","BIOS 20186","BIOS 20187"], abroad_eligible: false, hours_per_week: 12 },
     { id: "BIOS 23414", title: "Theoretical Ecology", category: "BIOS", offered: ["Autumn"], prereqs: ["BIOS 20186","BIOS 20187","BIOS 20188","MATH 15100"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "BIOS 21317", title: "Topics in Biological Chemistry", category: "BIOS", offered: ["Spring"], prereqs: ["BIOS 20200"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "BIOS 21328", title: "Biophysics of Biomolecules", category: "BIOS", offered: ["Winter","Spring"], prereqs: ["BIOS 20200"], abroad_eligible: false, hours_per_week: 11 },
     // Chemistry
     { id: "CHEM 11100", title: "Comprehensive General Chemistry I", category: "CHEM", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 14 },
     { id: "CHEM 11200", title: "Comprehensive General Chemistry II", category: "CHEM", offered: ["Winter"], prereqs: ["CHEM 11100"], abroad_eligible: false, hours_per_week: 14 },
     { id: "CHEM 11300", title: "Comprehensive General Chemistry III", category: "CHEM", offered: ["Spring"], prereqs: ["CHEM 11200"], abroad_eligible: false, hours_per_week: 14 },
     { id: "CHEM 22000", title: "Organic Chemistry I", category: "CHEM", offered: ["Autumn"], prereqs: ["CHEM 11100","CHEM 11200","CHEM 11300"], abroad_eligible: false, hours_per_week: 14 },
     { id: "CHEM 22100", title: "Organic Chemistry II", category: "CHEM", offered: ["Winter"], prereqs: ["CHEM 11100","CHEM 11200","CHEM 11300","CHEM 22000"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "CHEM 20100", title: "Inorganic Chemistry", category: "CHEM", offered: ["Autumn"], prereqs: ["CHEM 11300"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "CHEM 20200", title: "Organometallic Chemistry", category: "CHEM", offered: ["Winter"], prereqs: ["CHEM 20100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "CHEM 20300", title: "Chemistry of Materials", category: "CHEM", offered: ["Spring"], prereqs: ["CHEM 20100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "CHEM 22200", title: "Organic Chemistry III", category: "CHEM", offered: ["Spring"], prereqs: ["CHEM 22100"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "CHEM 23300", title: "Introduction to Chemical Biology", category: "CHEM", offered: ["Autumn","Spring"], prereqs: ["CHEM 22100"], abroad_eligible: false, hours_per_week: 11 },
+    { id: "CHEM 26100", title: "Introductory Quantum Mechanics", category: "CHEM", offered: ["Autumn"], prereqs: ["MATH 18500"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CHEM 26200", title: "Thermodynamics", category: "CHEM", offered: ["Winter"], prereqs: ["CHEM 26100"], abroad_eligible: false, hours_per_week: 12 },
+    { id: "CHEM 26700", title: "Experimental Physical Chemistry", category: "CHEM", offered: ["Winter","Spring"], prereqs: ["CHEM 26100"], abroad_eligible: false, hours_per_week: 14 },
+    { id: "CHEM 32100", title: "Physical Organic Chemistry I", category: "CHEM", offered: ["Autumn"], prereqs: ["CHEM 22200"], abroad_eligible: false, hours_per_week: 14 },
     // Psychology
     { id: "PSYC 20200", title: "Psychological Research Methods", category: "PSYC", offered: ["Autumn","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
     { id: "PSYC 20300", title: "Biological Psychology", category: "PSYC", offered: ["Winter"], prereqs: ["BIOS 10130","PSYC 20200"], abroad_eligible: false, hours_per_week: 9 },
@@ -270,6 +408,66 @@ window.CATALOG = {
     "Physics": [
       "PHYSICS",
       "MATH"
+    ],
+    "Anthropology": [
+      "ANTH"
+    ],
+    "Archaeology": [
+      "ARKE",
+      "NEAA",
+      "ANTH",
+      "ARTH",
+      "CLCV"
+    ],
+    "Art History": [
+      "ARTH"
+    ],
+    "Biological Chemistry": [
+      "CHEM",
+      "BIOS",
+      "MATH",
+      "PHYSICS"
+    ],
+    "Chemistry": [
+      "CHEM",
+      "MATH",
+      "PHYSICS"
+    ],
+    "Cinema and Media Studies": [
+      "CMST"
+    ],
+    "Classical Studies": [
+      "CLCV",
+      "LATN"
+    ],
+    "Climate and Sustainable Growth": [
+      "CCSG",
+      "GEOS",
+      "ENSC",
+      "PBPL",
+      "ECON"
+    ],
+    "Comparative Literature": [
+      "CMLT",
+      "ENGL",
+      "LATN",
+      "CLCV"
+    ],
+    "Computational and Applied Mathematics": [
+      "CAAM",
+      "MATH",
+      "STAT",
+      "CS"
+    ],
+    "Creative Writing": [
+      "CRWR",
+      "ENGL"
+    ],
+    "East Asian Languages and Civilizations": [
+      "EALC",
+      "CHIN",
+      "ARTH",
+      "ANTH"
     ]
   },
   // a Core pick that pairs well with each major (Harper suggests these first)
@@ -277,28 +475,28 @@ window.CATALOG = {
     "CS": {
       "HUM": "Philosophical Perspectives",
       "SOSC": "Mind",
-      "CIV": "European Civilization in Paris",
+      "CIV": "Paris: European Civilization",
       "PHYS": "Stars and Galaxies",
       "ARTS": "Visual Language: On Images"
     },
     "Econ": {
       "HUM": "Human Being and Citizen",
       "SOSC": "Classics of Social and Political Thought",
-      "CIV": "European Civilization in Paris",
+      "CIV": "Paris: European Civilization",
       "PHYS": "Stars and Galaxies",
-      "ARTS": "Introduction to Art"
+      "ARTS": "Visual Language: On Images"
     },
     "Math": {
       "HUM": "Philosophical Perspectives",
       "SOSC": "Mind",
-      "CIV": "Mediterranean Civilization in Rome",
+      "CIV": "Rome: Antiquity to the Baroque",
       "PHYS": "Stars and Galaxies",
       "ARTS": "Introduction to Western Art Music"
     },
     "Data Science": {
       "HUM": "Media Aesthetics",
       "SOSC": "Social Science Inquiry",
-      "CIV": "European Civilization in Paris",
+      "CIV": "Paris: European Civilization",
       "PHYS": "Stars and Galaxies",
       "ARTS": "Visual Language: On Images"
     },
@@ -319,63 +517,63 @@ window.CATALOG = {
     "Biology": {
       "HUM": "Readings in World Literature",
       "SOSC": "Mind",
-      "CIV": "Mediterranean Civilization in Rome",
+      "CIV": "Rome: Antiquity to the Baroque",
       "PHYS": "Introductory General Chemistry",
-      "ARTS": "Introduction to Art"
+      "ARTS": "Visual Language: On Images"
     },
     "Econ - Business Economics": {
       "HUM": "Human Being and Citizen",
       "SOSC": "Classics of Social and Political Thought",
-      "CIV": "European Civilization in Paris",
+      "CIV": "Paris: European Civilization",
       "PHYS": "Stars and Galaxies",
-      "ARTS": "Introduction to Art"
+      "ARTS": "Visual Language: On Images"
     },
     "Biology - Microbiology": {
       "HUM": "Readings in World Literature",
       "SOSC": "Mind",
-      "CIV": "Mediterranean Civilization in Rome",
+      "CIV": "Rome: Antiquity to the Baroque",
       "PHYS": "Introductory General Chemistry",
-      "ARTS": "Introduction to Art"
+      "ARTS": "Visual Language: On Images"
     },
     "Biology - Ecology and Evolution": {
       "HUM": "Readings in World Literature",
       "SOSC": "Mind",
-      "CIV": "Mediterranean Civilization in Rome",
+      "CIV": "Rome: Antiquity to the Baroque",
       "PHYS": "Stars and Galaxies",
       "ARTS": "Visual Language: On Images"
     },
     "Psychology": {
       "HUM": "Philosophical Perspectives",
       "SOSC": "Mind",
-      "CIV": "European Civilization in Paris",
+      "CIV": "Paris: European Civilization",
       "PHYS": "Stars and Galaxies",
       "ARTS": "Introduction to Western Art Music"
     },
     "Statistics": {
       "HUM": "Philosophical Perspectives",
       "SOSC": "Social Science Inquiry",
-      "CIV": "European Civilization in Paris",
+      "CIV": "Paris: European Civilization",
       "PHYS": "Stars and Galaxies",
       "ARTS": "Visual Language: On Images"
     },
     "History": {
       "HUM": "Human Being and Citizen",
       "SOSC": "Classics of Social and Political Thought",
-      "CIV": "Mediterranean Civilization in Rome",
+      "CIV": "Rome: Antiquity to the Baroque",
       "PHYS": "Stars and Galaxies",
-      "ARTS": "Introduction to Art"
+      "ARTS": "Visual Language: On Images"
     },
     "English": {
       "HUM": "Readings in World Literature",
       "SOSC": "Power, Identity, and Resistance",
-      "CIV": "European Civilization in Paris",
+      "CIV": "Paris: European Civilization",
       "PHYS": "Stars and Galaxies",
       "ARTS": "Drama: Embodiment and Transformation"
     },
     "Physics": {
       "HUM": "Philosophical Perspectives",
       "SOSC": "Mind",
-      "CIV": "European Civilization in Paris",
+      "CIV": "Paris: European Civilization",
       "PHYS": "Stars and Galaxies",
       "ARTS": "Introduction to Western Art Music"
     }
@@ -448,6 +646,65 @@ window.CATALOG = {
     ],
     "Physics": [
       "physics"
+    ],
+    "Anthropology": [
+      "anthropology",
+      "anth",
+      "anthro"
+    ],
+    "Archaeology": [
+      "archaeology",
+      "arke",
+      "archeology"
+    ],
+    "Art History": [
+      "art history",
+      "arth"
+    ],
+    "Biological Chemistry": [
+      "biological chemistry",
+      "biochem",
+      "biochemistry"
+    ],
+    "Chemistry": [
+      "chemistry",
+      "chem"
+    ],
+    "Cinema and Media Studies": [
+      "cinema and media studies",
+      "cmst",
+      "cms",
+      "film"
+    ],
+    "Classical Studies": [
+      "classical studies",
+      "classics",
+      "clcv"
+    ],
+    "Climate and Sustainable Growth": [
+      "climate and sustainable growth",
+      "ccsg",
+      "climate"
+    ],
+    "Comparative Literature": [
+      "comparative literature",
+      "cmlt",
+      "complit"
+    ],
+    "Computational and Applied Mathematics": [
+      "computational and applied mathematics",
+      "caam",
+      "applied math"
+    ],
+    "Creative Writing": [
+      "creative writing",
+      "crwr"
+    ],
+    "East Asian Languages and Civilizations": [
+      "east asian languages and civilizations",
+      "ealc",
+      "east asian studies",
+      "east asian"
     ]
   },
   plans: {
@@ -660,6 +917,174 @@ window.CATALOG = {
       "Y4-Autumn": ["ARTV 10100", "PHYS 21101", "PHYS 24310", "PHYS 27900"],
       "Y4-Winter": ["ELECTIVE 1", "PHYS 21102", "PHYS 23700"],
       "Y4-Spring": ["ELECTIVE 2", "PHYS 21103", "PHYS 22600"]
+    },
+    "Anthropology": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "ARTV 10100"],
+      "Y2-Autumn": ["ASTR 12700", "BIOS 10130", "ANTH 10100"],
+      "Y2-Winter": ["ASTR 12710", "BIOS 12117", "ANTH 21107"],
+      "Y2-Spring": ["HIST 13001", "ANTH 21420", "ANTH 20100"],
+      "Y3-Autumn": ["ANTH 20007", "ANTH 21265", "ANTH 26330"],
+      "Y3-Winter": ["HIST 13002", "ANTH 20014", "ANTH 21270"],
+      "Y3-Spring": ["ANTH 26100", "ANTH 26825", "ANTH 29500"],
+      "Y4-Autumn": ["ELECTIVE 1", "PLSC 28701", "HIST 14601"],
+      "Y4-Winter": ["ANTH 26900", "ANTH 28400", "ANTH 20200", "HIST 12706"],
+      "Y4-Spring": ["ELECTIVE 2", "PLSC 28801"]
+    },
+    "Archaeology": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "ARTV 10100"],
+      "Y2-Autumn": ["ASTR 12700", "BIOS 10130", "NEAA 20100"],
+      "Y2-Winter": ["ASTR 12710", "BIOS 12117", "ANTH 26900"],
+      "Y2-Spring": ["HIST 13001", "ARKE 20200", "ANTH 29500"],
+      "Y3-Autumn": ["NEAA 20330", "NEAA 20061", "ARKE 20511"],
+      "Y3-Winter": ["HIST 13002", "NEAA 20062", "ARKE 20002"],
+      "Y3-Spring": ["ARKE 20121", "ARKE 20322", "ANTH 20100"],
+      "Y4-Autumn": ["ELECTIVE 1", "ARTH 14107", "HIST 14601"],
+      "Y4-Winter": ["ARKE 20030", "NEAA 20035", "HIST 12706", "PLSC 28701"],
+      "Y4-Spring": ["ELECTIVE 2", "PLSC 28801"]
+    },
+    "Art History": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "ARTV 10100"],
+      "Y2-Autumn": ["ASTR 12700", "BIOS 10130", "ARTH 10100"],
+      "Y2-Winter": ["ASTR 12710", "BIOS 12117", "ARTH 16100"],
+      "Y2-Spring": ["HIST 13001", "ARTH 29600", "ARTH 24602"],
+      "Y3-Autumn": ["ARTH 14107", "ARTH 20603", "ARTH 25105"],
+      "Y3-Winter": ["HIST 13002", "ARTH 23010", "ARTH 25106", "ENGL 10144"],
+      "Y3-Spring": ["ARTH 25300", "HIST 15006"],
+      "Y4-Autumn": ["ARTH 28330", "ELECTIVE 1", "HIST 14601"],
+      "Y4-Winter": ["ENGL 10404", "PLSC 28701", "HIST 12706"],
+      "Y4-Spring": ["ELECTIVE 2", "PLSC 28801", "HIST 15007"]
+    },
+    "Biological Chemistry": {
+      "Y1-Autumn": ["HUMA 11000", "MATH 15100", "CHEM 11100"],
+      "Y1-Winter": ["HUMA 11100", "MATH 15200", "CHEM 11200"],
+      "Y1-Spring": ["HUMA 11200", "CHEM 11300", "ARTV 10100", "BIOS 20151"],
+      "Y2-Autumn": ["SOSC 12400", "CHEM 22000", "MATH 18300", "PHYS 13100"],
+      "Y2-Winter": ["SOSC 12500", "CHEM 22100", "PHYS 13200", "MATH 15300"],
+      "Y2-Spring": ["SOSC 12600", "CHEM 22200", "MATH 19620", "BIOS 20186"],
+      "Y3-Autumn": ["CHEM 20100", "MATH 18500", "BIOS 20187"],
+      "Y3-Winter": ["HIST 13001", "BIOS 20200"],
+      "Y3-Spring": ["CHEM 20300", "HIST 13002", "MATH 18400", "BIOS 21317"],
+      "Y4-Autumn": ["CHEM 32100", "ASTR 12700", "BIOS 10130", "CHEM 26100"],
+      "Y4-Winter": ["ASTR 12710", "BIOS 12117", "CHEM 26200", "CHEM 26700"],
+      "Y4-Spring": ["ELECTIVE 1", "ELECTIVE 2", "PHYS 13300", "BIOS 21328"]
+    },
+    "Chemistry": {
+      "Y1-Autumn": ["HUMA 11000", "MATH 15100", "CHEM 11100"],
+      "Y1-Winter": ["HUMA 11100", "MATH 15200", "CHEM 11200"],
+      "Y1-Spring": ["HUMA 11200", "CHEM 11300", "ARTV 10100", "MATH 15300"],
+      "Y2-Autumn": ["SOSC 12400", "CHEM 22000", "MATH 18300", "PHYS 13100"],
+      "Y2-Winter": ["SOSC 12500", "CHEM 22100", "PHYS 13200"],
+      "Y2-Spring": ["SOSC 12600", "CHEM 22200", "MATH 19620", "PHYS 13300"],
+      "Y3-Autumn": ["CHEM 20100", "ASTR 12700", "MATH 18400"],
+      "Y3-Winter": ["ASTR 12710"],
+      "Y3-Spring": ["CHEM 20300", "BIOS 10130", "HIST 13001", "MATH 18500"],
+      "Y4-Autumn": ["CHEM 23300", "CHEM 32100", "HIST 13002", "CHEM 26100"],
+      "Y4-Winter": ["CHEM 20200", "BIOS 12117", "ELECTIVE 1", "CHEM 26200"],
+      "Y4-Spring": ["ELECTIVE 2", "CHEM 26700"]
+    },
+    "Cinema and Media Studies": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "CMST 10100"],
+      "Y2-Autumn": ["CMST 28500", "ASTR 12700", "BIOS 10130"],
+      "Y2-Winter": ["CMST 28600", "ASTR 12710", "BIOS 12117"],
+      "Y2-Spring": ["CMST 28700", "ARTV 10100", "HIST 13001"],
+      "Y3-Autumn": ["CMST 29201", "CMST 23930", "CMST 28921"],
+      "Y3-Winter": ["CMST 23931", "CMST 28922", "HIST 13002", "HIST 12706"],
+      "Y3-Spring": ["CMST 29202"],
+      "Y4-Autumn": ["CMST 27299", "CMST 28999", "ELECTIVE 1", "HIST 14601"],
+      "Y4-Winter": ["ENGL 10404", "PLSC 28701", "ENGL 10144"],
+      "Y4-Spring": ["ELECTIVE 2", "PLSC 28801", "HIST 15006"]
+    },
+    "Classical Studies": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "LATN 10100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "LATN 10200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "LATN 10300"],
+      "Y2-Autumn": ["LATN 20100", "ASTR 12700", "BIOS 10130", "MATH 15100"],
+      "Y2-Winter": ["LATN 20200", "ASTR 12710", "BIOS 12117", "MATH 15200"],
+      "Y2-Spring": ["LATN 20300", "ARTV 10100", "HIST 13001", "CLCV 23024"],
+      "Y3-Autumn": ["CLCV 20100", "CLCV 20407", "CLCV 20700"],
+      "Y3-Winter": ["CLCV 21700", "CLCV 24622", "HIST 13002"],
+      "Y3-Spring": ["PLSC 28801", "HIST 15006"],
+      "Y4-Autumn": ["CLCV 29500", "ELECTIVE 1", "HIST 14601", "PLSC 28701"],
+      "Y4-Winter": ["ENGL 10404", "ENGL 10144", "HIST 12706"],
+      "Y4-Spring": ["ELECTIVE 2", "HIST 15007", "PLSC 28901"]
+    },
+    "Climate and Sustainable Growth": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "CCSG 19000"],
+      "Y2-Autumn": ["CCSG 20300", "ASTR 12700", "BIOS 10130"],
+      "Y2-Winter": ["CCSG 20100", "ASTR 12710", "BIOS 12117"],
+      "Y2-Spring": ["CCSG 20900", "ARTV 10100", "HIST 13001"],
+      "Y3-Autumn": ["CCSG 20500", "CCSG 21100", "GEOS 22060"],
+      "Y3-Winter": ["CCSG 20700", "ENSC 23600", "HIST 13002", "PBPL 20000"],
+      "Y3-Spring": ["CCSG 25000", "GEOS 24800"],
+      "Y4-Autumn": ["CCSG 29001", "ECON 10000", "ELECTIVE 1", "HIST 14601"],
+      "Y4-Winter": ["CCSG 29002", "PBPL 22100", "HIST 12706"],
+      "Y4-Spring": ["ELECTIVE 2", "PBPL 22200"]
+    },
+    "Comparative Literature": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "LATN 10100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "LATN 10200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "LATN 10300"],
+      "Y2-Autumn": ["LATN 20100", "CMLT 20109", "ASTR 12700", "BIOS 10130"],
+      "Y2-Winter": ["LATN 20200", "CMLT 20030", "ASTR 12710", "BIOS 12117"],
+      "Y2-Spring": ["LATN 20300", "ARTV 10100", "HIST 13001"],
+      "Y3-Autumn": ["ENGL 10432", "MATH 15100"],
+      "Y3-Winter": ["HIST 13002", "MATH 15200", "ENGL 10144", "ENGL 10404"],
+      "Y3-Spring": ["ENGL 10709", "CLCV 23024", "ENGL 10434"],
+      "Y4-Autumn": ["CLCV 20100", "CLCV 20407", "ELECTIVE 1", "HIST 14601"],
+      "Y4-Winter": ["CLCV 21700", "ENGL 10800", "HIST 12706", "ENGL 10455"],
+      "Y4-Spring": ["ELECTIVE 2", "ENGL 11004"]
+    },
+    "Computational and Applied Mathematics": {
+      "Y1-Autumn": ["HUMA 11000", "MATH 15100", "CMSC 14100"],
+      "Y1-Winter": ["HUMA 11100", "MATH 15200", "CMSC 14200"],
+      "Y1-Spring": ["HUMA 11200", "ARTV 10100", "MATH 19620", "MATH 15300"],
+      "Y2-Autumn": ["SOSC 12400", "STAT 24300", "CMSC 27100", "MATH 16300"],
+      "Y2-Winter": ["SOSC 12500", "CMSC 27200", "MATH 20250"],
+      "Y2-Spring": ["SOSC 12600", "HIST 13001", "MATH 20300"],
+      "Y3-Autumn": ["MATH 18400", "MATH 20400"],
+      "Y3-Winter": ["STAT 28000", "HIST 13002", "STAT 24400", "MATH 27300"],
+      "Y3-Spring": ["MATH 23500", "STAT 25100", "CAAM 21460", "CAAM 21470"],
+      "Y4-Autumn": ["ASTR 12700", "BIOS 10130", "MATH 20500", "MATH 21100"],
+      "Y4-Winter": ["ASTR 12710", "BIOS 12117", "MATH 21200", "CAAM 21450", "CAAM 28200"],
+      "Y4-Spring": ["ELECTIVE 1", "ELECTIVE 2", "STAT 24500"]
+    },
+    "Creative Writing": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "ARTV 10100"],
+      "Y2-Autumn": ["CRWR 10206", "ASTR 12700", "BIOS 10130"],
+      "Y2-Winter": ["CRWR 10306", "ASTR 12710", "BIOS 12117"],
+      "Y2-Spring": ["CRWR 10406", "HIST 13001", "ENGL 10434"],
+      "Y3-Autumn": ["ENGL 10432", "ENGL 16600"],
+      "Y3-Winter": ["ENGL 10455", "HIST 13002", "ENGL 10144", "ENGL 10404"],
+      "Y3-Spring": ["ENGL 10800", "ENGL 11004", "ENGL 10709"],
+      "Y4-Autumn": ["ENGL 12143", "ELECTIVE 1", "ENGL 11200", "HIST 14601"],
+      "Y4-Winter": ["PLSC 28701", "HIST 12706"],
+      "Y4-Spring": ["ELECTIVE 2", "PLSC 28801", "ENGL 16500"]
+    },
+    "East Asian Languages and Civilizations": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "CHIN 10100", "ARTH 10100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "CHIN 10200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "CHIN 10300"],
+      "Y2-Autumn": ["CHIN 20100", "ASTR 12700", "BIOS 10130"],
+      "Y2-Winter": ["CHIN 20200", "ASTR 12710", "BIOS 12117"],
+      "Y2-Spring": ["CHIN 20300", "ARTV 10100", "HIST 13001", "EALC 28901"],
+      "Y3-Autumn": ["EALC 28010", "ARTH 20603"],
+      "Y3-Winter": ["EALC 28015", "ARTH 16100", "HIST 13002"],
+      "Y3-Spring": ["HIST 15604", "HIST 15006", "PLSC 28801", "ARTH 24602"],
+      "Y4-Autumn": ["ANTH 26330", "HIST 14601", "ELECTIVE 1"],
+      "Y4-Winter": ["ANTH 21270", "HIST 12706", "PLSC 28701"],
+      "Y4-Spring": ["ELECTIVE 2", "HIST 15007", "PLSC 28901"]
     }
   },
   // Core sequences a student can switch to (Paris and Rome course numbers are placeholders)
@@ -726,13 +1151,101 @@ window.CATALOG = {
         { id: "HIST 13500", title: "America in World Civilization I", offered: ["Autumn","Winter"] },
         { id: "HIST 13600", title: "America in World Civilization II", offered: ["Winter","Spring"] }
       ] },
-      { name: "European Civilization in Paris", abroad: "Paris", courses: [
-        { id: "HIST 24001", title: "European Civilization in Paris I", offered: ["Autumn","Winter"] },
-        { id: "HIST 24002", title: "European Civilization in Paris II", offered: ["Autumn","Winter"] }
+      { name: "Athens: Greek Antiquity and Its Legacy", abroad: "Athens", quarter: "Spring", courses: [
+        { id: "Athens Civ I", title: "Greek Antiquity and Its Legacy I", offered: ["Spring"] },
+        { id: "Athens Civ II", title: "Greek Antiquity and Its Legacy II", offered: ["Spring"] }
       ] },
-      { name: "Mediterranean Civilization in Rome", abroad: "Rome", courses: [
-        { id: "HIST 24201", title: "Mediterranean Civ in Rome I", offered: ["Autumn","Winter"] },
-        { id: "HIST 24202", title: "Mediterranean Civ in Rome II", offered: ["Autumn","Winter"] }
+      { name: "Barcelona: Civilization in the Western Mediterranean", abroad: "Barcelona", quarter: "Autumn", courses: [
+        { id: "Barcelona Civ I", title: "Western Mediterranean Civilization I", offered: ["Autumn"] },
+        { id: "Barcelona Civ II", title: "Western Mediterranean Civilization II", offered: ["Autumn"] }
+      ] },
+      { name: "Barcelona: Western Mediterranean (in Spanish)", abroad: "Barcelona", quarter: "Spring", courses: [
+        { id: "Barcelona Civ I", title: "Western Mediterranean Civ I (Spanish)", offered: ["Spring"] },
+        { id: "Barcelona Civ II", title: "Western Mediterranean Civ II (Spanish)", offered: ["Spring"] }
+      ] },
+      { name: "Beijing: East Asia, Then and Now", abroad: "Beijing", quarter: "Autumn", courses: [
+        { id: "Beijing Civ I", title: "East Asia, Then and Now I", offered: ["Autumn"] },
+        { id: "Beijing Civ II", title: "East Asia, Then and Now II", offered: ["Autumn"] }
+      ] },
+      { name: "Cairo: Middle Eastern Civilizations", abroad: "Cairo", quarter: "Winter", courses: [
+        { id: "Cairo Civ I", title: "Middle Eastern Civilizations I", offered: ["Winter"] },
+        { id: "Cairo Civ II", title: "Middle Eastern Civilizations II", offered: ["Winter"] }
+      ] },
+      { name: "Córdoba: Crossroads of Mediterranean Civilizations", abroad: "Córdoba", quarter: "Spring", courses: [
+        { id: "SOSC 19082", title: "Mediterranean Crossroads I", offered: ["Spring"] },
+        { id: "SOSC 19083", title: "Mediterranean Crossroads II", offered: ["Spring"] }
+      ] },
+      { name: "Dakar: African Civilizations", abroad: "Dakar", quarter: "Winter", courses: [
+        { id: "Dakar Civ I", title: "African Civilizations I", offered: ["Winter"] },
+        { id: "Dakar Civ II", title: "African Civilizations II", offered: ["Winter"] }
+      ] },
+      { name: "Dakar: Colonizations", abroad: "Dakar", quarter: "Spring", courses: [
+        { id: "Dakar Civ I", title: "Colonizations I", offered: ["Spring"] },
+        { id: "Dakar Civ II", title: "Colonizations II", offered: ["Spring"] }
+      ] },
+      { name: "Istanbul: Middle Eastern Civilizations", abroad: "Istanbul", quarter: "Spring", courses: [
+        { id: "Istanbul Civ I", title: "Middle Eastern Civilizations I", offered: ["Spring"] },
+        { id: "Istanbul Civ II", title: "Middle Eastern Civilizations II", offered: ["Spring"] }
+      ] },
+      { name: "Jerusalem in Middle Eastern Civilizations (in Rome for 2027)", abroad: "Jerusalem", quarter: "Spring", courses: [
+        { id: "Jerusalem Civ I", title: "Jerusalem Civilization I", offered: ["Spring"] },
+        { id: "Jerusalem Civ II", title: "Jerusalem Civilization II", offered: ["Spring"] }
+      ] },
+      { name: "Marrakesh: Middle Eastern Civilizations in Morocco", abroad: "Marrakesh", quarter: "Winter", courses: [
+        { id: "Marrakesh Civ I", title: "Middle Eastern Civilizations I", offered: ["Winter"] },
+        { id: "Marrakesh Civ II", title: "Middle Eastern Civilizations II", offered: ["Winter"] }
+      ] },
+      { name: "Oaxaca: Mexico in Latin American Civilizations", abroad: "Oaxaca", quarter: "Winter", courses: [
+        { id: "Oaxaca Civ I", title: "Latin American Civilization I", offered: ["Winter"] },
+        { id: "Oaxaca Civ II", title: "Latin American Civilization II", offered: ["Winter"] }
+      ] },
+      { name: "Paris: European Civilization", abroad: "Paris", quarter: "Autumn", courses: [
+        { id: "Paris Civ I", title: "European Civilization in Paris I", offered: ["Autumn"] },
+        { id: "Paris Civ II", title: "European Civilization in Paris II", offered: ["Autumn"] }
+      ] },
+      { name: "Paris: Colonizations", abroad: "Paris", quarter: "Winter", courses: [
+        { id: "Paris Civ I", title: "Colonizations I", offered: ["Winter"] },
+        { id: "Paris Civ II", title: "Colonizations II", offered: ["Winter"] }
+      ] },
+      { name: "Paris: European Civilization (in French)", abroad: "Paris", quarter: "Autumn", courses: [
+        { id: "Paris Civ I", title: "Civilisation europeenne I", offered: ["Autumn"] },
+        { id: "Paris Civ II", title: "Civilisation europeenne II", offered: ["Autumn"] }
+      ] },
+      { name: "Paris: Gender and Sexuality in World Civilizations", abroad: "Paris", quarter: "Autumn", courses: [
+        { id: "Paris Civ I", title: "Gender and Sexuality Civilization I", offered: ["Autumn"] },
+        { id: "Paris Civ II", title: "Gender and Sexuality Civilization II", offered: ["Autumn"] }
+      ] },
+      { name: "Paris: Migration, Decolonization, and Diaspora", abroad: "Paris", quarter: "Autumn", courses: [
+        { id: "SOSC 19076", title: "Migration and Diaspora Civ I", offered: ["Autumn"] },
+        { id: "SOSC 19077", title: "Migration and Diaspora Civ II", offered: ["Autumn"] }
+      ] },
+      { name: "Paris: Music in Western Civilization", abroad: "Paris", quarter: "Autumn", courses: [
+        { id: "MUSI 12101", title: "Music and Euro-American Cultures I", offered: ["Autumn"] },
+        { id: "MUSI 12201", title: "Music and Euro-American Cultures II", offered: ["Autumn"] }
+      ] },
+      { name: "Paris: Russia and Eurasia", abroad: "Paris", quarter: "Spring", courses: [
+        { id: "Paris Civ I", title: "Russia and Eurasia Civilization I", offered: ["Spring"] },
+        { id: "Paris Civ II", title: "Russia and Eurasia Civilization II", offered: ["Spring"] }
+      ] },
+      { name: "Pune: South Asian Civilization in India", abroad: "Pune", quarter: "Autumn", courses: [
+        { id: "Pune Civ I", title: "South Asian Civilizations I", offered: ["Autumn"] },
+        { id: "Pune Civ II", title: "South Asian Civilizations II", offered: ["Autumn"] }
+      ] },
+      { name: "Rome: Antiquity to the Baroque", abroad: "Rome", quarter: "Autumn", courses: [
+        { id: "Rome Civ I", title: "Rome: Antiquity to the Baroque I", offered: ["Autumn"] },
+        { id: "Rome Civ II", title: "Rome: Antiquity to the Baroque II", offered: ["Autumn"] }
+      ] },
+      { name: "Vienna in Western Civilization", abroad: "Vienna", quarter: "Autumn", courses: [
+        { id: "Vienna Civ I", title: "Vienna in Western Civilization I", offered: ["Autumn"] },
+        { id: "Vienna Civ II", title: "Vienna in Western Civilization II", offered: ["Autumn"] }
+      ] },
+      { name: "Vienna: Jewish Civilization", abroad: "Vienna", quarter: "Spring", courses: [
+        { id: "SOSC 19073", title: "Jewish Civilization in Vienna I", offered: ["Spring"] },
+        { id: "SOSC 19074", title: "Jewish Civilization in Vienna II", offered: ["Spring"] }
+      ] },
+      { name: "Vienna: Music in Western Civilization", abroad: "Vienna", quarter: "Spring", courses: [
+        { id: "MUSI 12100", title: "Music and Euro-American Cultures I", offered: ["Spring"] },
+        { id: "MUSI 12200", title: "Music and Euro-American Cultures II", offered: ["Spring"] }
       ] }
     ],
     PHYS: [
@@ -760,9 +1273,6 @@ window.CATALOG = {
       ] },
       { name: "Drama: Embodiment and Transformation", abroad: null, courses: [
         { id: "TAPS 10100", title: "Drama: Embodiment and Transformation", offered: ["Autumn","Winter","Spring"] }
-      ] },
-      { name: "Introduction to Art", abroad: null, courses: [
-        { id: "ARTH 10100", title: "Introduction to Art", offered: ["Autumn","Winter","Spring"] }
       ] }
     ]
   }
