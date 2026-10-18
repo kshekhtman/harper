@@ -231,7 +231,7 @@ window.CATALOG = {
     { id: "HIST 13002", title: "History of European Civilization II", category: "CIV", offered: ["Autumn","Winter","Spring"], prereqs: ["HIST 13001"], abroad_eligible: true, hours_per_week: 7 },
     { id: "ARTV 10100", title: "Visual Language: On Images", category: "ARTS", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: true, hours_per_week: 6 },
     { id: "BIOS 10130", title: "Principles of Biology", category: "BIO", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 7 },
-    { id: "BIOS 12117", title: "Your Inner Fish", category: "BIO", offered: ["Autumn","Winter","Spring"], prereqs: ["BIOS 10130"], abroad_eligible: false, hours_per_week: 7 },
+    { id: "BIOS 12117", title: "\"Your Inner Fish\"", category: "BIO", offered: ["Autumn","Winter","Spring"], prereqs: ["BIOS 10130"], abroad_eligible: false, hours_per_week: 7 },
     { id: "ASTR 12700", title: "Stars", category: "PHYS", offered: ["Autumn","Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
     { id: "ASTR 12710", title: "Galaxies", category: "PHYS", offered: ["Winter","Spring"], prereqs: ["ASTR 12700"], abroad_eligible: false, hours_per_week: 8 },
     { id: "ELECTIVE 1", title: "General Elective I", category: "ELECTIVE", offered: ["Autumn","Winter","Spring"], prereqs: [], abroad_eligible: true, hours_per_week: 7 },
@@ -1408,32 +1408,72 @@ window.CATALOG = {
         { id: "HUMA 11100", title: "Readings in World Literature II", offered: ["Winter"] },
         { id: "HUMA 11200", title: "Readings in World Literature III", offered: ["Spring"] }
       ] },
+      { name: "Philosophical Perspectives", abroad: null, courses: [
+        { id: "HUMA 11500", title: "Philosophical Perspectives I", offered: ["Autumn"] },
+        { id: "HUMA 11600", title: "Philosophical Perspectives II", offered: ["Winter"] },
+        { id: "HUMA 11700", title: "Philosophical Perspectives III", offered: ["Spring"] }
+      ] },
+      { name: "Greece and Rome", abroad: null, courses: [
+        { id: "HUMA 12050", title: "Greece and Rome I", offered: ["Autumn"] },
+        { id: "HUMA 12150", title: "Greece and Rome II", offered: ["Winter"] },
+        { id: "HUMA 12250", title: "Greece and Rome III", offered: ["Spring"] }
+      ] },
       { name: "Human Being and Citizen", abroad: null, courses: [
         { id: "HUMA 12300", title: "Human Being and Citizen I", offered: ["Autumn"] },
         { id: "HUMA 12400", title: "Human Being and Citizen II", offered: ["Winter"] },
         { id: "HUMA 12500", title: "Human Being and Citizen III", offered: ["Spring"] }
+      ] },
+      { name: "Introduction to the Humanities", abroad: null, courses: [
+        { id: "HUMA 13500", title: "Introduction to the Humanities I", offered: ["Autumn"] },
+        { id: "HUMA 13600", title: "Introduction to the Humanities II", offered: ["Winter"] },
+        { id: "HUMA 13700", title: "Introduction to the Humanities III", offered: ["Spring"] }
+      ] },
+      { name: "Reading Cultures", abroad: null, courses: [
+        { id: "HUMA 14000", title: "Reading Cultures I", offered: ["Autumn"] },
+        { id: "HUMA 14100", title: "Reading Cultures II", offered: ["Winter"] },
+        { id: "HUMA 14200", title: "Reading Cultures III", offered: ["Spring"] }
       ] },
       { name: "Media Aesthetics", abroad: null, courses: [
         { id: "HUMA 16000", title: "Media Aesthetics I", offered: ["Autumn"] },
         { id: "HUMA 16100", title: "Media Aesthetics II", offered: ["Winter"] },
         { id: "HUMA 16200", title: "Media Aesthetics III", offered: ["Spring"] }
       ] },
-      { name: "Philosophical Perspectives", abroad: null, courses: [
-        { id: "HUMA 11500", title: "Philosophical Perspectives I", offered: ["Autumn"] },
-        { id: "HUMA 11600", title: "Philosophical Perspectives II", offered: ["Winter"] },
-        { id: "HUMA 11700", title: "Philosophical Perspectives III", offered: ["Spring"] }
+      { name: "Media Aesthetics with Digital Media", abroad: null, courses: [
+        { id: "HUMA 16000", title: "Media Aesthetics I", offered: ["Autumn"] },
+        { id: "HUMA 16100", title: "Media Aesthetics II", offered: ["Winter"] },
+        { id: "HUMA 16300", title: "Understanding Digital Media", offered: ["Spring"] }
+      ] },
+      { name: "Language and the Human", abroad: null, courses: [
+        { id: "HUMA 17000", title: "Language and the Human I", offered: ["Autumn"] },
+        { id: "HUMA 17100", title: "Language and the Human II", offered: ["Winter"] },
+        { id: "HUMA 17200", title: "Language and the Human III", offered: ["Spring"] }
+      ] },
+      { name: "Poetry and the Human", abroad: null, courses: [
+        { id: "HUMA 18000", title: "Poetry and the Human I", offered: ["Autumn"] },
+        { id: "HUMA 18100", title: "Poetry and the Human II", offered: ["Winter"] },
+        { id: "HUMA 18200", title: "Poetry and the Human III", offered: ["Spring"] }
       ] }
     ],
     SOSC: [
+      { name: "Power, Identity, and Resistance", abroad: null, courses: [
+        { id: "SOSC 11400", title: "Power, Identity, Resistance I", offered: ["Autumn"] },
+        { id: "SOSC 11500", title: "Power, Identity, Resistance II", offered: ["Winter"] },
+        { id: "SOSC 11600", title: "Power, Identity, Resistance III", offered: ["Spring"] }
+      ] },
       { name: "Self, Culture, and Society", abroad: null, courses: [
         { id: "SOSC 12400", title: "Self, Culture, and Society I", offered: ["Autumn"] },
         { id: "SOSC 12500", title: "Self, Culture, and Society II", offered: ["Winter"] },
         { id: "SOSC 12600", title: "Self, Culture, and Society III", offered: ["Spring"] }
       ] },
-      { name: "Power, Identity, and Resistance", abroad: null, courses: [
-        { id: "SOSC 11400", title: "Power, Identity, Resistance I", offered: ["Autumn"] },
-        { id: "SOSC 11500", title: "Power, Identity, Resistance II", offered: ["Winter"] },
-        { id: "SOSC 11600", title: "Power, Identity, Resistance III", offered: ["Spring"] }
+      { name: "Social Science Inquiry", abroad: null, courses: [
+        { id: "SOSC 13100", title: "Social Science Inquiry I", offered: ["Autumn"] },
+        { id: "SOSC 13200", title: "Social Science Inquiry II", offered: ["Winter"] },
+        { id: "SOSC 13300", title: "Social Science Inquiry III", offered: ["Spring"] }
+      ] },
+      { name: "Social Science Inquiry: Formal Theory", abroad: null, courses: [
+        { id: "SOSC 13110", title: "SSI: Formal Theory I", offered: ["Autumn"] },
+        { id: "SOSC 13210", title: "SSI: Formal Theory II", offered: ["Winter"] },
+        { id: "SOSC 13310", title: "SSI: Formal Theory III", offered: ["Spring"] }
       ] },
       { name: "Mind", abroad: null, courses: [
         { id: "SOSC 14100", title: "Mind I", offered: ["Autumn"] },
@@ -1445,10 +1485,20 @@ window.CATALOG = {
         { id: "SOSC 15200", title: "Classics of Soc. and Pol. Thought II", offered: ["Winter"] },
         { id: "SOSC 15300", title: "Classics of Soc. and Pol. Thought III", offered: ["Spring"] }
       ] },
-      { name: "Social Science Inquiry", abroad: null, courses: [
-        { id: "SOSC 13100", title: "Social Science Inquiry I", offered: ["Autumn"] },
-        { id: "SOSC 13200", title: "Social Science Inquiry II", offered: ["Winter"] },
-        { id: "SOSC 13300", title: "Social Science Inquiry III", offered: ["Spring"] }
+      { name: "Global Society", abroad: null, courses: [
+        { id: "SOSC 16100", title: "Global Society I", offered: ["Autumn"] },
+        { id: "SOSC 16200", title: "Global Society II", offered: ["Winter"] },
+        { id: "SOSC 16300", title: "Global Society III", offered: ["Spring"] }
+      ] },
+      { name: "Religion: Cosmos, Conscience, and Community", abroad: null, courses: [
+        { id: "SOSC 17100", title: "Religion I", offered: ["Autumn"] },
+        { id: "SOSC 17200", title: "Religion II", offered: ["Winter"] },
+        { id: "SOSC 17300", title: "Religion III", offered: ["Spring"] }
+      ] },
+      { name: "Democracy", abroad: null, courses: [
+        { id: "SOSC 18400", title: "Democracy I", offered: ["Autumn"] },
+        { id: "SOSC 18500", title: "Democracy II", offered: ["Winter"] },
+        { id: "SOSC 18600", title: "Democracy III", offered: ["Spring"] }
       ] }
     ],
     CIV: [
@@ -1617,20 +1667,76 @@ window.CATALOG = {
       { name: "Introductory General Chemistry", abroad: null, courses: [
         { id: "CHEM 10100", title: "Introductory General Chemistry I", offered: ["Autumn","Winter"] },
         { id: "CHEM 10200", title: "Introductory General Chemistry II", offered: ["Winter","Spring"] }
+      ] },
+      { name: "Physics for Future Presidents", abroad: null, courses: [
+        { id: "PHSC 11600", title: "Physics: Concepts and Applications", offered: ["Autumn"] },
+        { id: "PHSC 11700", title: "Physics: Energy and Sustainability", offered: ["Winter"] }
+      ] },
+      { name: "Chemistry and Human Disease", abroad: null, courses: [
+        { id: "PHSC 12400", title: "The Chemistry of Big Problems", offered: ["Autumn"] },
+        { id: "PHSC 12500", title: "Molecular Mechanisms of Human Disease", offered: ["Spring"] }
+      ] },
+      { name: "Matter and Black Holes", abroad: null, courses: [
+        { id: "PHSC 12600", title: "Matter, Energy, Space, and Time", offered: ["Autumn"] },
+        { id: "PHSC 12610", title: "Black Holes", offered: ["Winter"] }
+      ] },
+      { name: "Climate and Natural Hazards", abroad: null, courses: [
+        { id: "PHSC 13400", title: "Global Warming", offered: ["Autumn"] },
+        { id: "PHSC 13600", title: "Natural Hazards", offered: ["Winter"] }
+      ] },
+      { name: "Molecular Engineering", abroad: null, courses: [
+        { id: "PHSC 15100", title: "AI for Molecular Engineering", offered: ["Autumn"] },
+        { id: "PHSC 15200", title: "Engineering for Human Health", offered: ["Winter"] }
       ] }
     ],
     BIO: [
       { name: "Principles of Biology and Your Inner Fish", abroad: null, courses: [
         { id: "BIOS 10130", title: "Principles of Biology", offered: ["Autumn","Winter","Spring"] },
-        { id: "BIOS 12117", title: "Your Inner Fish", offered: ["Autumn","Winter","Spring"] }
+        { id: "BIOS 12117", title: "\"Your Inner Fish\"", offered: ["Autumn","Winter","Spring"] }
+      ] },
+      { name: "Biology and Genomics", abroad: null, courses: [
+        { id: "BIOS 10130", title: "Principles of Biology", offered: ["Autumn","Winter","Spring"] },
+        { id: "BIOS 11125", title: "Life Through a Genomic Lens", offered: ["Winter"] }
+      ] },
+      { name: "Biology and Biotechnology", abroad: null, courses: [
+        { id: "BIOS 10130", title: "Principles of Biology", offered: ["Autumn","Winter","Spring"] },
+        { id: "BIOS 11140", title: "Biotechnology for the 21st Century", offered: ["Autumn"] }
+      ] },
+      { name: "Biology and Evolution", abroad: null, courses: [
+        { id: "BIOS 10130", title: "Principles of Biology", offered: ["Autumn","Winter","Spring"] },
+        { id: "BIOS 13123", title: "Biological Evolution", offered: ["Winter"] }
+      ] },
+      { name: "Biology and Ecology", abroad: null, courses: [
+        { id: "BIOS 10130", title: "Principles of Biology", offered: ["Autumn","Winter","Spring"] },
+        { id: "BIOS 13132", title: "Ecology in the Anthropocene", offered: ["Autumn"] }
+      ] },
+      { name: "Biology and Vision", abroad: null, courses: [
+        { id: "BIOS 10140", title: "Inquiry-based Exploration of Biology", offered: ["Autumn","Winter","Spring"] },
+        { id: "BIOS 14117", title: "The Science and Art of Vision", offered: ["Spring"] }
+      ] },
+      { name: "Biology and Cancer", abroad: null, courses: [
+        { id: "BIOS 10140", title: "Inquiry-based Exploration of Biology", offered: ["Autumn","Winter","Spring"] },
+        { id: "BIOS 15115", title: "Cancer Biology: How Good Cells Go Bad", offered: ["Winter","Spring"] }
       ] }
     ],
     ARTS: [
       { name: "Visual Language: On Images", abroad: null, courses: [
         { id: "ARTV 10100", title: "Visual Language: On Images", offered: ["Autumn","Winter","Spring"] }
       ] },
+      { name: "Visual Language: On Objects", abroad: null, courses: [
+        { id: "ARTV 10200", title: "Visual Language: On Objects", offered: ["Autumn","Winter","Spring"] }
+      ] },
+      { name: "Visual Language: On Time and Space", abroad: null, courses: [
+        { id: "ARTV 10300", title: "Visual Language: On Time and Space", offered: ["Autumn","Winter","Spring"] }
+      ] },
+      { name: "Film and the Moving Image", abroad: null, courses: [
+        { id: "CMST 14400", title: "Film and the Moving Image", offered: ["Autumn","Winter","Spring"] }
+      ] },
       { name: "Introduction to Western Art Music", abroad: null, courses: [
         { id: "MUSI 10100", title: "Intro to Western Art Music", offered: ["Autumn","Winter","Spring"] }
+      ] },
+      { name: "Introduction to World Music", abroad: null, courses: [
+        { id: "MUSI 10200", title: "Introduction to World Music", offered: ["Autumn","Winter","Spring"] }
       ] },
       { name: "Drama: Embodiment and Transformation", abroad: null, courses: [
         { id: "TAPS 10100", title: "Drama: Embodiment and Transformation", offered: ["Autumn","Winter","Spring"] }

@@ -859,7 +859,9 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
 .fb-note { margin-top: 8px; color: var(--muted); font-size: 10.5px; font-style: italic; }
 
 /* "Harper" on the talk button uses the logo font */
-#talk .brandword { font-family: var(--serif); font-weight: 400; font-size: 1.45em; letter-spacing: -0.01em; margin-left: 2px; line-height: 1; }
+/* whole label in the logo font */
+#talklabel { font-family: var(--serif); font-weight: 400; font-size: 25px; letter-spacing: -0.01em; line-height: 1; display: inline-flex; align-items: center; }
+#talk .brandword { font: inherit; }
 
 /* quarters with 5+ courses: tighten so nothing is cut off */
 .cell { overflow-y: auto; scrollbar-width: none; }
@@ -875,3 +877,6 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
 .msg.ai::before { color: #c4b5fd; }
 .msg.tool { border-left: 3px solid #4b5262; background: #0b0c11; }
 .msg.tool::before { color: #8b93a7; }
+
+/* hidden means hidden, even for flex panels */
+[hidden] { display: none !important; }

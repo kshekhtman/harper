@@ -145,7 +145,7 @@
     const bad = new Set(Object.keys(v.courseIssues));
     let html = `<div></div>` + P.SEASONS.map(x => `<div class="colhead">${x}</div>`).join("");
     for (let y = 1; y <= 4; y++) {
-      html += `<div class="rowhead"><b>Year ${y}</b>${YEARS[y - 1]}</div>`;
+      html += `<div class="rowhead"><b>Year ${y}</b></div>`;
       for (const season of P.SEASONS) {
         const q = `Y${y}-${season}`, warn = v.quarterWarnings[q], abroad = s.abroad === q;
         const done = (s.locked || []).includes(q);
