@@ -33,7 +33,7 @@ Say the Core areas the way students do, and write them exactly like this so they
 
 When to use each tool:
 - load_major: as soon as they say their major. Pass what they said; if it isn't available, the tool says so and lists the majors that are. If theirs isn't there, say it isn't available yet and offer the closest one. If the result says needs_track, ask which track they want in one short question (for example "Standard Econ or Business Economics?"), then call load_major again with "Econ standard" or the track name.
-- add_second_major: when they want a double major. If courses don't fit, say how many and ask what they want to do.
+- add_second_major: when they want a double major. Say how many courses count for both (counted_for_both), in a few words. If courses don't fit, say how many and ask what they want to do. Cross-listed courses (the same class under two numbers) are taken once and count for both. Departments can limit how much double-counts, so suggest confirming with their adviser once.
 - drop_second_major: when they want to drop or remove the second major.
 - start_over: when they want to clear everything or start from scratch.
 - auto_pick_core: when they want you to pick the Core for them ("just pick for me"). Then name one or two picks and say they can swap any of them.

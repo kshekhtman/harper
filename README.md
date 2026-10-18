@@ -40,7 +40,7 @@ Got AP or placement credit? Say "I have AP credit for Calc I and II" and those c
 
 Not sure which elective to take? Ask Harper for recommendations or how a course is. **The ratings are sample data generated for the demo, not real UChicago course evaluations.** The feature is built so real evaluation data could be plugged in later, with the university's permission.
 
-You can add a second major ("add econ as a second major"). Shared courses count once, and Harper tells you if it doesn't fit in four years.
+You can add a second major ("add econ as a second major"). Courses both majors require are taken once and count for both (marked ×2 on the grid), including cross-listed courses that have different numbers in each department. Harper tells you if it doesn't fit in four years. Departments can limit double-counting, so check with your adviser.
 
 Say "send this to my adviser" (or click Export for adviser) to get a one-page summary you can print or save as a PDF.
 

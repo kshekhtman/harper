@@ -880,3 +880,6 @@ footer { max-width: 1680px; margin: 0 auto; padding: 8px 32px 28px; color: var(-
 
 /* hidden means hidden, even for flex panels */
 [hidden] { display: none !important; }
+
+/* counts toward both majors */
+.x2 { margin-left: 6px; padding: 0 5px; border-radius: 999px; background: rgba(56, 189, 248, 0.18); color: #7dd3fc; font-size: 10px; font-weight: 700; vertical-align: 1px; }

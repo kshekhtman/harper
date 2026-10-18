@@ -98,9 +98,15 @@
     const pretty = q => (q === "TRAY" ? "unscheduled" : q);
 
     // validation
+    // cross-listed courses are the same class under different numbers
+    const twinsOf = {};
+    (catalog.crosslists || []).forEach(g => g.forEach(id => (twinsOf[id] = g)));
+    const twins = id => twinsOf[id] || [id];
+    const anyWhere = id => { for (const t of twins(id)) { const w = whereIs(t); if (w && w !== "TRAY") return w; } return whereIs(id); };
+
     // a prereq on a Core course is met by whatever course fills that Core area
     function prereqAt(pid) {
-      const w = whereIs(pid);
+      const w = anyWhere(pid);
       if (w && w !== "TRAY") return w;
       const cat = courses[pid]?.category;
       if (!(catalog.core_options || {})[cat]) return w;
@@ -290,7 +296,7 @@
       let extras = entries.filter(e => !planned.has(e.id) && !core.includes(courses[e.id].category) && !mine.includes(courses[e.id].category)).length;
       QUARTERS.forEach(q => state.plan[q].forEach(id => { if (extras > 0 && /^ELECTIVE \d/.test(id)) { removeEverywhere(id); extras--; } }));
       // 4. put each course in the quarter they actually took it
-      entries.forEach(e => { removeEverywhere(e.id); state.plan[e.quarter].push(e.id); });
+      entries.forEach(e => { twins(e.id).forEach(t => removeEverywhere(t)); state.plan[e.quarter].push(e.id); });
       // AP / test credit with no course list: each 100 units fills an open elective slot
       let tc = state.testCredits || 0;
       state.testUsed = [];
@@ -374,8 +380,10 @@
         const before = snapshot();
         const scheduled = () => QUARTERS.flatMap(q => state.plan[q]).concat(state.tray, state.credit);
         const needed = QUARTERS.flatMap(q => catalog.plans[m2][q]).filter(id => mine2.includes(courses[id]?.category));
-        const shared = needed.filter(id => scheduled().includes(id));
-        const toAdd = needed.filter(id => !scheduled().includes(id));
+        const has = id => twins(id).some(t => scheduled().includes(t));
+        // the number actually in the plan (a cross-listed twin counts)
+        const shared = needed.filter(has).map(id => twins(id).find(t => scheduled().includes(t)) || id);
+        const toAdd = needed.filter(id => !has(id));
         // free up space: drop electives that neither major needs
         const dropped = [];
         QUARTERS.forEach(q => state.plan[q].forEach(id => {
@@ -454,7 +462,7 @@
         const found = ids.filter(Boolean), missing = String(course_ids).split(/,|\band\b|&/).filter((s, i) => !ids[i]).map(s => s.trim()).filter(Boolean);
         if (!found.length) return { ok: false, error: `Couldn't find ${course_ids}. Use course numbers like "MATH 15100".` };
         const before = snapshot();
-        found.forEach(id => { removeEverywhere(id); if (!state.credit.includes(id)) state.credit.push(id); });
+        found.forEach(id => { twins(id).forEach(t => removeEverywhere(t)); if (!state.credit.includes(id)) state.credit.push(id); });
         // these are the transcript's unlisted test credits being named: give back the elective slots they were holding
         if (state.testCredits) {
           const n = Math.min(found.length, state.testCredits);
@@ -770,7 +778,7 @@
       }
     };
 
-    return { tools, state, validate, hoursIn, courses, QUARTERS, SEASONS, onChange: fn => listeners.push(fn), parseQuarter, findCourse };
+    return { tools, state, validate, hoursIn, courses, QUARTERS, SEASONS, twins, onChange: fn => listeners.push(fn), parseQuarter, findCourse };
   }
 
   root.Planner = { createPlanner, QUARTERS, SEASONS };

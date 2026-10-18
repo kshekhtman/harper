@@ -109,6 +109,14 @@
   // "The Inca And Aztec States" -> "The Inca and Aztec States"
   const SMALL = new Set(["a", "an", "and", "as", "at", "but", "by", "for", "in", "of", "on", "or", "the", "to", "vs", "with"]);
   const titleCase = s => String(s).split(" ").map((w, i, a) => (i > 0 && !/[:\-–]$/.test(a[i - 1]) && SMALL.has(w.toLowerCase()) ? w.toLowerCase() : w)).join(" ");
+  // does this course count toward both majors?
+  function countsTwice(id) {
+    const s = P.state; if (!s.second) return false;
+    const cats = window.CATALOG.major_categories || {}, c = P.courses[id];
+    const inPlan = m => P.QUARTERS.some(q => (window.CATALOG.plans[m]?.[q] || []).some(x => P.twins(id).includes(x)));
+    const forMajor = m => (cats[m] || []).includes(c.category) && inPlan(m);
+    return forMajor(s.major) && forMajor(s.second);
+  }
   function cardHTML(id, issues, changed, fixed) {
     const c = P.courses[id];
     const elective = /^ELECTIVE \d/.test(id);
@@ -117,7 +125,7 @@
     const label = c.placeholder ? { HUM: "HUM", SOSC: "SOSC", CIV: "CIV", ARTS: "ARTS", BIO: "BIO SCI", PHYS: "PHYS SCI" }[c.category] + " " + id.split(" ")[1] : id;
     const title = elective ? "Open elective" : c.placeholder ? "Not picked yet" : titleCase(c.title);
     return `<div class="${cls}" data-id="${id}" style="--c:${GROUPS[groupOf(id)]}">
-      <div class="id">${label}</div><div class="t">${title}</div>
+      <div class="id">${label}${countsTwice(id) ? '<span class="x2" title="Counts toward both majors">×2</span>' : ""}</div><div class="t">${title}</div>
       ${issues ? `<div class="why" title="${issues.join("; ")}">${issues.join("; ")}</div>` : ""}</div>`;
   }
 

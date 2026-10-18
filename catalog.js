@@ -890,6 +890,27 @@ window.CATALOG = {
       "ARTS": "Introduction to Western Art Music"
     }
   },
+  // cross-listed courses: the same class under different numbers (counts once)
+  crosslists: [
+    ["CMST 10100","ENGL 10800"],
+    ["CCSG 20500","ENSC 21100"],
+    ["GEOS 24800","ENSC 24800"],
+    ["CMLT 20030","REES 20030"],
+    ["ENSC 24400","BIOS 20196"],
+    ["JWSC 20122","RLST 12000"],
+    ["LACS 10600","RDIN 10600"],
+    ["LACS 16100","RDIN 16100"],
+    ["LACS 16200","RDIN 16200"],
+    ["LACS 16300","RDIN 16300"],
+    ["LACS 16404","RDIN 16404"],
+    ["LACS 21001","LLSO 21001"],
+    ["LACS 22677","RDIN 21677"],
+    ["LLSO 10432","ENGL 10432"],
+    ["MDVL 11040","RLST 11040"],
+    ["RDIN 12200","HIST 12706"],
+    ["RDIN 20140","SOCI 20140"],
+    ["STAT 26300","BIOS 21216"]
+  ],
   aliases: {
     "CS": [
       "computer science",
