@@ -5,6 +5,7 @@
   const QUARTERS = [];
   for (let y = 1; y <= 4; y++) for (const s of SEASONS) QUARTERS.push(`Y${y}-${s}`);
   const MAX_COURSES = 4;
+  const MIN_COURSES = 3; // university policy: at least 3 courses a quarter
   const HEAVY_HOURS = 42;
 
   function createPlanner(catalog) {
@@ -136,6 +137,7 @@
         const w = [];
         if (state.locked.includes(q)) return;
         if (n > MAX_COURSES) w.push(`${n} courses (max ${MAX_COURSES})`);
+        if (n < MIN_COURSES && state.major) w.push(`only ${n} course${n === 1 ? "" : "s"} (minimum ${MIN_COURSES})`);
         if (hrs > HEAVY_HOURS) w.push(`heavy: ~${hrs} hrs/week`);
         if (w.length) quarterWarnings[q] = w;
       });
@@ -146,7 +148,7 @@
       const v = validate(), out = [];
       Object.entries(v.courseIssues).forEach(([id, ps]) => out.push(`${id} (${whereIs(id)}): ${ps.join("; ")}`));
       v.unscheduled.forEach(id => out.push(`${id} is unscheduled and needs a new quarter`));
-      Object.entries(v.quarterWarnings).forEach(([q, ws]) => out.push(`${q} warning: ${ws.join("; ")}`));
+      Object.entries(v.quarterWarnings).forEach(([q, ws]) => ws.forEach(w => out.push(w.startsWith("only ") ? `${q}: ${w}` : `${q} warning: ${w}`)));
       return out;
     }
     function result(extra) {
@@ -248,6 +250,37 @@
         const before = state.tray.length;
         runAutoFixOnce();
         if (!state.tray.length || state.tray.length >= before && k > 0) break;
+      }
+      balanceMin();
+    }
+    // top up any quarter under the 3-course minimum with a course from a 4-course quarter
+    function balanceMin() {
+      const deps = x => catalog.courses.filter(c => c.prereqs.includes(x)).map(c => whereIs(c.id)).filter(w => w && w !== "TRAY" && w !== "CREDIT").map(qIndex);
+      for (let n = 0; n < 12; n++) {
+        const low = QUARTERS.find(q => !state.locked.includes(q) && state.abroad !== q && state.plan[q].length < MIN_COURSES);
+        if (!low) return;
+        const li = qIndex(low);
+        // first anything stuck in the tray, then a course from a full quarter
+        let moved = false;
+        for (const id of [...state.tray]) { removeEverywhere(id); if (canPlace(id, li, MAX_COURSES)) { state.plan[low].push(id); moved = true; break; } state.tray.push(id); }
+        if (!moved) {
+          const donors = QUARTERS.filter(q => !state.locked.includes(q) && state.abroad !== q && state.plan[q].length > MIN_COURSES)
+            .sort((a, b) => Math.abs(qIndex(a) - li) - Math.abs(qIndex(b) - li));
+          outer: for (const d of donors) {
+            for (const x of [...state.plan[d]]) {
+              removeEverywhere(x);
+              if (canPlace(x, li, MAX_COURSES) && deps(x).every(k => k > li)) { state.plan[low].push(x); moved = true; break outer; }
+              state.plan[d].push(x);
+            }
+          }
+        }
+        if (!moved) {
+          // nothing can move here, so add an open elective (you still need 3 courses a quarter)
+          let k = 1; while (courses["ELECTIVE " + k] && whereIs("ELECTIVE " + k)) k++;
+          const eid = "ELECTIVE " + k;
+          if (!courses[eid]) { const ec = { id: eid, title: "General Elective", category: "ELECTIVE", offered: SEASONS, prereqs: [], abroad_eligible: true, hours_per_week: 7 }; catalog.courses.push(ec); courses[eid] = ec; byNorm[norm(eid)] = eid; }
+          state.plan[low].push(eid);
+        }
       }
     }
     function runAutoFixOnce() {
@@ -361,6 +394,7 @@
           if (slots.length) open.push(area);
         });
         QUARTERS.forEach(q => (state.plan[q] = state.plan[q].filter(id => !state.credit.includes(id))));
+        balanceMin();
         state.changed = QUARTERS.flatMap(q => state.plan[q]);
         if (state.transcript) {
           const t = applyTranscript(state.transcript);
@@ -681,7 +715,7 @@
           state.plan[q].filter(id => !pick.courses.some(c => c.id === id)).forEach(id => { removeEverywhere(id); state.tray.push(id); });
           todo.forEach(c => { removeEverywhere(c.id); state.plan[q].push(c.id); });
           // the extra courses beyond the CIV requirement count as electives
-          const extra = Math.max(0, pick.courses.length - slots.length);
+          const extra = 0; // the program's extra courses add to the total (UChicago degrees are ~42 courses)
           state.abroadElectives = [];
           for (const x of QUARTERS.filter(x => !state.locked.includes(x) && x !== q)) {
             for (const id of [...state.plan[x]]) {
@@ -716,6 +750,7 @@
           const heavy = qs.filter(q => hoursIn(q) > goal && !stuck.has(q)).sort((a, b) => hoursIn(b) - hoursIn(a))[0];
           if (!heavy) break;
           const hi = qIndex(heavy);
+          if (state.plan[heavy].length <= MIN_COURSES) { stuck.add(heavy); continue; }
           const movable = [...state.plan[heavy]].sort((a, b) => courses[b].hours_per_week - courses[a].hours_per_week);
           const targets = QUARTERS.map((q, i) => i).filter(i => !qs.includes(QUARTERS[i])).sort((a, b) => Math.abs(a - hi) - Math.abs(b - hi));
           let moved = false;
@@ -733,6 +768,7 @@
           }
           if (!moved) stuck.add(heavy);
         }
+        balanceMin();
         const changes = diff(before);
         const still = qs.filter(q => hoursIn(q) > goal).map(q => `${q} is still ~${hoursIn(q)} hrs/week`);
         return result({
@@ -778,7 +814,7 @@
       }
     };
 
-    return { tools, state, validate, hoursIn, courses, QUARTERS, SEASONS, twins, onChange: fn => listeners.push(fn), parseQuarter, findCourse };
+    return { tools, state, validate, hoursIn, courses, QUARTERS, SEASONS, twins, balanceMin, onChange: fn => listeners.push(fn), parseQuarter, findCourse };
   }
 
   root.Planner = { createPlanner, QUARTERS, SEASONS };

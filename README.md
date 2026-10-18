@@ -2,7 +2,7 @@
 
 Hi! Harper is an interactive tool that helps you talk to someone about your four-year graduation plan. I made this as part of my submission for the UChicago KTP Fall Voice AI Mini-Hack (Oct 17, 2026) with ElevenLabs.
 
-Through this tool, you can talk to Harper about your four-year graduation plan. You speak with Harper and it helps you plan your time here in college. You tell Harper your major and it lays out a possible 12-quarter plan. Then you can talk to Harper about it, "I want to do Paris in the fall of third year," or "CMSC 14300 just filled up." The grid then automatically updates as you talk with Harper. If a course is incompatible with another course or isn't satisfied in your plan, it will turn red, and Harper will fix the plan on your behalf, taking into account your evolving preferences.
+Through this tool, you can talk to Harper about your four-year graduation plan. You speak with Harper and it helps you plan your time here in college. You tell Harper your major and it lays out a possible 12-quarter plan. Then you can talk to Harper about it, "I want to do Paris in the fall of third year," or "CMSC 14300 just filled up." The grid then automatically updates as you talk with Harper. Every quarter keeps at least 3 courses, as the university requires. If a course is incompatible with another course or isn't satisfied in your plan, it will turn red, and Harper will fix the plan on your behalf, taking into account your evolving preferences.
 
 ## Why
 
@@ -23,7 +23,7 @@ We split it this way so the model can't make up a plan that breaks the rules. Wh
 - `index.html`: the page and the voice connection
 - `styles.css`: styling
 - `planner.js`: rules, auto-fix, and the tools
-- `catalog.js`: course data, starting plans for 46 majors and tracks, Core options, and 24 study abroad programs
+- `catalog.js`: course data, starting plans for 51 majors and tracks, Core options, and 24 study abroad programs
 - `AGENT_SETUP.md`: prompt and tool settings for the ElevenLabs agent
 
 ## Running it

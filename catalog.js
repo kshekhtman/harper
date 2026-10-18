@@ -353,6 +353,56 @@ window.CATALOG = {
     { id: "SPAN 21805", title: "Iberian Lit and Culture: Modern", category: "SPAN", offered: ["Autumn","Winter"], prereqs: ["SPAN 20300"], abroad_eligible: false, hours_per_week: 9 },
     { id: "SPAN 21905", title: "Latin American Lit and Culture: Colonial", category: "SPAN", offered: ["Autumn","Winter"], prereqs: ["SPAN 20300"], abroad_eligible: false, hours_per_week: 9 },
     { id: "SPAN 22005", title: "Latin American Lit and Culture: 20th-21st C.", category: "SPAN", offered: ["Autumn","Winter"], prereqs: ["SPAN 20300"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 20150", title: "Sustainable Urban Development", category: "CEGU", offered: ["Autumn","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 20151", title: "Environmental Histories of the Pacific", category: "CEGU", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 20180", title: "Writing the City", category: "CEGU", offered: ["Autumn"], prereqs: ["CEGU 20001"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 21114", title: "Medieval Indian Cities", category: "CEGU", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 21501", title: "Environmental Organizing & Activism", category: "CEGU", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 22100", title: "Disease, Health & Global Environment", category: "CEGU", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 22301", title: "Digital Geographies of Climate Justice", category: "CEGU", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 23517", title: "Pixels, Planet, Power", category: "CEGU", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 24010", title: "Ecocide: Environmental Destruction", category: "CEGU", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 24660", title: "Urban Geography", category: "CEGU", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 25035", title: "Modern Nature", category: "CEGU", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 25909", title: "Environment & Technology: Middle East", category: "CEGU", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 26907", title: "Environmental History of South Asia", category: "CEGU", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CEGU 27155", title: "Urban Design with Nature", category: "CEGU", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 20150", title: "Language and Communication", category: "CHDV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 20175", title: "The Sociology of Deviant Behavior", category: "CHDV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 20655", title: "Child & Adolescent Development", category: "CHDV", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 20774", title: "Multilingualism & Social Interaction", category: "CHDV", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 21000", title: "Cultural Psychology", category: "CHDV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 21600", title: "Abortion & Forced Sterilization in US", category: "CHDV", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 21816", title: "A History of Youth in Latin America", category: "CHDV", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 21899", title: "The Politics of International Migration", category: "CHDV", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 21920", title: "The Evolution of Language", category: "CHDV", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 22099", title: "Sex, Money, and Power", category: "CHDV", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 22305", title: "Who Deserves What?", category: "CHDV", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 23100", title: "Human Language and Interaction", category: "CHDV", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 23204", title: "Intro to Medical Anthropology", category: "CHDV", offered: ["Winter"], prereqs: ["SOSC 12600"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 23370", title: "Bright and Dark Sides of Empathy", category: "CHDV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 23700", title: "Crosslinguistic Language Development", category: "CHDV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 23900", title: "Introduction to Language Acquisition", category: "CHDV", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 24500", title: "Language and Environment", category: "CHDV", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "CHDV 25120", title: "Child Development and Public Policy", category: "CHDV", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 20027", title: "Quantitative Methods in Linguistics", category: "COGS", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 22001", title: "Intro to Phonetics and Phonology", category: "COGS", offered: ["Spring"], prereqs: ["LING 20001"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 22003", title: "Introduction to Syntax", category: "COGS", offered: ["Winter"], prereqs: ["LING 20001"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 22004", title: "Intro to Semantics and Pragmatics", category: "COGS", offered: ["Spring"], prereqs: ["LING 20001"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 22005", title: "Morphology", category: "COGS", offered: ["Spring"], prereqs: ["LING 20001"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 22006", title: "Sociophonetics", category: "COGS", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 22013", title: "Introduction to Psycholinguistics", category: "COGS", offered: ["Autumn","Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 22501", title: "Nature, Nurture, Language & Cognition", category: "COGS", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 24001", title: "Prediction in Language Comprehension", category: "COGS", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "COGS 29001", title: "Contemporary Topics: Cognitive Science", category: "COGS", offered: ["Winter"], prereqs: ["COGS 20001","COGS 20002"], abroad_eligible: false, hours_per_week: 9 },
+    { id: "HIPS 15006", title: "Histories of the Bomb", category: "HIPS", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "HIPS 18302", title: "SCS I: Ancient Science", category: "HIPS", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "HIPS 18506", title: "SCS III: Modern Science", category: "HIPS", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "HIPS 22001", title: "Introduction to Science Studies", category: "HIPS", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "HIPS 25014", title: "Introduction to Environmental History", category: "HIPS", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "HIPS 25417", title: "Biology, Technology & Politics", category: "HIPS", offered: ["Winter"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "HIPS 29653", title: "Tutorial: Genetics in Society", category: "HIPS", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
+    { id: "HIPS 29654", title: "Tutorial: Populating the Earth", category: "HIPS", offered: ["Spring"], prereqs: [], abroad_eligible: false, hours_per_week: 9 },
     // Core
     { id: "HUMA 11000", title: "Readings in World Literature I", category: "HUM", offered: ["Autumn"], prereqs: [], abroad_eligible: false, hours_per_week: 8 },
     { id: "HUMA 11100", title: "Readings in World Literature II", category: "HUM", offered: ["Winter"], prereqs: ["HUMA 11000"], abroad_eligible: false, hours_per_week: 8 },
@@ -780,6 +830,31 @@ window.CATALOG = {
     ],
     "Sociology": [
       "SOCI"
+    ],
+    "Astrophysics": [
+      "ASTR",
+      "PHYSICS",
+      "MATH"
+    ],
+    "Cognitive Science": [
+      "COGS",
+      "LING",
+      "PSYC",
+      "PHIL",
+      "CHDV"
+    ],
+    "Comparative Human Development": [
+      "CHDV",
+      "PSYC"
+    ],
+    "Environment, Geography, and Urbanization": [
+      "CEGU",
+      "NEAA"
+    ],
+    "History, Philosophy, and Social Studies of Science and Medicine": [
+      "HIPS",
+      "PHYSICS",
+      "MATH"
     ]
   },
   // a Core pick that pairs well with each major (Harper suggests these first)
@@ -1127,6 +1202,34 @@ window.CATALOG = {
     "Sociology": [
       "sociology",
       "soci"
+    ],
+    "Astrophysics": [
+      "astrophysics",
+      "astronomy",
+      "astro"
+    ],
+    "Cognitive Science": [
+      "cognitive science",
+      "cogs",
+      "cogsci",
+      "cog sci"
+    ],
+    "Comparative Human Development": [
+      "comparative human development",
+      "human development",
+      "chdv"
+    ],
+    "Environment, Geography, and Urbanization": [
+      "environment, geography, and urbanization",
+      "environment geography and urbanization",
+      "cegu",
+      "environmental studies",
+      "geography"
+    ],
+    "History, Philosophy, and Social Studies of Science and Medicine": [
+      "history, philosophy, and social studies of science and medicine",
+      "hips",
+      "history of science"
     ]
   },
   plans: {
@@ -1139,10 +1242,10 @@ window.CATALOG = {
       "Y2-Spring": ["CMSC 25300", "SOSC 12600", "BIOS 10130"],
       "Y3-Autumn": ["CMSC 23500", "CMSC 25400", "ARTV 10100"],
       "Y3-Winter": ["CMSC 23300", "HIST 13001", "ASTR 12710"],
-      "Y3-Spring": ["HIST 13002", "ECON 10000", "ELECTIVE 1", "BIOS 12117"],
+      "Y3-Spring": ["ECON 10000", "ELECTIVE 1", "BIOS 12117"],
       "Y4-Autumn": ["CMSC 23200", "ECON 10200", "STAT 23400"],
       "Y4-Winter": ["CMSC 22240", "MATH 19520", "ECON 20000"],
-      "Y4-Spring": ["ECON 20100", "ELECTIVE 2"]
+      "Y4-Spring": ["ECON 20100", "ELECTIVE 2", "HIST 13002"]
     },
     "Econ": {
       "Y1-Autumn": ["MATH 15100", "ECON 10000", "HUMA 11000"],
@@ -1152,8 +1255,8 @@ window.CATALOG = {
       "Y2-Winter": ["ECON 20100", "STAT 23400", "SOSC 12500", "ASTR 12710"],
       "Y2-Spring": ["ECON 20200", "ECON 21020", "SOSC 12600"],
       "Y3-Autumn": ["ECON 20300", "ECON 28000", "ARTV 10100"],
-      "Y3-Winter": ["ECON 25000", "HIST 13001"],
-      "Y3-Spring": ["ECON 24000", "ECON 20700", "HIST 13002", "BIOS 12117"],
+      "Y3-Winter": ["ECON 25000", "HIST 13001", "ECON 24000"],
+      "Y3-Spring": ["ECON 20700", "HIST 13002", "BIOS 12117"],
       "Y4-Autumn": ["ECON 26010", "CMSC 14100", "ELECTIVE 1"],
       "Y4-Winter": ["ECON 23950", "STAT 24300", "CMSC 14200"],
       "Y4-Spring": ["CMSC 14300", "CMSC 25300", "ELECTIVE 2"]
@@ -1164,8 +1267,8 @@ window.CATALOG = {
       "Y1-Spring": ["MATH 15300", "BIOS 10130", "HUMA 11200"],
       "Y2-Autumn": ["MATH 16300", "STAT 24300", "SOSC 12400", "ASTR 12700"],
       "Y2-Winter": ["MATH 20250", "CMSC 27100", "SOSC 12500", "ASTR 12710"],
-      "Y2-Spring": ["MATH 20300", "STAT 23400", "SOSC 12600", "BIOS 12117"],
-      "Y3-Autumn": ["MATH 20400", "MATH 25400"],
+      "Y2-Spring": ["SOSC 12600", "BIOS 12117", "MATH 20300"],
+      "Y3-Autumn": ["MATH 20400", "MATH 25400", "STAT 23400"],
       "Y3-Winter": ["MATH 20500", "MATH 25500", "HIST 13001"],
       "Y3-Spring": ["MATH 27000", "HIST 13002", "ECON 20000"],
       "Y4-Autumn": ["MATH 27300", "MATH 19520", "ARTV 10100"],
@@ -1180,9 +1283,9 @@ window.CATALOG = {
       "Y2-Winter": ["DATA 21200", "CMSC 14200", "SOSC 12500"],
       "Y2-Spring": ["DATA 23700", "STAT 24300", "SOSC 12600"],
       "Y3-Autumn": ["DATA 21300", "DATA 22100", "DATA 25900"],
-      "Y3-Winter": ["STAT 23400", "CMSC 14300", "HIST 13001", "ASTR 12710"],
+      "Y3-Winter": ["CMSC 14300", "HIST 13001", "ASTR 12710"],
       "Y3-Spring": ["CMSC 23500", "HIST 13002", "BIOS 10130"],
-      "Y4-Autumn": ["CMSC 25300", "ARTV 10100"],
+      "Y4-Autumn": ["CMSC 25300", "ARTV 10100", "STAT 23400"],
       "Y4-Winter": ["CMSC 25400", "ECON 10000", "ELECTIVE 1"],
       "Y4-Spring": ["ECON 10200", "MATH 19520", "ELECTIVE 2", "BIOS 12117"]
     },
@@ -1208,16 +1311,16 @@ window.CATALOG = {
       "Y2-Winter": ["PLSC 25457", "STAT 23400", "SOSC 12500", "ASTR 12710"],
       "Y2-Spring": ["PLSC 27654", "BIOS 10130", "SOSC 12600"],
       "Y3-Autumn": ["PLSC 23501", "PLSC 26100", "PBPL 22100"],
-      "Y3-Winter": ["ECON 10000", "HIST 13001"],
-      "Y3-Spring": ["ECON 10200", "HIST 13002", "ARTV 10100", "BIOS 12117"],
+      "Y3-Winter": ["ECON 10000", "HIST 13001", "ARTV 10100"],
+      "Y3-Spring": ["BIOS 12117", "ECON 10200", "HIST 13002"],
       "Y4-Autumn": ["PBPL 20000", "PBPL 24701", "DATA 11800"],
       "Y4-Winter": ["PBPL 22200", "DATA 11900", "ELECTIVE 1"],
       "Y4-Spring": ["PBPL 22300", "PBPL 28550", "ELECTIVE 2"]
     },
     "Biology": {
       "Y1-Autumn": ["MATH 15100", "BIOS 10130", "HUMA 11000"],
-      "Y1-Winter": ["MATH 15200", "HUMA 11100"],
-      "Y1-Spring": ["MATH 15300", "ARTV 10100", "HUMA 11200", "BIOS 12117"],
+      "Y1-Winter": ["MATH 15200", "HUMA 11100", "ARTV 10100"],
+      "Y1-Spring": ["HUMA 11200", "BIOS 12117", "MATH 15300"],
       "Y2-Autumn": ["BIOS 20151", "STAT 23400", "SOSC 12400", "ASTR 12700"],
       "Y2-Winter": ["BIOS 20186", "DATA 11800", "SOSC 12500", "ASTR 12710"],
       "Y2-Spring": ["BIOS 20187", "DATA 11900", "SOSC 12600"],
@@ -1376,8 +1479,8 @@ window.CATALOG = {
       "Y2-Winter": ["ASTR 12710", "ARTH 16100", "HIST 13001"],
       "Y2-Spring": ["ARTH 29600", "ARTH 24602", "BIOS 12117"],
       "Y3-Autumn": ["ARTH 14107", "ARTH 20603", "ARTH 25105"],
-      "Y3-Winter": ["HIST 13002", "ARTH 23010", "ARTH 25106", "ENGL 10144"],
-      "Y3-Spring": ["ARTH 25300", "HIST 15006"],
+      "Y3-Winter": ["ARTH 23010", "ARTH 25106", "ENGL 10144"],
+      "Y3-Spring": ["ARTH 25300", "HIST 15006", "HIST 13002"],
       "Y4-Autumn": ["ARTH 28330", "ELECTIVE 1", "HIST 14601"],
       "Y4-Winter": ["ENGL 10404", "PLSC 28701", "HIST 12706"],
       "Y4-Spring": ["ELECTIVE 2", "PLSC 28801", "HIST 15007"]
@@ -1390,8 +1493,8 @@ window.CATALOG = {
       "Y2-Winter": ["SOSC 12500", "CHEM 22100", "PHYS 13200", "MATH 15300"],
       "Y2-Spring": ["SOSC 12600", "CHEM 22200", "MATH 19620", "BIOS 20186"],
       "Y3-Autumn": ["CHEM 20100", "MATH 18500", "BIOS 20187"],
-      "Y3-Winter": ["HIST 13001", "BIOS 20200"],
-      "Y3-Spring": ["CHEM 20300", "HIST 13002", "MATH 18400", "BIOS 21317"],
+      "Y3-Winter": ["HIST 13001", "BIOS 20200", "MATH 18400"],
+      "Y3-Spring": ["BIOS 21317", "CHEM 20300", "HIST 13002"],
       "Y4-Autumn": ["CHEM 32100", "ASTR 12700", "CHEM 26100"],
       "Y4-Winter": ["ASTR 12710", "CHEM 26200", "CHEM 26700"],
       "Y4-Spring": ["ELECTIVE 1", "ELECTIVE 2", "PHYS 13300", "BIOS 21328"]
@@ -1400,11 +1503,11 @@ window.CATALOG = {
       "Y1-Autumn": ["HUMA 11000", "MATH 15100", "CHEM 11100"],
       "Y1-Winter": ["HUMA 11100", "MATH 15200", "CHEM 11200"],
       "Y1-Spring": ["HUMA 11200", "CHEM 11300", "ARTV 10100", "MATH 15300"],
-      "Y2-Autumn": ["SOSC 12400", "CHEM 22000", "MATH 18300", "PHYS 13100"],
+      "Y2-Autumn": ["PHYS 13100", "SOSC 12400", "CHEM 22000"],
       "Y2-Winter": ["SOSC 12500", "CHEM 22100", "PHYS 13200"],
       "Y2-Spring": ["SOSC 12600", "CHEM 22200", "MATH 19620", "PHYS 13300"],
       "Y3-Autumn": ["CHEM 20100", "ASTR 12700", "MATH 18400"],
-      "Y3-Winter": ["ASTR 12710", "HIST 13001"],
+      "Y3-Winter": ["ASTR 12710", "HIST 13001", "MATH 18300"],
       "Y3-Spring": ["CHEM 20300", "BIOS 10130", "MATH 18500"],
       "Y4-Autumn": ["CHEM 23300", "CHEM 32100", "CHEM 26100"],
       "Y4-Winter": ["CHEM 20200", "ELECTIVE 1", "CHEM 26200"],
@@ -1418,9 +1521,9 @@ window.CATALOG = {
       "Y2-Winter": ["CMST 28600", "ASTR 12710", "HIST 13001"],
       "Y2-Spring": ["CMST 28700", "ARTV 10100", "BIOS 12117"],
       "Y3-Autumn": ["CMST 29201", "CMST 23930", "CMST 28921"],
-      "Y3-Winter": ["CMST 23931", "CMST 28922", "HIST 13002", "HIST 12706"],
-      "Y3-Spring": ["CMST 29202"],
-      "Y4-Autumn": ["CMST 27299", "CMST 28999", "ELECTIVE 1", "HIST 14601"],
+      "Y3-Winter": ["HIST 13002", "HIST 12706", "CMST 23931"],
+      "Y3-Spring": ["CMST 29202", "CMST 28922", "ELECTIVE 1"],
+      "Y4-Autumn": ["HIST 14601", "CMST 27299", "CMST 28999"],
       "Y4-Winter": ["ENGL 10404", "PLSC 28701", "ENGL 10144"],
       "Y4-Spring": ["ELECTIVE 2", "PLSC 28801", "HIST 15006"]
     },
@@ -1433,8 +1536,8 @@ window.CATALOG = {
       "Y2-Spring": ["LATN 20300", "ARTV 10100", "CLCV 23024", "BIOS 12117"],
       "Y3-Autumn": ["CLCV 20100", "CLCV 20407", "CLCV 20700", "HIST 13001"],
       "Y3-Winter": ["CLCV 21700", "CLCV 24622", "HIST 13002"],
-      "Y3-Spring": ["PLSC 28801", "HIST 15006"],
-      "Y4-Autumn": ["CLCV 29500", "ELECTIVE 1", "HIST 14601", "PLSC 28701"],
+      "Y3-Spring": ["PLSC 28801", "HIST 15006", "ELECTIVE 1"],
+      "Y4-Autumn": ["HIST 14601", "PLSC 28701", "CLCV 29500"],
       "Y4-Winter": ["ENGL 10404", "ENGL 10144", "HIST 12706"],
       "Y4-Spring": ["ELECTIVE 2", "HIST 15007", "PLSC 28901"]
     },
@@ -1446,11 +1549,11 @@ window.CATALOG = {
       "Y2-Winter": ["CCSG 20100", "ASTR 12710", "HIST 13001"],
       "Y2-Spring": ["CCSG 20900", "ARTV 10100", "BIOS 12117"],
       "Y3-Autumn": ["CCSG 20500", "CCSG 21100", "GEOS 22060"],
-      "Y3-Winter": ["CCSG 20700", "ENSC 23600", "HIST 13002", "PBPL 20000"],
-      "Y3-Spring": ["CCSG 25000", "GEOS 24800"],
-      "Y4-Autumn": ["CCSG 29001", "ECON 10000", "ELECTIVE 1", "HIST 14601"],
+      "Y3-Winter": ["HIST 13002", "PBPL 20000", "CCSG 20700"],
+      "Y3-Spring": ["CCSG 25000", "GEOS 24800", "ENSC 23600"],
+      "Y4-Autumn": ["ELECTIVE 1", "HIST 14601", "CCSG 29001"],
       "Y4-Winter": ["CCSG 29002", "PBPL 22100", "HIST 12706"],
-      "Y4-Spring": ["ELECTIVE 2", "PBPL 22200"]
+      "Y4-Spring": ["ELECTIVE 2", "PBPL 22200", "ECON 10000"]
     },
     "Comparative Literature": {
       "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "LATN 10100"],
@@ -1463,16 +1566,16 @@ window.CATALOG = {
       "Y3-Winter": ["HIST 13002", "MATH 15200", "ENGL 10144", "ENGL 10404"],
       "Y3-Spring": ["ENGL 10709", "CLCV 23024", "ENGL 10434"],
       "Y4-Autumn": ["CLCV 20100", "CLCV 20407", "ELECTIVE 1", "HIST 14601"],
-      "Y4-Winter": ["CLCV 21700", "ENGL 10800", "HIST 12706", "ENGL 10455"],
-      "Y4-Spring": ["ELECTIVE 2", "ENGL 11004"]
+      "Y4-Winter": ["HIST 12706", "ENGL 10455", "CLCV 21700"],
+      "Y4-Spring": ["ELECTIVE 2", "ENGL 11004", "ENGL 10800"]
     },
     "Computational and Applied Mathematics": {
       "Y1-Autumn": ["HUMA 11000", "MATH 15100", "CMSC 14100"],
       "Y1-Winter": ["HUMA 11100", "MATH 15200", "CMSC 14200"],
       "Y1-Spring": ["HUMA 11200", "ARTV 10100", "MATH 19620", "MATH 15300"],
-      "Y2-Autumn": ["SOSC 12400", "STAT 24300", "CMSC 27100", "MATH 16300"],
+      "Y2-Autumn": ["CMSC 27100", "MATH 16300", "SOSC 12400"],
       "Y2-Winter": ["SOSC 12500", "CMSC 27200", "MATH 20250"],
-      "Y2-Spring": ["SOSC 12600", "MATH 20300"],
+      "Y2-Spring": ["SOSC 12600", "MATH 20300", "STAT 24300"],
       "Y3-Autumn": ["MATH 18400", "MATH 20400", "HIST 13001"],
       "Y3-Winter": ["STAT 28000", "HIST 13002", "STAT 24400", "MATH 27300"],
       "Y3-Spring": ["MATH 23500", "STAT 25100", "CAAM 21460", "CAAM 21470"],
@@ -1485,13 +1588,13 @@ window.CATALOG = {
       "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
       "Y1-Spring": ["HUMA 11200", "SOSC 12600", "ARTV 10100"],
       "Y2-Autumn": ["CRWR 10206", "ASTR 12700", "BIOS 10130"],
-      "Y2-Winter": ["CRWR 10306", "ASTR 12710"],
+      "Y2-Winter": ["CRWR 10306", "ASTR 12710", "ENGL 10455"],
       "Y2-Spring": ["CRWR 10406", "ENGL 10434", "BIOS 12117"],
       "Y3-Autumn": ["ENGL 10432", "ENGL 16600", "HIST 13001"],
-      "Y3-Winter": ["ENGL 10455", "HIST 13002", "ENGL 10144", "ENGL 10404"],
+      "Y3-Winter": ["HIST 13002", "ENGL 10144", "ENGL 10404"],
       "Y3-Spring": ["ENGL 10800", "ENGL 11004", "ENGL 10709"],
-      "Y4-Autumn": ["ENGL 12143", "ELECTIVE 1", "ENGL 11200", "HIST 14601"],
-      "Y4-Winter": ["PLSC 28701", "HIST 12706"],
+      "Y4-Autumn": ["ENGL 11200", "HIST 14601", "ENGL 12143"],
+      "Y4-Winter": ["PLSC 28701", "HIST 12706", "ELECTIVE 1"],
       "Y4-Spring": ["ELECTIVE 2", "PLSC 28801", "ENGL 16500"]
     },
     "East Asian Languages and Civilizations": {
@@ -1499,8 +1602,8 @@ window.CATALOG = {
       "Y1-Winter": ["HUMA 11100", "SOSC 12500", "CHIN 10200"],
       "Y1-Spring": ["HUMA 11200", "SOSC 12600", "CHIN 10300"],
       "Y2-Autumn": ["CHIN 20100", "ASTR 12700", "BIOS 10130"],
-      "Y2-Winter": ["CHIN 20200", "ASTR 12710"],
-      "Y2-Spring": ["CHIN 20300", "ARTV 10100", "EALC 28901", "BIOS 12117"],
+      "Y2-Winter": ["CHIN 20200", "ASTR 12710", "ARTV 10100"],
+      "Y2-Spring": ["EALC 28901", "BIOS 12117", "CHIN 20300"],
       "Y3-Autumn": ["EALC 28010", "ARTH 20603", "HIST 13001"],
       "Y3-Winter": ["EALC 28015", "ARTH 16100", "HIST 13002"],
       "Y3-Spring": ["HIST 15604", "HIST 15006", "PLSC 28801", "ARTH 24602"],
@@ -1529,12 +1632,12 @@ window.CATALOG = {
       "Y2-Autumn": ["LATN 20100", "FNDL 21800", "ASTR 12700", "BIOS 10130"],
       "Y2-Winter": ["LATN 20200", "FNDL 23419", "ASTR 12710"],
       "Y2-Spring": ["LATN 20300", "FNDL 20211", "ARTV 10100", "BIOS 12117"],
-      "Y3-Autumn": ["FNDL 29900", "CLCV 20100", "MATH 15100", "HIST 13001"],
+      "Y3-Autumn": ["CLCV 20100", "MATH 15100", "HIST 13001"],
       "Y3-Winter": ["FNDL 29901", "CLCV 21700", "MATH 15200", "ENGL 10404"],
-      "Y3-Spring": ["CLCV 23024", "HIST 13002"],
+      "Y3-Spring": ["CLCV 23024", "HIST 13002", "FNDL 29900"],
       "Y4-Autumn": ["ENGL 10432", "ELECTIVE 1", "HIST 14601"],
-      "Y4-Winter": ["FNDL 29902", "HIST 12706", "ENGL 10144", "ENGL 10455"],
-      "Y4-Spring": ["ELECTIVE 2", "ENGL 10434"]
+      "Y4-Winter": ["HIST 12706", "ENGL 10144", "ENGL 10455"],
+      "Y4-Spring": ["ELECTIVE 2", "ENGL 10434", "FNDL 29902"]
     },
     "Gender and Sexuality Studies": {
       "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
@@ -1544,10 +1647,10 @@ window.CATALOG = {
       "Y2-Winter": ["GNSE 15003", "GNSE 12149", "ASTR 12710"],
       "Y2-Spring": ["GNSE 15014", "ARTV 10100", "BIOS 12117"],
       "Y3-Autumn": ["GNSE 12148", "GNSE 12159", "ENGL 10432", "HIST 13001"],
-      "Y3-Winter": ["GNSE 20112", "HIST 13002", "ENGL 10144", "HIST 12706"],
+      "Y3-Winter": ["HIST 13002", "ENGL 10144", "HIST 12706"],
       "Y3-Spring": ["GNSE 12151", "GNSE 20136", "PLSC 28801"],
-      "Y4-Autumn": ["GNSE 29501", "ELECTIVE 1", "PLSC 28701", "HIST 14601"],
-      "Y4-Winter": ["ENGL 10404"],
+      "Y4-Autumn": ["ELECTIVE 1", "PLSC 28701", "HIST 14601"],
+      "Y4-Winter": ["ENGL 10404", "GNSE 29501", "GNSE 20112"],
       "Y4-Spring": ["ELECTIVE 2", "PLSC 28901", "HIST 15006"]
     },
     "Geophysical Sciences": {
@@ -1556,8 +1659,8 @@ window.CATALOG = {
       "Y1-Spring": ["HUMA 11200", "CHEM 11300", "GEOS 13300", "ARTV 10100"],
       "Y2-Autumn": ["SOSC 12400", "PHYS 13100", "MATH 18300", "GEOS 21000"],
       "Y2-Winter": ["SOSC 12500", "PHYS 13200", "GEOS 21400", "CCSG 20100"],
-      "Y2-Spring": ["SOSC 12600", "MATH 15300"],
-      "Y3-Autumn": ["GEOS 22060", "GEOS 24220", "MATH 19620", "STAT 23400"],
+      "Y2-Spring": ["SOSC 12600", "MATH 15300", "MATH 19620"],
+      "Y3-Autumn": ["STAT 23400", "GEOS 22060", "GEOS 24220"],
       "Y3-Winter": ["GEOS 23205", "MATH 18400", "HIST 13001"],
       "Y3-Spring": ["GEOS 24300", "GEOS 28600", "GEOS 24800", "HIST 13002"],
       "Y4-Autumn": ["ASTR 12700", "BIOS 10130", "MATH 18500"],
@@ -1585,12 +1688,12 @@ window.CATALOG = {
       "Y2-Autumn": ["CHIN 20100", "GLST 23101", "ASTR 12700", "BIOS 10130"],
       "Y2-Winter": ["CHIN 20200", "ANTH 10100", "ASTR 12710"],
       "Y2-Spring": ["CHIN 20300", "ANTH 21420", "ARTV 10100", "BIOS 12117"],
-      "Y3-Autumn": ["GLST 25830", "ECON 10000", "MATH 15100", "HIST 13001"],
+      "Y3-Autumn": ["MATH 15100", "HIST 13001", "GLST 25830"],
       "Y3-Winter": ["GLST 23102", "GLST 25850", "MATH 15200"],
       "Y3-Spring": ["GLST 23111", "GLST 26382", "HIST 13002"],
       "Y4-Autumn": ["GLST 29800", "ELECTIVE 1", "HIST 14601"],
       "Y4-Winter": ["GLST 29801", "PBPL 22100", "HIST 12706", "PBPL 20000"],
-      "Y4-Spring": ["ELECTIVE 2", "PBPL 22200"]
+      "Y4-Spring": ["ELECTIVE 2", "PBPL 22200", "ECON 10000"]
     },
     "Human Rights": {
       "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
@@ -1603,8 +1706,8 @@ window.CATALOG = {
       "Y3-Winter": ["HMRT 21201", "HMRT 25003", "HIST 13002"],
       "Y3-Spring": ["HMRT 21400", "HMRT 25004", "PLSC 28801"],
       "Y4-Autumn": ["HMRT 23472", "ELECTIVE 1", "HIST 14601"],
-      "Y4-Winter": ["PLSC 28901", "ECON 10000", "HIST 12706", "PBPL 20000"],
-      "Y4-Spring": ["ELECTIVE 2", "HIST 15006"]
+      "Y4-Winter": ["ECON 10000", "HIST 12706", "PBPL 20000"],
+      "Y4-Spring": ["ELECTIVE 2", "HIST 15006", "PLSC 28901"]
     },
     "Inquiry and Research in the Humanities": {
       "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
@@ -1612,13 +1715,13 @@ window.CATALOG = {
       "Y1-Spring": ["HUMA 11200", "SOSC 12600", "ARTV 10100"],
       "Y2-Autumn": ["ENGL 13000", "ASTR 12700", "BIOS 10130"],
       "Y2-Winter": ["IRHU 20100", "ASTR 12710", "HIST 13001"],
-      "Y2-Spring": ["IRHU 27002", "BIOS 12117"],
+      "Y2-Spring": ["IRHU 27002", "BIOS 12117", "GRMN 22312"],
       "Y3-Autumn": ["IRHU 20009", "GRMN 23333", "ENGL 10432"],
-      "Y3-Winter": ["GRMN 22312", "HIST 13002", "ENGL 10144", "ENGL 10404"],
+      "Y3-Winter": ["HIST 13002", "ENGL 10144", "ENGL 10404"],
       "Y3-Spring": ["IRHU 27003", "ENGL 10434", "ENGL 10709"],
-      "Y4-Autumn": ["HIST 14601", "ELECTIVE 1"],
+      "Y4-Autumn": ["HIST 14601", "ELECTIVE 1", "ELECTIVE 2"],
       "Y4-Winter": ["ARTH 10100", "HIST 12706", "ENGL 10455"],
-      "Y4-Spring": ["ELECTIVE 2", "HIST 15007", "ARTH 29600", "HIST 15006"]
+      "Y4-Spring": ["HIST 15007", "ARTH 29600", "HIST 15006"]
     },
     "Jewish Studies": {
       "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "HEBR 10501"],
@@ -1631,8 +1734,8 @@ window.CATALOG = {
       "Y3-Winter": ["JWSC 20923", "JWSC 20924", "HIST 13002"],
       "Y3-Spring": ["JWSC 12007", "JWSC 12012", "JWSC 20203"],
       "Y4-Autumn": ["PLSC 28701", "ELECTIVE 1", "HIST 14601"],
-      "Y4-Winter": ["JWSC 23480", "HIST 12706"],
-      "Y4-Spring": ["ELECTIVE 2", "HIST 15006", "PLSC 28901", "PLSC 28801"]
+      "Y4-Winter": ["JWSC 23480", "HIST 12706", "ELECTIVE 2"],
+      "Y4-Spring": ["HIST 15006", "PLSC 28901", "PLSC 28801"]
     },
     "Latin American and Caribbean Studies": {
       "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "SPAN 10100", "MATH 15100"],
@@ -1773,6 +1876,76 @@ window.CATALOG = {
       "Y4-Autumn": ["SOCI 20140", "SOCI 20175", "ARTV 10100"],
       "Y4-Winter": ["SOCI 20640", "ELECTIVE 3", "ELECTIVE 4"],
       "Y4-Spring": ["ELECTIVE 5", "ELECTIVE 1", "ELECTIVE 2"]
+    },
+    "Cognitive Science": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100", "COGS 20001"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200", "LING 20001"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "PSYC 20200"],
+      "Y2-Autumn": ["COGS 20027", "PSYC 20400", "BIOS 10130"],
+      "Y2-Winter": ["HIST 13001", "COGS 22003", "COGS 20002", "PSYC 20300"],
+      "Y2-Spring": ["HIST 13002", "BIOS 12117", "COGS 22001"],
+      "Y3-Autumn": ["ASTR 12700", "COGS 25001", "CHDV 25120"],
+      "Y3-Winter": ["ASTR 12710", "COGS 22006", "COGS 29001"],
+      "Y3-Spring": ["COGS 20003", "COGS 22004", "CHDV 20655"],
+      "Y4-Autumn": ["PHIL 20100", "COGS 22501", "COGS 22013"],
+      "Y4-Winter": ["ARTV 10100", "ELECTIVE 1", "ELECTIVE 2"],
+      "Y4-Spring": ["COGS 22005", "COGS 24001", "PHIL 23000"]
+    },
+    "Comparative Human Development": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "CHDV 20000"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "CHDV 20774", "CHDV 20100"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "ELECTIVE 3"],
+      "Y2-Autumn": ["ASTR 12700", "BIOS 10130", "PSYC 20200"],
+      "Y2-Winter": ["ASTR 12710", "HIST 13001", "CHDV 23900"],
+      "Y2-Spring": ["BIOS 12117", "HIST 13002", "CHDV 20655"],
+      "Y3-Autumn": ["CHDV 20150", "CHDV 20175", "CHDV 21000"],
+      "Y3-Winter": ["CHDV 21600", "CHDV 21920", "CHDV 22099"],
+      "Y3-Spring": ["CHDV 21816", "CHDV 21899", "CHDV 22305"],
+      "Y4-Autumn": ["CHDV 23370", "CHDV 23700", "CHDV 25120"],
+      "Y4-Winter": ["CHDV 23204", "ARTV 10100", "ELECTIVE 1"],
+      "Y4-Spring": ["CHDV 23100", "CHDV 24500", "ELECTIVE 2"]
+    },
+    "Environment, Geography, and Urbanization": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "CEGU 20001"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "CEGU 20002"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "CEGU 20003"],
+      "Y2-Autumn": ["CEGU 20150", "ASTR 12700", "BIOS 10130"],
+      "Y2-Winter": ["CEGU 23517", "ASTR 12710", "HIST 13001"],
+      "Y2-Spring": ["BIOS 12117", "HIST 13002", "CEGU 20151"],
+      "Y3-Autumn": ["CEGU 20180", "NEAA 20061", "CEGU 25035"],
+      "Y3-Winter": ["NEAA 20062", "CEGU 21501", "CEGU 22100"],
+      "Y3-Spring": ["CEGU 21114", "CEGU 22301", "ARTV 10100"],
+      "Y4-Autumn": ["CEGU 29801", "CEGU 27155", "CEGU 25909"],
+      "Y4-Winter": ["CEGU 29802", "CEGU 24010", "CEGU 24660"],
+      "Y4-Spring": ["CEGU 26907", "ELECTIVE 1", "ELECTIVE 2"]
+    },
+    "History, Philosophy, and Social Studies of Science and Medicine": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100", "HIPS 18302"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "MATH 15300"],
+      "Y2-Autumn": ["PHYS 13100", "HIPS 29653", "MATH 19620"],
+      "Y2-Winter": ["PHYS 13200", "HIPS 18506", "HIPS 18401", "MATH 18300"],
+      "Y2-Spring": ["HIPS 29654", "HIPS 29800", "MATH 18500"],
+      "Y3-Autumn": ["ASTR 12700", "BIOS 10130", "MATH 18400"],
+      "Y3-Winter": ["ASTR 12710", "HIST 13001", "HIPS 25014", "MATH 18600"],
+      "Y3-Spring": ["BIOS 12117", "HIST 13002", "HIPS 11800"],
+      "Y4-Autumn": ["HIPS 22001", "ARTV 10100", "HIPS 29810"],
+      "Y4-Winter": ["HIPS 25417", "ELECTIVE 1", "HIPS 29700"],
+      "Y4-Spring": ["HIPS 29900", "HIPS 15006", "ELECTIVE 2"]
+    },
+    "Astrophysics": {
+      "Y1-Autumn": ["HUMA 11000", "SOSC 12400", "MATH 15100"],
+      "Y1-Winter": ["HUMA 11100", "SOSC 12500", "MATH 15200"],
+      "Y1-Spring": ["HUMA 11200", "SOSC 12600", "MATH 15300"],
+      "Y2-Autumn": ["PHYS 13100", "MATH 19620", "MATH 18300"],
+      "Y2-Winter": ["HIST 13001", "PHYS 13200", "MATH 18500"],
+      "Y2-Spring": ["HIST 13002", "ASTR 13300", "MATH 18400", "PHYS 13300"],
+      "Y3-Autumn": ["BIOS 10130", "ASTR 12700", "ASTR 20500", "MATH 18600"],
+      "Y3-Winter": ["ASTR 12710", "PHYS 22500", "PHYS 23410"],
+      "Y3-Spring": ["BIOS 12117", "PHYS 23510", "ASTR 21200"],
+      "Y4-Autumn": ["ARTV 10100", "PHYS 27900", "ASTR 25400", "ASTR 21000"],
+      "Y4-Winter": ["ELECTIVE 1", "ASTR 24100", "ASTR 21100"],
+      "Y4-Spring": ["ELECTIVE 2", "ASTR 23900", "ASTR 25800"]
     }
   },
   // Core sequences a student can switch to (Paris and Rome course numbers are placeholders)
