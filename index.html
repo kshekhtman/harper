@@ -336,6 +336,30 @@
     .map(m => `<button data-t='${JSON.stringify(["load_major", { major: m + " standard" }])}'>${m}</button>`).join("");
   document.querySelectorAll("details button").forEach(b => b.onclick = () => { const [n, a] = JSON.parse(b.dataset.t); clientTools[n](a); });
 
+  // what Harper should know about the plan already on screen
+  function planSummary() {
+    const s = P.state;
+    if (!s.major) return "No plan is loaded yet.";
+    const v = P.validate();
+    const issues = Object.keys(v.courseIssues).length + s.tray.length;
+    const parts = [`A plan is already loaded: ${s.major}${s.second ? ` with ${s.second} as a second major` : ""}.`];
+    const picks = Object.entries(s.coreChoices || {}).map(([a, n]) => `${a}: ${n}`);
+    if (picks.length) parts.push(`Core picked so far: ${picks.join("; ")}.`);
+    const open = [...new Set(P.QUARTERS.flatMap(q => s.plan[q]).filter(id => P.courses[id]?.placeholder).map(id => P.courses[id].category))];
+    if (open.length) parts.push(`Core still unpicked: ${open.join(", ")}.`);
+    if (s.abroad) parts.push(`Studying abroad in ${s.abroad}.`);
+    if ((s.credit || []).length) parts.push(`AP/placement credit: ${s.credit.join(", ")}.`);
+    if (s.testCredits) parts.push(`${s.testCredits} AP/test credit(s) not yet matched to courses.`);
+    if ((s.locked || []).length) parts.push(`Transcript applied: quarters through ${s.locked[s.locked.length - 1]} are completed.`);
+    parts.push(issues ? `${issues} open problem(s).` : "The plan is valid.");
+    return parts.join(" ");
+  }
+  function greetingText() {
+    const s = P.state;
+    if (!s.major) return "Hey, I'm Harper. What's your major?";
+    return `Welcome back. Your ${s.second ? `${s.major} and ${s.second}` : s.major} plan is still here. What do you want to work on?`;
+  }
+
   // let Harper know about something that happened on the page, and get her to respond
   let pendingNote = null;
   function tellHarper(note) {
@@ -359,6 +383,8 @@
       convo = await Conversation.startSession({
         agentId: AGENT_ID,
         clientTools,
+        // so Harper remembers the plan on screen when a new conversation starts
+        dynamicVariables: { greeting: greetingText(), plan_summary: planSummary() },
         onConnect: () => { if (pendingNote) { const n = pendingNote; pendingNote = null; setTimeout(() => tellHarper(n), 1500); } talk.classList.add("live"); $("talklabel").textContent = "End conversation"; $("mode").textContent = "Listening…"; },
         onDisconnect: () => { convo = null; talk.className = ""; $("talklabel").innerHTML = 'Talk to <span class="brandword">Harper</span>'; $("mode").textContent = "Disconnected"; },
         onMessage: ({ message, source }) => {
